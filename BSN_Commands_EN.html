@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Commands — Eenvoudige Netwerken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07090f;color:rgba(255,255,255,0.92);font-family:'Space Grotesk',sans-serif;line-height:1.6;min-height:100vh}
+.topnav{position:sticky;top:0;z-index:200;height:52px;background:#07090f;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px}
+.hublink:hover{color:rgba(255,255,255,0.6)}
+/* TOOLBAR */
+.toolbar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.08);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;position:sticky;top:52px;z-index:100}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:380px}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:13px;color:rgba(255,255,255,0.3);pointer-events:none}
+.search-wrap input{width:100%;background:#111720;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:.5rem .75rem .5rem 2rem;color:rgba(255,255,255,0.92);font-size:.875rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:#4f8ef7}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.fpill{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:#111720;color:rgba(255,255,255,0.5);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8)}
+.fpill.active{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+/* STATS */
+.stats-bar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.06);padding:.45rem 1.5rem;font-size:11px;color:rgba(255,255,255,0.38);display:flex;align-items:center;gap:1rem}
+.stats-count{font-family:'Space Mono',monospace;font-weight:700;color:rgba(255,255,255,0.6)}
+.copy-hint{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3)}
+/* CONTENT */
+.content{max-width:860px;margin:0 auto;padding:1.25rem 1.5rem 4rem}
+/* CHAPTER GROUP */
+.ch-group{margin-bottom:2rem}
+.ch-group-head{display:flex;align-items:center;gap:10px;margin-bottom:.85rem}
+.ch-pip{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.ch-group-label{font-size:.95rem;font-weight:700;color:rgba(255,255,255,0.88)}
+.ch-group-count{font-size:11px;color:rgba(255,255,255,0.35);background:#111720;border-radius:20px;padding:1px 8px}
+/* COMMAND ROW */
+.cmd-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;margin-bottom:.55rem;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.cmd-card:hover{border-color:rgba(255,255,255,0.2)}
+.cmd-card.open{border-color:rgba(255,255,255,0.22)}
+.cmd-top{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem}
+.cmd-name{font-family:'Space Mono',monospace;font-size:.9rem;font-weight:700;color:#22d3a5;flex:1}
+.cmd-desc-short{font-size:.82rem;color:rgba(255,255,255,0.55);flex:2;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.cmd-copy-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:#0b2018;border:1px solid rgba(34,211,165,0.25);color:#22d3a5;font-size:11px;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;flex-shrink:0;transition:background .15s}
+.cmd-copy-btn:hover{background:#0d2a20}
+.cmd-copy-btn.copied{background:#0d2a20;border-color:rgba(34,211,165,0.5);color:#22d3a5}
+.cmd-ch-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0}
+.cmd-arrow{font-size:10px;color:rgba(255,255,255,0.3);transition:transform .2s;flex-shrink:0}
+.cmd-card.open .cmd-arrow{transform:rotate(90deg)}
+/* EXPANDED BODY */
+.cmd-body{display:none;padding:.1rem 1rem 1rem 1rem}
+.cmd-card.open .cmd-body{display:block}
+.cmd-full{font-family:'Space Mono',monospace;font-size:.9rem;color:#22d3a5;background:#0b0f18;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.cmd-full-text{flex:1}
+.cmd-detail{font-size:.855rem;color:rgba(255,255,255,0.72);line-height:1.65;margin-bottom:.6rem}
+.cmd-detail strong{color:rgba(255,255,255,0.92)}
+.cmd-detail code{font-family:'Space Mono',monospace;font-size:.78rem;background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.cmd-example{background:#0b0f18;border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:.65rem .9rem;font-family:'Space Mono',monospace;font-size:.78rem;color:rgba(255,255,255,0.65);line-height:1.6}
+.cmd-example-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.3);margin-bottom:.35rem;font-family:'Space Grotesk',sans-serif}
+/* EMPTY */
+.empty-msg{padding:3rem;text-align:center;color:rgba(255,255,255,0.35);display:none}
+.empty-msg.show{display:block}
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(60px);background:#0b2018;border:1px solid rgba(34,211,165,0.4);color:#22d3a5;font-size:.875rem;font-weight:600;padding:.65rem 1.4rem;border-radius:8px;opacity:0;transition:opacity .25s,transform .25s;z-index:999;pointer-events:none;font-family:'Space Grotesk',sans-serif}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:640px){
+  .toolbar{padding:.6rem 1rem}
+  .content{padding:1rem}
+  .cmd-desc-short{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tnl">
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Commands &middot; EN</div><div class="tnsub">Eenvoudige Netwerken &mdash; All CMD Commands</div></div>
+  </div>
+  <div class="tnr">
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search commands, descriptions..." oninput="render()">
+  </div>
+  <div class="filter-pills" id="filterPills"></div>
+</div>
+
+<div class="stats-bar">
+  <span>Showing <span class="stats-count" id="countEl">0</span> commands</span>
+  <span class="copy-hint">Click any row or &#128203; to copy the command</span>
+</div>
+
+<div class="content" id="content"></div>
+<div class="toast" id="toast">&#10003; Copied to clipboard</div>
+
+<script>
+
+var CHAPTERS = [
+  {id:2,name:'MAC Addresses',color:'#22d3a5'},
+  {id:4,name:'TCP/IP',color:'#e879f9'},
+  {id:5,name:'Ports',color:'#facc15'},
+  {id:6,name:'ARP & ICMP',color:'#f43f5e'},
+];
+
+var CMDS = [
+  /* CH2 */
+  {id:'getmac',ch:2,cmd:'getmac',
+   desc:'Show MAC address(es) of this computer',
+   detail:'Displays the <strong>Physical Address (MAC address)</strong> of all network adapters on the computer. Output is in dash notation (e.g. B4-B6-86-27-1D-B8). Quick way to find a MAC without all the extra info from ipconfig /all.',
+   example:'C:\\> getmac\n\nPhysical Address    Transport Name\n==================  ==================================\nB4-B6-86-27-1D-B8   \\Device\\Tcpip_{GUID}'},
+
+  {id:'ipconfig_all',ch:2,cmd:'ipconfig /all',
+   desc:'Full network config including MAC, IP, gateway, DNS',
+   detail:'Shows the complete TCP/IP configuration for every network adapter: <strong>Physical Address (MAC)</strong>, IP address, subnet mask, default gateway, DNS servers, DHCP status, DHCP server IP, and lease times. The most comprehensive network info command.',
+   example:'C:\\> ipconfig /all\n\nEthernet adapter Ethernet:\n   Physical Address. . . . : B4-B6-86-27-1D-B8\n   IPv4 Address. . . . . . : 192.168.1.50\n   Subnet Mask . . . . . . : 255.255.255.0\n   Default Gateway . . . . : 192.168.1.1\n   DNS Servers . . . . . . : 8.8.8.8'},
+
+  /* CH4 */
+  {id:'ncpa_cpl',ch:4,cmd:'ncpa.cpl',
+   desc:'Open Network Connections — configure static/dynamic IP',
+   detail:'Opens the <strong>Network Connections</strong> control panel where you can configure IP settings. Right-click an adapter → Properties → Internet Protocol Version 4 (TCP/IPv4) → Properties to set a static IP address, subnet mask, gateway and DNS — or switch back to DHCP.',
+   example:'Win + R  →  type: ncpa.cpl  →  Enter\n\nOR\n\nStart menu → search: ncpa.cpl → Enter'},
+
+  /* CH5 */
+  {id:'netstat_an',ch:5,cmd:'netstat -an',
+   desc:'Show all open ports, connections and their states',
+   detail:'Displays all <strong>active network connections and listening ports</strong> on the system. Shows protocol (TCP/UDP), local address + port, foreign address + port, and state (LISTENING, ESTABLISHED, TIME_WAIT, etc.). Essential for seeing which services are running and on which ports.',
+   example:'C:\\> netstat -an\n\nProto  Local Address        Foreign Address      State\nTCP    0.0.0.0:80           0.0.0.0:0            LISTENING\nTCP    0.0.0.0:3389         0.0.0.0:0            LISTENING\nTCP    192.168.1.50:51106   93.184.216.34:443    ESTABLISHED\nUDP    0.0.0.0:53           *:*'},
+
+  /* CH6 */
+  {id:'arp_a',ch:6,cmd:'arp -a',
+   desc:'View ARP table — all IP-to-MAC mappings',
+   detail:'Displays the <strong>ARP cache</strong> — the list of IP-to-MAC address mappings learned by this device. Entries are marked as <strong>dynamic</strong> (learned automatically via ARP) or <strong>static</strong> (manually added). The ARP table prevents repeated ARP requests for known devices.',
+   example:'C:\\> arp -a\n\nInterface: 192.168.1.50 --- 0x3\n  Internet Address    Physical Address    Type\n  192.168.1.1         6a-02-b8-82-bc-f3   dynamic\n  192.168.1.255       ff-ff-ff-ff-ff-ff   static'},
+
+  {id:'arp_d',ch:6,cmd:'arp -d *',
+   desc:'Delete all ARP cache entries',
+   detail:'Clears the <strong>entire ARP table</strong> (cache). Useful for troubleshooting ARP-related issues, forcing the device to re-learn all MAC addresses fresh, or after changing network settings. Requires administrator privileges. The asterisk (*) means "all entries".',
+   example:'C:\\> arp -d *\n\n(No output — table is silently cleared)\n\nVerify it worked:\nC:\\> arp -a\n(Table should be empty or minimal)'},
+
+  {id:'ping',ch:6,cmd:'ping 192.168.1.1',
+   desc:'Test reachability — 4 ICMP packets of 32 bytes',
+   detail:'Tests whether a device is reachable by sending <strong>4 ICMP echo requests of 32 bytes each</strong> and waiting for replies. Shows round-trip time (ms) and TTL. Lost packets indicate connectivity problems. Asterisks (*) or "Request timed out" can mean ICMP is blocked by a firewall — not necessarily that the device is offline.',
+   example:'C:\\> ping 192.168.1.1\n\nPinging 192.168.1.1 with 32 bytes of data:\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\n\nPing statistics: Sent=4, Received=4, Lost=0 (0% loss)'},
+
+  {id:'ping_t',ch:6,cmd:'ping -t 192.168.1.1',
+   desc:'Continuous ping until Ctrl+C — test stability',
+   detail:'Sends ICMP echo requests <strong>continuously</strong> until you press <strong>Ctrl+C</strong> to stop. Press Ctrl+Break to see intermediate statistics without stopping. Useful for monitoring connection stability, detecting intermittent drops, or keeping a session alive.',
+   example:'C:\\> ping -t 192.168.1.1\n\nPinging 192.168.1.1 with 32 bytes of data:\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=2ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\n...\n\nCtrl+C  to stop\nCtrl+Break  for stats without stopping'},
+
+  {id:'ping_4',ch:6,cmd:'ping -4 google.be',
+   desc:'Force IPv4 ping — useful when host has both IPv4 and IPv6',
+   detail:'Forces ping to use <strong>IPv4</strong> even if the target has an IPv6 address available. Useful when testing IPv4 connectivity specifically, or when you want to verify that IPv4 routing works correctly to a dual-stack host.',
+   example:'C:\\> ping -4 google.be\n\nPinging google.be [142.250.179.195] with 32 bytes of data:\nReply from 142.250.179.195: bytes=32 time=12ms TTL=57\n...'},
+
+  {id:'ping_6',ch:6,cmd:'ping -6 google.be',
+   desc:'Force IPv6 ping — test IPv6 connectivity',
+   detail:'Forces ping to use <strong>IPv6</strong>. The target must have an IPv6 (AAAA) DNS record and your network must support IPv6. Useful for verifying IPv6 connectivity specifically. IPv6 addresses are 128-bit written in colon-separated hex groups.',
+   example:'C:\\> ping -6 google.be\n\nPinging google.be [2a00:1450:400e:804::2003]\nwith 32 bytes of data:\nReply from 2a00:1450:400e:804::2003: time=13ms'},
+
+  {id:'tracert',ch:6,cmd:'tracert 8.8.8.8',
+   desc:'Show each router hop to the destination',
+   detail:'Traces the <strong>route packets take</strong> from your computer to a destination, showing each router (hop) along the way with round-trip times. Works by sending ICMP packets with incrementing TTL values. Each router that decrements TTL to 0 sends back a "TTL Exceeded" message, revealing itself. Asterisks (*) mean a hop is not responding to ICMP.',
+   example:'C:\\> tracert 8.8.8.8\n\nTracing route to dns.google [8.8.8.8]\n\n  1    1 ms    1 ms    1 ms  192.168.1.1\n  2    8 ms    7 ms    8 ms  10.123.0.1\n  3   11 ms   10 ms   11 ms  172.16.45.2\n  4   12 ms   12 ms   11 ms  8.8.8.8\n\nTrace complete.'},
+];
+
+var activeCh = 0;
+
+function init(){
+  buildPills();
+  render();
+}
+
+function buildPills(){
+  var h = '<div class="fpill active" id="pill_0" onclick="setCh(0)">All Chapters</div>';
+  for(var i=0;i<CHAPTERS.length;i++){
+    var c=CHAPTERS[i];
+    h += '<div class="fpill" id="pill_'+c.id+'" onclick="setCh('+c.id+')" style="border-color:'+c.color+'33">Ch.'+c.id+' '+c.name+'</div>';
+  }
+  document.getElementById('filterPills').innerHTML = h;
+}
+
+function setCh(id){
+  activeCh = id;
+  var pills = document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  var p = document.getElementById('pill_'+id);
+  if(p) p.classList.add('active');
+  render();
+}
+
+function getChColor(chid){
+  for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].id===chid) return CHAPTERS[i].color;
+  return '#4f8ef7';
+}
+function getChName(chid){
+  for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].id===chid) return CHAPTERS[i].name;
+  return 'Chapter '+chid;
+}
+
+function render(){
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  var filtered = [];
+  for(var i=0;i<CMDS.length;i++){
+    var c = CMDS[i];
+    if(activeCh && c.ch !== activeCh) continue;
+    if(q){
+      var hay = (c.cmd+' '+c.desc+' '+c.detail+' '+c.example).toLowerCase();
+      if(hay.indexOf(q) < 0) continue;
+    }
+    filtered.push(c);
+  }
+  document.getElementById('countEl').textContent = filtered.length;
+
+  if(!filtered.length){
+    document.getElementById('content').innerHTML = '<div class="empty-msg show">No commands match your search.</div>';
+    return;
+  }
+
+  /* group by chapter */
+  var groups = {};
+  var order = [];
+  for(var i=0;i<filtered.length;i++){
+    var c = filtered[i];
+    if(!groups[c.ch]){ groups[c.ch]=[]; order.push(c.ch); }
+    groups[c.ch].push(c);
+  }
+
+  var html = '';
+  for(var gi=0;gi<order.length;gi++){
+    var chid = order[gi];
+    var cmds = groups[chid];
+    var cc = getChColor(chid);
+    var cn = getChName(chid);
+    html += '<div class="ch-group">';
+    html += '<div class="ch-group-head">'
+      +'<div class="ch-pip" style="background:'+cc+'"></div>'
+      +'<span class="ch-group-label">Chapter '+chid+' — '+cn+'</span>'
+      +'<span class="ch-group-count">'+cmds.length+' command'+(cmds.length>1?'s':'')+'</span>'
+      +'</div>';
+    for(var ci=0;ci<cmds.length;ci++){
+      var c = cmds[ci];
+      html += '<div class="cmd-card" id="cc_'+c.id+'" onclick="toggleCmd(\''+c.id+'\')">';
+      html += '<div class="cmd-top">';
+      html += '<span class="cmd-name">'+c.cmd+'</span>';
+      html += '<span class="cmd-desc-short">'+c.desc+'</span>';
+      html += '<span class="cmd-ch-badge" style="background:'+cc+'22;color:'+cc+'">Ch.'+chid+'</span>';
+      html += '<button class="cmd-copy-btn" id="cpbtn_'+c.id+'" onclick="copyCmd(event,\''+c.id+'\',\''+escJs(c.cmd)+'\')">&#128203; copy</button>';
+      html += '<span class="cmd-arrow">&#9658;</span>';
+      html += '</div>';
+      html += '<div class="cmd-body">';
+      html += '<div class="cmd-full"><span class="cmd-full-text">'+c.cmd+'</span>'
+        +'<button class="cmd-copy-btn" onclick="copyCmd(event,\''+c.id+'\',\''+escJs(c.cmd)+'\')">&#128203; copy</button></div>';
+      html += '<div class="cmd-detail">'+c.detail+'</div>';
+      html += '<div class="cmd-example-label">Example output</div>';
+      html += '<div class="cmd-example">'+escHtml(c.example)+'</div>';
+      html += '</div></div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById('content').innerHTML = html;
+  if(q){
+    var cards = document.querySelectorAll('.cmd-card');
+    for(var i=0;i<cards.length;i++) cards[i].classList.add('open');
+  }
+}
+
+function escJs(s){ return s.replace(/'/g,"\\'"); }
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function toggleCmd(id){
+  var el = document.getElementById('cc_'+id);
+  if(el) el.classList.toggle('open');
+}
+
+var toastTimer = null;
+function copyCmd(evt, id, cmd){
+  evt.stopPropagation();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(cmd).then(function(){
+      var btns = document.querySelectorAll('#cpbtn_'+id+', #cc_'+id+' .cmd-copy-btn');
+      for(var i=0;i<btns.length;i++){
+        btns[i].textContent = '\u2713 copied';
+        btns[i].classList.add('copied');
+      }
+      showToast();
+      setTimeout(function(){
+        var btns2 = document.querySelectorAll('#cpbtn_'+id+', #cc_'+id+' .cmd-copy-btn');
+        for(var i=0;i<btns2.length;i++){
+          btns2[i].textContent = '\uD83D\uDCCB copy';
+          btns2[i].classList.remove('copied');
+        }
+      },1400);
+    });
+  }
+}
+
+function showToast(){
+  var t = document.getElementById('toast');
+  if(!t) return;
+  t.classList.add('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); },1600);
+}
+
+init();
+</script>
+</body>
+</html>

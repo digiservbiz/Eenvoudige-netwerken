@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Cheat Sheet — Eenvoudige Netwerken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07090f;color:rgba(255,255,255,0.92);font-family:'Space Grotesk',sans-serif;line-height:1.6;min-height:100vh}
+/* NAV */
+.topnav{position:sticky;top:0;z-index:200;height:52px;background:#07090f;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px;transition:color .2s}
+.hublink:hover{color:rgba(255,255,255,0.6)}
+.nllink{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);text-decoration:none;transition:background .2s}
+.nllink:hover{background:#111720;color:rgba(255,255,255,0.85)}
+/* TOOLBAR */
+.toolbar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.08);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;position:sticky;top:52px;z-index:100}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:360px}
+.search-wrap input{width:100%;background:#111720;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:.5rem .75rem .5rem 2rem;color:rgba(255,255,255,0.92);font-size:.875rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:#4f8ef7}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:13px;color:rgba(255,255,255,0.3);pointer-events:none}
+.filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.fpill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:#111720;color:rgba(255,255,255,0.5);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8)}
+.fpill.active{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+.expand-btn{margin-left:auto;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#111720;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;transition:background .2s;white-space:nowrap}
+.expand-btn:hover{background:#18202e;color:rgba(255,255,255,0.85)}
+/* CONTENT */
+.content{max-width:900px;margin:0 auto;padding:1.5rem}
+.ch-section{margin-bottom:2rem}
+.ch-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;cursor:pointer;user-select:none}
+.ch-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ch-label{font-size:1rem;font-weight:700;color:rgba(255,255,255,0.92)}
+.ch-count{font-size:11px;color:rgba(255,255,255,0.35);background:#111720;border-radius:20px;padding:1px 8px}
+.ch-toggle{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.35);transition:transform .2s}
+.ch-toggle.open{transform:rotate(90deg)}
+.ch-body{display:none}
+.ch-body.open{display:block}
+/* FACT CARD */
+.fact-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;margin-bottom:.6rem;overflow:hidden}
+.fact-header{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;cursor:pointer;transition:background .15s}
+.fact-header:hover{background:#111720}
+.fact-icon{font-size:13px;flex-shrink:0}
+.fact-title{font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.88);flex:1}
+.fact-tag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+.tag-def{background:#0e1c38;color:#4f8ef7}
+.tag-trap{background:#200812;color:#f43f5e}
+.tag-cmd{background:#0b2018;color:#22d3a5}
+.tag-table{background:#1a1800;color:#facc15}
+.tag-rule{background:#110d20;color:#a78bfa}
+.fact-arrow{font-size:10px;color:rgba(255,255,255,0.3);transition:transform .2s;flex-shrink:0}
+.fact-card.open .fact-arrow{transform:rotate(90deg)}
+.fact-body{display:none;padding:.1rem 1rem 1rem}
+.fact-card.open .fact-body{display:block}
+.fact-text{font-size:.855rem;color:rgba(255,255,255,0.78);line-height:1.68;margin-bottom:.6rem}
+.fact-text strong{color:rgba(255,255,255,0.95)}
+.fact-text code{font-family:'Space Mono',monospace;font-size:.78rem;background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+/* COMPARISON TABLE */
+.ctbl{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.1);margin-bottom:.6rem}
+.ctbl table{width:100%;border-collapse:collapse;font-size:.82rem}
+.ctbl th{background:#111720;padding:.55rem .9rem;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,0.45);border-bottom:1px solid rgba(255,255,255,0.08)}
+.ctbl td{padding:.52rem .9rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.78);vertical-align:top}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl tr:hover td{background:rgba(255,255,255,0.02)}
+.ctbl td strong{color:rgba(255,255,255,0.92)}
+.ctbl td code{font-family:'Space Mono',monospace;font-size:.76rem;background:rgba(255,255,255,0.06);padding:1px 4px;border-radius:3px;color:#22d3a5}
+/* CMD ROW (click to copy) */
+.cmd-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:.6rem}
+.cmd-row{display:flex;align-items:center;gap:.75rem;background:#0b0f18;border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:.55rem .9rem;cursor:pointer;transition:background .15s,border-color .15s}
+.cmd-row:hover{background:#111720;border-color:rgba(255,255,255,0.16)}
+.cmd-code{font-family:'Space Mono',monospace;font-size:.8rem;color:#22d3a5;flex:1}
+.cmd-desc{font-size:.8rem;color:rgba(255,255,255,0.55);flex:1;text-align:right}
+.cmd-copy{font-size:10px;color:rgba(255,255,255,0.25);flex-shrink:0;transition:color .2s}
+.cmd-row:hover .cmd-copy{color:rgba(255,255,255,0.55)}
+.cmd-row.copied{border-color:rgba(34,211,165,0.3);background:#0b2018}
+.cmd-row.copied .cmd-copy{color:#22d3a5}
+/* TRAP BLOCK */
+.trap-block{background:#1a0810;border:1px solid rgba(244,63,94,0.3);border-radius:7px;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;gap:.65rem}
+.trap-icon{font-size:.9rem;flex-shrink:0;margin-top:1px}
+.trap-text{font-size:.845rem;color:rgba(255,255,255,0.82);line-height:1.6}
+.trap-text strong{color:#f43f5e}
+/* CONVERSION TABLE */
+.conv{display:grid;gap:2px;margin-bottom:.6rem;font-family:'Space Mono',monospace}
+.conv-8{grid-template-columns:repeat(8,1fr)}
+.conv-4{grid-template-columns:repeat(4,1fr)}
+.conv-cell{background:#111720;border:1px solid rgba(255,255,255,0.07);padding:.35rem .2rem;text-align:center;font-size:.72rem;color:rgba(255,255,255,0.65)}
+.conv-cell.hd{background:#0e1c38;color:#4f8ef7;font-weight:700;font-size:.68rem}
+.conv-cell.hi{background:#0b2018;color:#22d3a5;font-weight:700}
+/* EMPTY STATE */
+.empty{padding:3rem;text-align:center;color:rgba(255,255,255,0.35);display:none}
+.empty.show{display:block}
+/* RESPONSIVE */
+@media(max-width:640px){
+  .toolbar{padding:.6rem 1rem}
+  .content{padding:1rem}
+  .cmd-desc{display:none}
+  .expand-btn{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tnl">
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Cheat Sheet &middot; EN</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <a href="BSN_CheatSheet_NL.html" class="nllink">&#127463;&#127466; NL</a>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search topics, commands, values..." oninput="doSearch()">
+  </div>
+  <div class="filter-pills" id="filterPills"></div>
+  <button class="expand-btn" id="expandBtn" onclick="toggleAll()">Expand All</button>
+</div>
+
+<div class="content" id="content">
+  <div class="empty" id="emptyMsg">No results found for your search.</div>
+</div>
+
+<script>
+var SECTIONS = [{"ch": 1, "color": "#4f8ef7", "title": "Chapter 1 — Number Systems", "cards": [{"icon": "📖", "title": "The Three Number Systems", "tag": "def", "body": "\n<div class=\"fact-text\">In networking you must master three number systems:<br>\n<strong>Binary (base-2)</strong> — uses digits 0 and 1. Used in subnet masks and IP calculations.<br>\n<strong>Decimal (base-10)</strong> — uses digits 0–9. How humans write IP addresses.<br>\n<strong>Hexadecimal (base-16)</strong> — uses digits 0–9 and letters A–F. Used in MAC addresses.\n</div>\n<div class=\"ctbl\"><table>\n<tr><th>System</th><th>Base</th><th>Symbols</th><th>Example</th></tr>\n<tr><td>Binary</td><td>2</td><td>0, 1</td><td><code>1010 1100</code></td></tr>\n<tr><td>Decimal</td><td>10</td><td>0–9</td><td><code>172</code></td></tr>\n<tr><td>Hexadecimal</td><td>16</td><td>0–9, A–F</td><td><code>AC</code></td></tr>\n</table></div>"}, {"icon": "⚠️", "title": "Hex Letter Values — Must Memorise", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Exam trap:</strong> Hex letters represent decimal values. A=10, B=11, C=12, D=13, E=14, F=15.<br>\nAlso: hex 10 = decimal <strong>16</strong> (not 10!). Hex 10 = 1×16 + 0×1 = 16.\n</div></div>"}, {"icon": "🔢", "title": "8-Bit Positional Value Table", "tag": "rule", "body": "\n<div class=\"fact-text\">The foundation of binary conversion. Each bit position has a fixed value:</div>\n<div class=\"conv conv-8\">\n<div class=\"conv-cell hd\">2⁷</div><div class=\"conv-cell hd\">2⁶</div><div class=\"conv-cell hd\">2⁵</div><div class=\"conv-cell hd\">2⁴</div><div class=\"conv-cell hd\">2³</div><div class=\"conv-cell hd\">2²</div><div class=\"conv-cell hd\">2¹</div><div class=\"conv-cell hd\">2⁰</div>\n<div class=\"conv-cell hi\">128</div><div class=\"conv-cell hi\">64</div><div class=\"conv-cell hi\">32</div><div class=\"conv-cell hi\">16</div><div class=\"conv-cell hi\">8</div><div class=\"conv-cell hi\">4</div><div class=\"conv-cell hi\">2</div><div class=\"conv-cell hi\">1</div>\n</div>\n<div class=\"fact-text\"><strong>Binary → Decimal:</strong> Place bits below the table. Add values where bit = 1.<br>\nExample: 1100 1010 = 128+64+8+2 = <strong>202</strong><br><br>\n<strong>Decimal → Binary:</strong> Starting at 128, work left to right. Subtract if possible (write 1), skip if not (write 0).<br>\nExample: 202 → 128✓74 → 64✓10 → 32✗ → 16✗ → 8✓2 → 4✗ → 2✓0 → 1✗ = <strong>1100 1010</strong></div>\n<div class=\"fact-text\"><strong>Key values to memorise:</strong><br>\n128 = 1000 0000 &nbsp;|&nbsp; 192 = 1100 0000 &nbsp;|&nbsp; 255 = 1111 1111 &nbsp;|&nbsp; 0 = 0000 0000</div>"}, {"icon": "🔄", "title": "Binary ↔ Hexadecimal", "tag": "rule", "body": "\n<div class=\"fact-text\"><strong>Rule: 1 hex digit = 4 binary bits (nibble)</strong><br>\nSplit binary into groups of 4, convert each group independently.</div>\n<div class=\"ctbl\"><table>\n<tr><th>Decimal</th><th>Binary</th><th>Hex</th><th>Decimal</th><th>Binary</th><th>Hex</th></tr>\n<tr><td>0</td><td><code>0000</code></td><td><strong>0</strong></td><td>8</td><td><code>1000</code></td><td><strong>8</strong></td></tr>\n<tr><td>1</td><td><code>0001</code></td><td><strong>1</strong></td><td>9</td><td><code>1001</code></td><td><strong>9</strong></td></tr>\n<tr><td>2</td><td><code>0010</code></td><td><strong>2</strong></td><td>10</td><td><code>1010</code></td><td><strong>A</strong></td></tr>\n<tr><td>3</td><td><code>0011</code></td><td><strong>3</strong></td><td>11</td><td><code>1011</code></td><td><strong>B</strong></td></tr>\n<tr><td>4</td><td><code>0100</code></td><td><strong>4</strong></td><td>12</td><td><code>1100</code></td><td><strong>C</strong></td></tr>\n<tr><td>5</td><td><code>0101</code></td><td><strong>5</strong></td><td>13</td><td><code>1101</code></td><td><strong>D</strong></td></tr>\n<tr><td>6</td><td><code>0110</code></td><td><strong>6</strong></td><td>14</td><td><code>1110</code></td><td><strong>E</strong></td></tr>\n<tr><td>7</td><td><code>0111</code></td><td><strong>7</strong></td><td>15</td><td><code>1111</code></td><td><strong>F</strong></td></tr>\n</table></div>\n<div class=\"fact-text\">Examples: &nbsp; <code>1001 0111</code> → 9 7 → <strong>0x97</strong> &nbsp;|&nbsp; <code>AC</code> → A(1010) C(1100) → <strong>1010 1100</strong></div>"}, {"icon": "⚠️", "title": "Binary Addressing — Bits Needed", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\nTo address N devices in binary: need 2ⁿ ≥ N. Always round UP to the next power.<br>\n21 computers → 2⁴=16 (too few) → 2⁵=32 → <strong>5 bits needed</strong>.<br>\nPad binary addresses with leading zeros: decimal 5 in 4 bits = <strong>0101</strong>, NOT 101.\n</div></div>"}]}, {"ch": 2, "color": "#22d3a5", "title": "Chapter 2 — MAC Addresses", "cards": [{"icon": "📖", "title": "MAC Address Basics", "tag": "def", "body": "\n<div class=\"fact-text\"><strong>MAC</strong> = Media Access Control address. Also called: hardware address, ethernet address, physical address.<br>\n<strong>48 bits</strong> long (6 bytes, 12 hex characters). Written as: <code>00:0C:6E:D2:11:E6</code><br>\nAssigned permanently to the <strong>NIC (Network Interface Controller)</strong> by the manufacturer.<br>\nValid <strong>only within a LAN</strong> — changes at every router hop.</div>"}, {"icon": "🏗️", "title": "MAC Address Structure: OUI + NIC Specific", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Part</th><th>Bytes</th><th>Bits</th><th>Identifies</th><th>Assigned by</th></tr>\n<tr><td><strong>OUI</strong></td><td>First 3</td><td>24</td><td>Manufacturer</td><td>IEEE</td></tr>\n<tr><td><strong>NIC Specific</strong></td><td>Last 3</td><td>24</td><td>Individual device</td><td>Manufacturer</td></tr>\n</table></div>\n<div class=\"fact-text\">OUI = Organizational Unique Identifier. Standard: <strong>IEEE 802 (EUI-48)</strong> — provides 2⁴⁸ unique addresses.<br>\nLook up OUI at: ouilookup.com &nbsp;|&nbsp; Windows displays MACs with dashes: <code>B4-B6-86-27-1D-B8</code></div>"}, {"icon": "📡", "title": "Broadcast MAC Address", "tag": "rule", "body": "\n<div class=\"fact-text\"><strong>FF:FF:FF:FF:FF:FF</strong> — all 48 bits set to 1.<br>\nFrames sent here are delivered to <strong>every device on the LAN</strong>.<br>\nUsed by: ARP requests, DHCP Discovery, and other broadcast protocols.</div>"}, {"icon": "💻", "title": "CMD Commands for MAC", "tag": "cmd", "body": "\n<div class=\"cmd-rows\" id=\"mac-cmds\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'getmac')\"><span class=\"cmd-code\">getmac</span><span class=\"cmd-desc\">Show MAC address(es) of this computer</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ipconfig /all')\"><span class=\"cmd-code\">ipconfig /all</span><span class=\"cmd-desc\">Full network config including MAC (Physical Address)</span><span class=\"cmd-copy\">📋 copy</span></div>\n</div>"}, {"icon": "⚠️", "title": "MAC Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Last 3 bytes ≠ manufacturer.</strong> The FIRST 3 bytes (OUI) identify the manufacturer. The LAST 3 bytes are device-specific.\n</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>MAC addresses change at routers.</strong> MACs are local-only. Every time a packet crosses a router, both source and destination MAC addresses are replaced. Only IP addresses persist end-to-end.\n</div></div>"}]}, {"ch": 3, "color": "#f97316", "title": "Chapter 3 — Network Communication", "cards": [{"icon": "📊", "title": "Unicast / Multicast / Broadcast", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Type</th><th>Recipients</th><th>Destination MAC</th><th>Example Use</th></tr>\n<tr><td><strong>Unicast</strong></td><td>1 specific device</td><td>Device's unique MAC</td><td>Web browsing, file transfer</td></tr>\n<tr><td><strong>Multicast</strong></td><td>Subscribed group</td><td><code>01-00-5E-xx-xx-xx</code></td><td>Video streaming, OSPF</td></tr>\n<tr><td><strong>Broadcast</strong></td><td>ALL devices on LAN</td><td><code>FF:FF:FF:FF:FF:FF</code></td><td>ARP request, DHCP Discovery</td></tr>\n</table></div>\n<div class=\"fact-text\">IPv4 multicast IP range: <strong>224.0.0.0 – 239.255.255.255</strong> (Class D)</div>"}, {"icon": "⚠️", "title": "Communication Type Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>ARP requests are BROADCAST</strong> — not unicast. The sender doesn't know the destination MAC yet, so it asks everyone.<br>ARP replies are unicast (sent directly back to the requester).\n</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Broadcasts cause congestion</strong> — this is exactly why switches (which learn MACs and direct traffic) replaced hubs (which broadcast to all ports).\n</div></div>"}]}, {"ch": 4, "color": "#e879f9", "title": "Chapter 4 — TCP/IP & IP Addressing", "cards": [{"icon": "📊", "title": "IP Address Classes", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Class</th><th>First Octet</th><th>Default Mask</th><th>CIDR</th><th>Hosts/Network</th></tr>\n<tr><td><strong>A</strong></td><td>1 – 126</td><td><code>255.0.0.0</code></td><td>/8</td><td>16,777,214</td></tr>\n<tr><td><strong>B</strong></td><td>128 – 191</td><td><code>255.255.0.0</code></td><td>/16</td><td>65,534</td></tr>\n<tr><td><strong>C</strong></td><td>192 – 223</td><td><code>255.255.255.0</code></td><td>/24</td><td>254</td></tr>\n<tr><td><strong>D</strong></td><td>224 – 239</td><td>Multicast</td><td>—</td><td>—</td></tr>\n<tr><td><strong>E</strong></td><td>240 – 255</td><td>Reserved</td><td>—</td><td>—</td></tr>\n</table></div>"}, {"icon": "📖", "title": "Network-ID, Broadcast & Subnet Mask", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>Network-ID</strong> — host portion all zeros. Identifies the network. Cannot be assigned to a host.<br>\n<code>192.168.50.112/24</code> → Network-ID: <strong>192.168.50.0</strong><br><br>\n<strong>Broadcast</strong> — host portion all ones (255). Sends to all devices. Cannot be assigned to a host.<br>\n<code>192.168.50.112/24</code> → Broadcast: <strong>192.168.50.255</strong><br><br>\n<strong>Usable hosts</strong> = total addresses − 2. A /24 has 256 addresses → <strong>254 usable hosts</strong>.\n</div>\n<div class=\"ctbl\"><table>\n<tr><th>CIDR</th><th>Subnet Mask</th><th>Binary</th></tr>\n<tr><td>/8</td><td><code>255.0.0.0</code></td><td>11111111.00000000.00000000.00000000</td></tr>\n<tr><td>/16</td><td><code>255.255.0.0</code></td><td>11111111.11111111.00000000.00000000</td></tr>\n<tr><td>/24</td><td><code>255.255.255.0</code></td><td>11111111.11111111.11111111.00000000</td></tr>\n</table></div>"}, {"icon": "📊", "title": "Private IP Ranges", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Class</th><th>Private Range</th><th>Mask</th></tr>\n<tr><td>A</td><td><code>10.0.0.0 – 10.255.255.255</code></td><td>/8</td></tr>\n<tr><td>B</td><td><code>172.16.0.0 – 172.31.255.255</code></td><td>/12</td></tr>\n<tr><td>C</td><td><code>192.168.0.0 – 192.168.255.255</code></td><td>/16</td></tr>\n<tr><td>APIPA</td><td><code>169.254.0.1 – 169.254.255.254</code></td><td>/16 — when DHCP fails</td></tr>\n</table></div>"}, {"icon": "⚠️", "title": "IP Addressing Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>127.x.x.x = LOOPBACK</strong> — NOT a valid Class A host address. 127.0.0.1 = localhost.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Private IPs are NOT routable on the internet.</strong> NAT at the router translates private → public IP.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Network-ID and Broadcast CANNOT be assigned to hosts.</strong> A /24 has 254 usable hosts, not 256.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>APIPA = 169.254.x.x</strong> assigned when DHCP is unavailable. You can ping other APIPA devices on the LAN but NOT the internet.</div></div>"}, {"icon": "💻", "title": "IP Config CMD Commands", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ipconfig /all')\"><span class=\"cmd-code\">ipconfig /all</span><span class=\"cmd-desc\">Show full IP config (IP, mask, gateway, DNS, MAC)</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ncpa.cpl')\"><span class=\"cmd-code\">ncpa.cpl</span><span class=\"cmd-desc\">Open Network Connections — configure static/dynamic IP</span><span class=\"cmd-copy\">📋 copy</span></div>\n</div>"}]}, {"ch": 5, "color": "#facc15", "title": "Chapter 5 — Ports", "cards": [{"icon": "📊", "title": "Must-Know Port Numbers", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Protocol</th><th>Full Name</th><th>Transport</th><th>Port</th></tr>\n<tr><td><strong>HTTP</strong></td><td>Hypertext Transfer Protocol</td><td>TCP</td><td><strong>80</strong></td></tr>\n<tr><td><strong>HTTPS</strong></td><td>HTTP Secure</td><td>TCP</td><td><strong>443</strong></td></tr>\n<tr><td><strong>DNS</strong></td><td>Domain Name System</td><td><strong style=\"color:#f43f5e\">UDP</strong></td><td><strong>53</strong></td></tr>\n<tr><td><strong>DHCP</strong></td><td>Dynamic Host Config Protocol</td><td><strong style=\"color:#f43f5e\">UDP</strong></td><td><strong>67 / 68</strong></td></tr>\n<tr><td><strong>FTP</strong></td><td>File Transfer Protocol</td><td>TCP</td><td><strong>21</strong></td></tr>\n<tr><td><strong>SSH</strong></td><td>Secure Shell</td><td>TCP</td><td><strong>22</strong></td></tr>\n<tr><td><strong>SMTP</strong></td><td>Simple Mail Transfer Protocol</td><td>TCP</td><td><strong>25</strong></td></tr>\n<tr><td><strong>SMB</strong></td><td>Server Message Block</td><td>TCP</td><td><strong>445</strong></td></tr>\n<tr><td><strong>RDP</strong></td><td>Remote Desktop Protocol</td><td>TCP</td><td><strong>3389</strong></td></tr>\n<tr><td><strong>TELNET</strong></td><td>Teletype Network</td><td>TCP</td><td><strong>23</strong></td></tr>\n</table></div>"}, {"icon": "📊", "title": "TCP vs UDP Comparison", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>\n<tr><td>Connection</td><td>Connection-oriented</td><td>Connectionless</td></tr>\n<tr><td>Reliability</td><td>Reliable (retransmits lost data)</td><td>No error checking</td></tr>\n<tr><td>Speed</td><td>Slower</td><td><strong>Faster</strong></td></tr>\n<tr><td>Use</td><td>HTTP, HTTPS, FTP, SSH, RDP, SMTP</td><td>DNS, DHCP, streaming</td></tr>\n</table></div>\n<div class=\"fact-text\">Port ranges: Well-known: <strong>0–1023</strong> (IANA) · Registered: <strong>1024–49151</strong> · Dynamic/Private: <strong>49152–65535</strong> (client ports)<br>Total ports: 2¹⁶ = <strong>65,536</strong> · Socket = IP address + port number</div>"}, {"icon": "⚠️", "title": "Port Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DNS uses UDP 53</strong> — NOT TCP. Most common wrong answer on exams.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DHCP uses UDP 67/68</strong> — NOT TCP. Server = 67, Client = 68.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>UDP is FASTER than TCP</strong> because it does NOT check for errors. TCP is reliable but slower.</div></div>"}, {"icon": "💻", "title": "Port CMD Commands", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'netstat -an')\"><span class=\"cmd-code\">netstat -an</span><span class=\"cmd-desc\">Show all open ports, connections and their states</span><span class=\"cmd-copy\">📋 copy</span></div>\n</div>"}]}, {"ch": 6, "color": "#f43f5e", "title": "Chapter 6 — ARP & ICMP", "cards": [{"icon": "📖", "title": "ARP — Address Resolution Protocol", "tag": "def", "body": "\n<div class=\"fact-text\"><strong>ARP</strong> resolves IP addresses to MAC addresses. It is the <strong>first protocol activated</strong> when two hosts in a LAN want to communicate.</div>\n<div class=\"ctbl\"><table>\n<tr><th>Step</th><th>Type</th><th>Destination MAC</th><th>Content</th></tr>\n<tr><td>ARP Request</td><td><strong>Broadcast</strong></td><td><code>FF:FF:FF:FF:FF:FF</code></td><td>\"Who has IP x.x.x.x?\"</td></tr>\n<tr><td>ARP Reply</td><td><strong>Unicast</strong></td><td>Requester's MAC</td><td>\"I have it, my MAC is xx:xx:xx\"</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>ARP Table</strong> — caches IP-to-MAC mappings to avoid repeating ARP for known devices.<br>\n<strong>GARP (Gratuitous ARP)</strong> — ARP reply without a prior request. Used to announce a device or update ARP caches after failover. Shown as \"ARP Probe\" in Wireshark.</div>"}, {"icon": "📖", "title": "ICMP — Internet Control Message Protocol", "tag": "def", "body": "\n<div class=\"fact-text\">ICMP sends <strong>error and diagnostic messages</strong> — no application data. Used by ping and tracert.<br>Default ping: <strong>4 packets × 32 bytes</strong>. Asterisks (*) in output = ICMP blocked by firewall OR route broken — does NOT always mean offline.</div>"}, {"icon": "💻", "title": "ARP & ICMP CMD Commands", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'arp -a')\"><span class=\"cmd-code\">arp -a</span><span class=\"cmd-desc\">View ARP table (IP-to-MAC mappings)</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'arp -d *')\"><span class=\"cmd-code\">arp -d *</span><span class=\"cmd-desc\">Delete all ARP cache entries</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping 192.168.1.1')\"><span class=\"cmd-code\">ping 192.168.1.1</span><span class=\"cmd-desc\">Test reachability (4 packets × 32 bytes)</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -t 192.168.1.1')\"><span class=\"cmd-code\">ping -t 192.168.1.1</span><span class=\"cmd-desc\">Continuous ping until Ctrl+C</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -4 google.be')\"><span class=\"cmd-code\">ping -4 google.be</span><span class=\"cmd-desc\">Force IPv4 ping</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -6 google.be')\"><span class=\"cmd-code\">ping -6 google.be</span><span class=\"cmd-desc\">Force IPv6 ping</span><span class=\"cmd-copy\">📋 copy</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'tracert 8.8.8.8')\"><span class=\"cmd-code\">tracert 8.8.8.8</span><span class=\"cmd-desc\">Show route (each hop) to destination</span><span class=\"cmd-copy\">📋 copy</span></div>\n</div>"}, {"icon": "⚠️", "title": "ARP & ICMP Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>ARP Request = Broadcast.</strong> ARP Reply = Unicast. Never confuse the two.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>GARP = ARP reply without prior request.</strong> In Wireshark it appears as \"ARP Probe\". Used for failover announcements.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Asterisks (*) in ping ≠ device offline.</strong> May be a firewall blocking ICMP. Try other protocols to confirm.</div></div>"}]}, {"ch": 7, "color": "#a78bfa", "title": "Chapter 7 — Network Devices", "cards": [{"icon": "📊", "title": "Hub vs Switch", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Feature</th><th>Hub</th><th>Switch</th></tr>\n<tr><td>Traffic</td><td>ALL ports (dumb)</td><td>Destination port only (smart)</td></tr>\n<tr><td>Intelligence</td><td>None</td><td>MAC address table</td></tr>\n<tr><td>Collisions</td><td>Many</td><td>Minimal</td></tr>\n<tr><td>Still used?</td><td>No (obsolete)</td><td>Yes (standard)</td></tr>\n<tr><td>Types</td><td>Unmanaged only</td><td>Unmanaged or Managed</td></tr>\n</table></div>\n<div class=\"fact-text\">\n<strong>Cabling:</strong> PC → Switch = <strong>straight-through</strong> cable (MDI to MDIX)<br>\nSwitch → Switch = <strong>crossover</strong> cable (MDIX to MDIX)<br>\n<strong>Auto-MDI/MDIX</strong> — automatically detects which cable type is needed.\n</div>"}, {"icon": "📖", "title": "Router & Default Gateway", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>Router</strong> — connects 2+ different IP networks. Has at least 2 NICs (LAN + WAN). Routes packets between networks by finding the best path.<br><br>\n<strong>Default Gateway</strong> — the LAN-side IP address of the router. All devices send off-network traffic here. The router forwards it via the WAN interface to the internet.\n</div>"}, {"icon": "📖", "title": "DHCP — What it provides", "tag": "def", "body": "\n<div class=\"fact-text\">DHCP automatically assigns <strong>4 TCP/IP settings</strong> to connecting devices:</div>\n<div class=\"ctbl\"><table>\n<tr><th>#</th><th>Setting</th><th>Example</th></tr>\n<tr><td>1</td><td>IP address</td><td><code>192.168.1.50</code></td></tr>\n<tr><td>2</td><td>Subnet mask</td><td><code>255.255.255.0</code></td></tr>\n<tr><td>3</td><td>Default gateway</td><td><code>192.168.1.1</code></td></tr>\n<tr><td>4</td><td>DNS server</td><td><code>8.8.8.8</code></td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>DHCP process:</strong> Discover → Offer → Request → Acknowledge<br>\nAssignments are temporary (lease time). If DHCP fails → APIPA (169.254.x.x).</div>"}, {"icon": "📖", "title": "DNS & Web Server", "tag": "def", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Record</th><th>Function</th><th>Example</th></tr>\n<tr><td><strong>A Record</strong></td><td>Hostname → IP address</td><td>www.encora.be → 212.123.0.115</td></tr>\n<tr><td><strong>CNAME</strong></td><td>Name → another name (alias)</td><td>mail.encora.be → encora.be</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>FQDN</strong> (Fully Qualified Domain Name) = hostname + domain.<br>\nExample: <code>mailserver.encora.be</code> → hostname: mailserver · domain: encora.be · TLD: .be</div>"}, {"icon": "⚠️", "title": "Network Devices Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Router connects DIFFERENT networks.</strong> A switch connects devices within the SAME network. Never confuse the two.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>PC → Switch uses straight-through cable.</strong> NOT a crossover. Crossover = switch-to-switch.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DHCP assigns TEMPORARY IPs</strong> — not permanent. Static IPs are permanent.</div></div>"}]}, {"ch": 8, "color": "#38bdf8", "title": "Chapter 8 — Cisco Packet Tracer", "cards": [{"icon": "📖", "title": "Packet Tracer Status Indicators", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Dot Color</th><th>Meaning</th><th>Action</th></tr>\n<tr><td><strong style=\"color:#22d3a5\">🟢 Green</strong></td><td>Connected and active</td><td>Ready to use</td></tr>\n<tr><td><strong style=\"color:#f97316\">🟠 Orange</strong></td><td>Link not yet active</td><td>Click Fast Forward button</td></tr>\n<tr><td><strong style=\"color:#f43f5e\">🔴 Red</strong></td><td>No connection at all</td><td>Check cable and ports</td></tr>\n</table></div>"}, {"icon": "📋", "title": "Packet Tracer Setup Steps", "tag": "rule", "body": "\n<div class=\"fact-text\">\n<strong>1.</strong> Add switch (2960-24TT) and PCs from toolbar<br>\n<strong>2.</strong> Connect: Connections → Copper Straight-Through → click PC NIC → click switch port<br>\n<strong>3.</strong> Configure IP: PC → Desktop → IP Configuration → enter IP + subnet mask<br>\n<strong>4.</strong> Label with Place Note (top toolbar)<br>\n<strong>5.</strong> Test: PC → Desktop → Command Prompt → <code>ping [target IP]</code><br>\n<strong>6.</strong> If orange dots: click Fast Forward button (top toolbar)\n</div>"}, {"icon": "📊", "title": "ARP + ICMP Simulation Flow", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Step</th><th>Protocol</th><th>Type</th><th>Description</th></tr>\n<tr><td>1</td><td>ARP Request</td><td>Broadcast</td><td>PC3 asks: \"Who has this IP?\"</td></tr>\n<tr><td>2</td><td>ARP Reply</td><td>Unicast</td><td>PC4 responds with its MAC</td></tr>\n<tr><td>3</td><td>ICMP Ping ×4</td><td>Unicast</td><td>PC3 pings PC4 directly</td></tr>\n<tr><td>4</td><td>ICMP Reply ×4</td><td>Unicast</td><td>PC4 replies to PC3</td></tr>\n</table></div>"}, {"icon": "📋", "title": "Packet Tracer Exercises", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Exercise</th><th>Setup</th><th>File</th></tr>\n<tr><td>OEF1 — ARP & ICMP</td><td>5 PCs + switch</td><td>Voornaam_OEF1_ARP_ICMP.pkt</td></tr>\n<tr><td>OEF2 — Direct</td><td>2 PCs, no switch</td><td>Voornaam_OEF2_2PC_ZONDER_SWITCH.pkt</td></tr>\n<tr><td>OEF3 — 2 Networks</td><td>2 switches + router</td><td>Voornaam_OEF3_2_NETWERKEN.pkt</td></tr>\n</table></div>"}]}, {"ch": 9, "color": "#fb923c", "title": "Chapter 9 — TCP/IP Model & NAT", "cards": [{"icon": "📊", "title": "TCP/IP Model — 4 Layers", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Layer</th><th>Name</th><th>PDU</th><th>Protocols</th><th>Function</th></tr>\n<tr><td><strong>4</strong></td><td>Application</td><td>Data</td><td>HTTP, HTTPS, FTP, DNS, SMTP</td><td>End-user apps</td></tr>\n<tr><td><strong>3</strong></td><td>Transport</td><td>Segment</td><td>TCP, UDP</td><td>Port addressing, reliability</td></tr>\n<tr><td><strong>2</strong></td><td>Internet</td><td>Packet</td><td>IP, ICMP, ARP</td><td>IP addressing, routing</td></tr>\n<tr><td><strong>1</strong></td><td>Network Access</td><td>Frame</td><td>Ethernet, Wi-Fi</td><td>Hardware, signals, MAC</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>Encapsulation</strong> (sending — going DOWN): Data → Segment → Packet → Frame<br>\n<strong>Decapsulation</strong> (receiving — going UP): Frame → Packet → Segment → Data</div>"}, {"icon": "📖", "title": "NAT — Network Address Translation", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>NAT</strong> allows multiple private-IP devices to share ONE public IP to access the internet.<br>\nThe <strong>Edge Router (NAT router)</strong> sits at the LAN/internet boundary.<br><br>\n<strong>Process:</strong><br>\n1. PC sends packet with private source IP<br>\n2. NAT router replaces private IP with its own public WAN IP<br>\n3. Packet sent to internet (internet only sees public IP)<br>\n4. Response arrives → router checks NAT table → forwards to correct device<br><br>\n<strong>Regular internet routers do NOT perform NAT</strong> — only edge routers do.\n</div>"}, {"icon": "⚠️", "title": "TCP/IP Model & NAT Exam Traps", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>PDU names are mandatory:</strong> Frame (L1) · Packet/IP Packet (L2) · Segment (L3) · Data (L4). These appear on every exam.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>TCP/IP = PRACTICAL</strong> model (real protocols). OSI = THEORETICAL model. Don't confuse them.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Private IPs cannot be used on the internet.</strong> NAT is what makes internet access possible for private networks.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>NAT = Edge Router only.</strong> Core internet routers do NOT perform NAT — they just forward packets.</div></div>"}]}];
+
+var allOpen = false;
+var activeFilter = 'all';
+
+function init(){
+  buildFilterPills();
+  renderAll();
+}
+
+function buildFilterPills(){
+  var CHAPTERS_META = [
+    {id:1,label:'Ch.1 Numbers',color:'#4f8ef7'},
+    {id:2,label:'Ch.2 MAC',color:'#22d3a5'},
+    {id:3,label:'Ch.3 Network Comm.',color:'#f97316'},
+    {id:4,label:'Ch.4 TCP/IP',color:'#e879f9'},
+    {id:5,label:'Ch.5 Ports',color:'#facc15'},
+    {id:6,label:'Ch.6 ARP & ICMP',color:'#f43f5e'},
+    {id:7,label:'Ch.7 Devices',color:'#a78bfa'},
+    {id:8,label:'Ch.8 Packet Tracer',color:'#38bdf8'},
+    {id:9,label:'Ch.9 NAT',color:'#fb923c'},
+  ];
+  var h = '<div class="fpill active" id="fp_all" onclick="setFilter(\'all\',this)">All</div>';
+  for(var i=0;i<CHAPTERS_META.length;i++){
+    var c=CHAPTERS_META[i];
+    h+='<div class="fpill" id="fp_'+c.id+'" onclick="setFilter(\''+c.id+'\',this)" style="border-color:'+c.color+'33">'+c.label+'</div>';
+  }
+  document.getElementById('filterPills').innerHTML=h;
+}
+
+function setFilter(f, btn){
+  activeFilter=f;
+  var pills=document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  btn.classList.add('active');
+  document.getElementById('searchInput').value='';
+  renderAll();
+}
+
+function doSearch(){
+  activeFilter='all';
+  var pills=document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  var fp=document.getElementById('fp_all');if(fp) fp.classList.add('active');
+  renderAll();
+}
+
+function renderAll(){
+  var q=document.getElementById('searchInput').value.toLowerCase();
+  var content=document.getElementById('content');
+  var html='<div class="empty" id="emptyMsg">No results found for your search.</div>';
+  var found=false;
+  for(var si=0;si<SECTIONS.length;si++){
+    var sec=SECTIONS[si];
+    if(activeFilter!=='all' && String(sec.ch)!==String(activeFilter)) continue;
+    var secHtml=''; var cardCount=0;
+    for(var ci=0;ci<sec.cards.length;ci++){
+      var card=sec.cards[ci];
+      if(q && card.title.toLowerCase().indexOf(q)<0 && card.body.toLowerCase().indexOf(q)<0) continue;
+      cardCount++;
+      var cid='card_'+sec.ch+'_'+ci;
+      var tagHtml='<span class="fact-tag tag-'+card.tag+'">'+card.tag+'</span>';
+      secHtml+='<div class="fact-card" id="'+cid+'">'
+        +'<div class="fact-header" onclick="toggleCard(\''+cid+'\')">'
+        +'<span class="fact-icon">'+card.icon+'</span>'
+        +'<span class="fact-title">'+card.title+'</span>'
+        +tagHtml
+        +'<span class="fact-arrow">&#9658;</span>'
+        +'</div>'
+        +'<div class="fact-body">'+card.body+'</div>'
+        +'</div>';
+    }
+    if(!cardCount) continue;
+    found=true;
+    var sid='sec_'+sec.ch;
+    html+='<div class="ch-section" id="'+sid+'">'
+      +'<div class="ch-header" onclick="toggleSection(\''+sid+'\')">'
+      +'<div class="ch-dot" style="background:'+sec.color+'"></div>'
+      +'<span class="ch-label">'+sec.title+'</span>'
+      +'<span class="ch-count">'+cardCount+' cards</span>'
+      +'<span class="ch-toggle open" id="ct_'+sid+'">&#9658;</span>'
+      +'</div>'
+      +'<div class="ch-body open" id="cb_'+sid+'">'+secHtml+'</div>'
+      +'</div>';
+  }
+  content.innerHTML=html;
+  var em=document.getElementById('emptyMsg');
+  if(em) em.style.display=found?'none':'block';
+  if(q) openAllCards();
+}
+
+function toggleCard(id){
+  var card=document.getElementById(id);
+  if(card) card.classList.toggle('open');
+}
+
+function toggleSection(sid){
+  var body=document.getElementById('cb_'+sid);
+  var tog=document.getElementById('ct_'+sid);
+  if(!body) return;
+  var isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(tog) tog.classList.toggle('open',!isOpen);
+}
+
+function openAllCards(){
+  var cards=document.querySelectorAll('.fact-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.add('open');
+}
+
+function toggleAll(){
+  allOpen=!allOpen;
+  var cards=document.querySelectorAll('.fact-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.toggle('open',allOpen);
+  var bodies=document.querySelectorAll('.ch-body');
+  for(var i=0;i<bodies.length;i++) bodies[i].classList.toggle('open',allOpen);
+  var toggles=document.querySelectorAll('.ch-toggle');
+  for(var i=0;i<toggles.length;i++) toggles[i].classList.toggle('open',allOpen);
+  document.getElementById('expandBtn').textContent=allOpen?'Collapse All':'Expand All';
+}
+
+function copyCmd(el, cmd){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(cmd).then(function(){
+      el.classList.add('copied');
+      var c=el.querySelector('.cmd-copy');
+      if(c){c.textContent='✓ copied';}
+      setTimeout(function(){
+        el.classList.remove('copied');
+        var c=el.querySelector('.cmd-copy');
+        if(c) c.textContent='📋 copy';
+      },1400);
+    });
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Exam — Eenvoudige Netwerken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07090f;color:rgba(255,255,255,0.92);font-family:'Space Grotesk',sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+/* NAV */
+.topnav{position:sticky;top:0;z-index:200;height:52px;background:#07090f;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem;flex-shrink:0}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px}
+.hublink:hover{color:rgba(255,255,255,0.6)}
+.nllink{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);text-decoration:none}
+.nllink:hover{background:#111720;color:rgba(255,255,255,0.85)}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 4rem}
+.wrap{width:100%;max-width:760px}
+/* START SCREEN */
+.start-screen{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2.5rem;text-align:center}
+.start-icon{font-size:3rem;margin-bottom:1rem}
+.start-title{font-size:1.75rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.6rem}
+.start-desc{font-size:.9rem;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:1.75rem}
+.start-rules{background:#111720;border-radius:10px;padding:1.1rem 1.4rem;margin-bottom:1.75rem;text-align:left;list-style:none}
+.start-rules li{font-size:.875rem;color:rgba(255,255,255,0.72);padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:.6rem}
+.start-rules li:last-child{border-bottom:none}
+.start-rules li::before{content:"→";color:#4f8ef7;font-weight:700;flex-shrink:0}
+.start-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.75rem;margin-bottom:1.75rem}
+.stat-box{background:#111720;border-radius:8px;padding:.9rem;text-align:center}
+.stat-val{font-size:1.6rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.stat-key{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.05em}
+/* EXAM HEADER */
+.exam-hdr{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.timer{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:#facc15;letter-spacing:.05em}
+.timer.urgent{color:#f43f5e;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.exam-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.exam-q-counter{font-size:12px;color:rgba(255,255,255,0.5);font-family:'Space Mono',monospace}
+.submit-btn{padding:.5rem 1.1rem;border-radius:7px;background:#200812;border:1px solid rgba(244,63,94,0.35);color:#f43f5e;font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:background .2s}
+.submit-btn:hover{background:#2d0d1c}
+/* PROGRESS BAR */
+.prog-wrap{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-bottom:1.25rem;position:relative}
+.prog-fill{height:4px;border-radius:2px;background:linear-gradient(90deg,#4f8ef7,#7c5cfc);transition:width .3s}
+/* QUESTION CARD */
+.qcard{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:1.75rem;margin-bottom:1.25rem}
+.qcard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:.5rem;flex-wrap:wrap}
+.qcard-num{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4)}
+.qcard-ch{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+.q-text{font-size:1rem;font-weight:600;color:rgba(255,255,255,0.92);line-height:1.55;margin-bottom:1.25rem}
+.q-opts{display:flex;flex-direction:column;gap:.45rem}
+.q-opt{display:flex;align-items:flex-start;gap:.75rem;background:#111720;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.65rem .9rem;cursor:pointer;font-size:.875rem;color:rgba(255,255,255,0.75);text-align:left;width:100%;font-family:'Space Grotesk',sans-serif;transition:background .15s,border-color .15s}
+.q-opt:hover{background:#18202e;border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.92)}
+.q-opt.sel{border-color:#4f8ef7;background:#0e1c38;color:rgba(255,255,255,0.92)}
+.q-opt.rev-ok{border-color:#22d3a5;background:#0b2018;color:rgba(255,255,255,0.92)}
+.q-opt.rev-bad{border-color:#f43f5e;background:#200812;color:rgba(255,255,255,0.92)}
+.q-letter{width:22px;height:22px;border-radius:5px;background:#1a2030;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:rgba(255,255,255,0.45);flex-shrink:0}
+.q-fill{width:100%;background:#111720;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:.65rem .9rem;color:rgba(255,255,255,0.92);font-size:.875rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.q-fill:focus{border-color:#4f8ef7}
+.q-fill.rev-ok{border-color:#22d3a5;background:#0b2018}
+.q-fill.rev-bad{border-color:#f43f5e;background:#200812}
+/* QUESTION NAV DOTS */
+.q-nav-dots{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:1.25rem}
+.q-dot{width:28px;height:28px;border-radius:6px;background:#111720;border:1px solid rgba(255,255,255,0.1);font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'Space Mono',monospace}
+.q-dot:hover{background:#18202e;color:rgba(255,255,255,0.7)}
+.q-dot.current{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+.q-dot.answered{background:#0b1e1a;border-color:rgba(34,211,165,0.35);color:#22d3a5}
+.q-dot.answered.current{background:#0b2018;border-color:#22d3a5}
+/* NAV BUTTONS */
+.nav-row{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:.65rem 1.25rem;border-radius:8px;font-size:.875rem;font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;border:none;transition:opacity .2s,transform .1s}
+.btn:hover{opacity:.88;transform:translateY(-1px)}
+.btn-ghost{background:#111720;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.btn-primary{background:linear-gradient(135deg,#4f8ef7,#7c5cfc);color:#fff}
+.btn-danger{background:#200812;border:1px solid rgba(244,63,94,0.4);color:#f43f5e}
+/* RESULTS SCREEN */
+.results-screen{display:none}
+.results-screen.show{display:block}
+.result-hero{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;text-align:center;margin-bottom:1.25rem}
+.result-pct{font-size:4.5rem;font-weight:700;line-height:1;margin-bottom:.35rem}
+.result-grade{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.result-detail{font-size:.9rem;color:rgba(255,255,255,0.55);margin-bottom:1.5rem}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.75rem}
+.result-cell{background:#111720;border-radius:8px;padding:.8rem;text-align:center}
+.result-cell-val{font-size:1.4rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.result-cell-key{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.05em}
+/* REVIEW SECTION */
+.review-section{margin-top:1.5rem}
+.review-title{font-size:1rem;font-weight:700;color:rgba(255,255,255,0.85);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.review-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:.65rem}
+.review-q{font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.88);margin-bottom:.6rem;line-height:1.5}
+.review-ans{font-size:.82rem;padding:.55rem .85rem;border-radius:6px;line-height:1.55}
+.review-correct{background:#0b2018;border:1px solid rgba(34,211,165,0.35);color:#22d3a5}
+.review-wrong{background:#200812;border:1px solid rgba(244,63,94,0.35);color:#f87171}
+.review-skipped{background:#1a1800;border:1px solid rgba(250,204,21,0.25);color:#facc15}
+/* SECTION TOGGLE */
+.section-toggle{background:#111720;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.6rem 1rem;cursor:pointer;font-size:.85rem;font-weight:600;color:rgba(255,255,255,0.65);display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;width:100%;font-family:'Space Grotesk',sans-serif}
+.section-toggle:hover{background:#18202e;color:rgba(255,255,255,0.85)}
+.section-toggle .arrow{transition:transform .2s;font-size:10px}
+.section-toggle.open .arrow{transform:rotate(90deg)}
+.section-body{display:none}
+.section-body.open{display:block}
+@media(max-width:600px){
+  .main{padding:1.25rem .75rem 3rem}
+  .q-dot{width:24px;height:24px;font-size:9px}
+  .result-pct{font-size:3rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tnl">
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Exam &middot; EN</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <a href="BSN_Examen_NL.html" class="nllink">&#127463;&#127466; NL</a>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+
+<main class="main" id="mainArea">
+  <div class="wrap" id="startScreen">
+    <div class="start-screen">
+      <div class="start-icon">&#128203;</div>
+      <div class="start-title">Exam Simulation</div>
+      <div class="start-desc">This works exactly like the real exam. No hints. No feedback during the exam.<br>Your full results and a wrong-answer review appear at the end.</div>
+      <div class="start-stats">
+        <div class="stat-box"><div class="stat-val" style="color:#4f8ef7">80</div><div class="stat-key">Questions</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:#facc15">45</div><div class="stat-key">Minutes</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:#22d3a5">9</div><div class="stat-key">Chapters</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:#e879f9">70%</div><div class="stat-key">Pass mark</div></div>
+      </div>
+      <ul class="start-rules">
+        <li>All 9 chapters covered — proportional distribution</li>
+        <li>MCQ, True/False and Fill-in-the-blank questions</li>
+        <li>Navigate freely — go back to change answers</li>
+        <li>No hints or feedback shown during the exam</li>
+        <li>Timer counts down from 45:00 — turns red at 5 minutes</li>
+        <li>Full results + wrong-answer review shown at the end</li>
+        <li>Score 70% or more to pass</li>
+      </ul>
+      <button class="btn btn-primary" onclick="startExam()" style="font-size:1rem;padding:.85rem 2.5rem">&#9201; Start Exam</button>
+    </div>
+  </div>
+
+  <div class="wrap" id="examScreen" style="display:none">
+    <div class="exam-hdr">
+      <div class="timer" id="timerEl">45:00</div>
+      <div class="exam-meta">
+        <span class="exam-q-counter" id="qCounter">Q 1 / 80</span>
+        <button class="submit-btn" onclick="confirmSubmit()">Submit Exam</button>
+      </div>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="q-nav-dots" id="navDots"></div>
+    <div id="qArea"></div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" id="prevBtn" onclick="navQ(-1)">&#8592; Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="navQ(1)">Next &#8594;</button>
+    </div>
+  </div>
+
+  <div class="wrap results-screen" id="resultsScreen"></div>
+</main>
+
+<script>
+
+var CHAPTERS = [
+  {id:1,name:'Number Systems',color:'#4f8ef7'},
+  {id:2,name:'MAC Addresses',color:'#22d3a5'},
+  {id:3,name:'Network Comm.',color:'#f97316'},
+  {id:4,name:'TCP/IP',color:'#e879f9'},
+  {id:5,name:'Ports',color:'#facc15'},
+  {id:6,name:'ARP & ICMP',color:'#f43f5e'},
+  {id:7,name:'Net Devices',color:'#a78bfa'},
+  {id:8,name:'Packet Tracer',color:'#38bdf8'},
+  {id:9,name:'TCP/IP Model & NAT',color:'#fb923c'},
+];
+
+/* 155 questions — same bank as StudyApp */
+var BANK = [
+{id:1,ch:1,t:'mcq',q:'How many digits does the binary number system use?',o:['8','2','16','10'],a:1,e:'Binary = base-2: only digits 0 and 1.'},
+{id:2,ch:1,t:'tf',q:'Hexadecimal uses digits 0-9 plus letters A to F.',a:true,e:'Hex is base-16: ten digits plus A(10) through F(15).'},
+{id:3,ch:1,t:'mcq',q:'What decimal value does hex letter B represent?',o:['10','11','12','13'],a:1,e:'B = 11. A=10 B=11 C=12 D=13 E=14 F=15.'},
+{id:4,ch:1,t:'tf',q:'Binary 00000000 equals decimal 0.',a:true,e:'All bits are 0 so the sum is 0.'},
+{id:5,ch:1,t:'fill',q:'What is the decimal value of binary 10000000?',a:'128',e:'10000000 = 2^7 = 128.'},
+{id:6,ch:1,t:'mcq',q:'What is decimal 255 in binary (8 bits)?',o:['11111110','11111111','10000000','11111100'],a:1,e:'255 = all 8 bits set to 1.'},
+{id:7,ch:1,t:'fill',q:'How many binary bits equal ONE hexadecimal digit?',a:'4',e:'1 hex digit = 4 binary bits (one nibble).'},
+{id:8,ch:1,t:'tf',q:'Hex 10 equals decimal 16.',a:true,e:'1x16 + 0x1 = 16. Hex 10 is sixteen, not ten.'},
+{id:9,ch:1,t:'fill',q:'Convert binary 01000010 to decimal.',a:'66',e:'64 + 2 = 66.'},
+{id:10,ch:1,t:'fill',q:'Convert decimal 192 to binary (8 bits).',a:'11000000',e:'192 = 128+64 = 11000000.'},
+{id:11,ch:1,t:'fill',q:'Convert binary 10010111 to hexadecimal.',a:'97',e:'1001=9, 0111=7 -> 97.'},
+{id:12,ch:1,t:'fill',q:'Convert hex AC to binary (8 bits).',a:'10101100',e:'A=1010, C=1100 -> 10101100.'},
+{id:13,ch:1,t:'mcq',q:'What is the decimal value of binary 11001010?',o:['194','202','200','198'],a:1,e:'128+64+8+2 = 202.'},
+{id:14,ch:1,t:'fill',q:'Convert hex 1F to decimal.',a:'31',e:'1x16 + F(15)x1 = 31.'},
+{id:15,ch:1,t:'tf',q:'To address 21 computers in binary you need 5 bits.',a:true,e:'2^4=16 too few; 2^5=32 is the first power >= 21.'},
+{id:16,ch:1,t:'fill',q:'Convert decimal 128 to binary (8 bits).',a:'10000000',e:'128 = 2^7 = 10000000.'},
+{id:17,ch:1,t:'fill',q:'Convert hex D4 to decimal.',a:'212',e:'D(13)x16 + 4x1 = 208+4 = 212.'},
+{id:18,ch:1,t:'fill',q:'Convert binary 11010100 to hex.',a:'D4',e:'1101=D, 0100=4 -> D4.'},
+{id:19,ch:1,t:'mcq',q:'How many bits do you need to address 65 computers?',o:['5','6','7','8'],a:2,e:'2^6=64 too few; 2^7=128 >= 65. So 7 bits.'},
+{id:20,ch:1,t:'fill',q:'What is decimal 5 in 4 binary bits?',a:'0101',e:'5 = 4+1 = 0101 in 4-bit binary.'},
+{id:21,ch:2,t:'fill',q:'What does MAC stand for? (3 words)',a:'Media Access Control',e:'MAC = Media Access Control.'},
+{id:22,ch:2,t:'mcq',q:'How many bits does a MAC address contain?',o:['32','64','48','128'],a:2,e:'MAC addresses are 48 bits (6 bytes).'},
+{id:23,ch:2,t:'tf',q:'A MAC address is also called a physical address.',a:true,e:'MAC = hardware/physical/ethernet address.'},
+{id:24,ch:2,t:'fill',q:'What is the broadcast MAC address?',a:'FF:FF:FF:FF:FF:FF',e:'Broadcast MAC = FF:FF:FF:FF:FF:FF — all 48 bits are 1.'},
+{id:25,ch:2,t:'mcq',q:'Which CMD command shows only MAC addresses?',o:['ipconfig','netstat','getmac','arp -a'],a:2,e:'getmac shows the Physical Address (MAC) of each adapter.'},
+{id:26,ch:2,t:'fill',q:'The first 3 bytes of a MAC address form the ___.',a:'OUI',e:'OUI = Organizational Unique Identifier — identifies the manufacturer.'},
+{id:27,ch:2,t:'tf',q:'The last 3 bytes of a MAC address identify the manufacturer.',a:false,e:'False — the FIRST 3 bytes (OUI) identify the manufacturer.'},
+{id:28,ch:2,t:'mcq',q:'Who assigns OUI codes to manufacturers?',o:['IANA','Cisco','IEEE','ISO'],a:2,e:'The IEEE assigns OUI codes under the IEEE 802 standard.'},
+{id:29,ch:2,t:'tf',q:'MAC addresses change when a packet crosses a router.',a:true,e:'MACs are local only. At every router hop both MACs are replaced.'},
+{id:30,ch:2,t:'mcq',q:'Which CMD shows full network config including MAC?',o:['getmac','ipconfig /all','netstat -an','arp -a'],a:1,e:'ipconfig /all shows Physical Address (MAC) along with IP, gateway, DNS.'},
+{id:31,ch:3,t:'mcq',q:'Which type sends data to ALL devices on the LAN?',o:['Unicast','Multicast','Broadcast','Anycast'],a:2,e:'Broadcast sends to all devices via FF:FF:FF:FF:FF:FF.'},
+{id:32,ch:3,t:'tf',q:'In unicast, data is sent to one specific device.',a:true,e:'Unicast targets a single device using its specific MAC address.'},
+{id:33,ch:3,t:'fill',q:'The broadcast MAC address is ___.',a:'FF:FF:FF:FF:FF:FF',e:'All 48 bits set to 1 = FF:FF:FF:FF:FF:FF = broadcast.'},
+{id:34,ch:3,t:'mcq',q:'Multicast MAC addresses start with which hex prefix?',o:['FF-FF-FF','00-00-00','01-00-5E','AC-DE-48'],a:2,e:'IPv4 multicast MACs always begin with 01-00-5E.'},
+{id:35,ch:3,t:'tf',q:'ARP requests use unicast communication.',a:false,e:'False — ARP requests are BROADCAST (FF:FF:FF:FF:FF:FF).'},
+{id:36,ch:3,t:'mcq',q:'Which type sends data to a subscribed group of devices?',o:['Unicast','Broadcast','Multicast','Anycast'],a:2,e:'Multicast targets a group of devices that have opted in.'},
+{id:37,ch:4,t:'fill',q:'IP stands for ___ Protocol.',a:'Internet',e:'IP = Internet Protocol.'},
+{id:38,ch:4,t:'mcq',q:'How many bits does an IPv4 address contain?',o:['16','32','48','64'],a:1,e:'IPv4 = 32 bits = 4 octets of 8 bits.'},
+{id:39,ch:4,t:'tf',q:'IP addresses are permanent hardware addresses.',a:false,e:'False — IP addresses are LOGICAL and can be changed.'},
+{id:40,ch:4,t:'mcq',q:'Which IP class does 192.168.1.1 belong to?',o:['Class A','Class B','Class C','Class D'],a:2,e:'First octet 192 is in range 192-223 -> Class C.'},
+{id:41,ch:4,t:'fill',q:'What is the default subnet mask for Class C?',a:'255.255.255.0',e:'Class C = 255.255.255.0 (/24).'},
+{id:42,ch:4,t:'mcq',q:'Which IP class covers first octets 128 to 191?',o:['Class A','Class B','Class C','Class D'],a:1,e:'Class B: first octet 128-191, mask 255.255.0.0 (/16).'},
+{id:43,ch:4,t:'tf',q:'127.0.0.1 is a valid Class A host address.',a:false,e:'False — 127.x.x.x is the loopback range, not assignable to a host.'},
+{id:44,ch:4,t:'fill',q:'What is the Network-ID of 192.168.50.112/24?',a:'192.168.50.0',e:'Set last octet to 0: 192.168.50.0'},
+{id:45,ch:4,t:'fill',q:'What is the broadcast address of 172.16.0.1/16?',a:'172.16.255.255',e:'Set last 16 bits to all 1s: 172.16.255.255'},
+{id:46,ch:4,t:'mcq',q:'What does /24 mean in CIDR notation?',o:['24 hosts','24 network bits','24 total bits','24 subnets'],a:1,e:'/24 = 24 network bits set to 1 = subnet mask 255.255.255.0.'},
+{id:47,ch:4,t:'fill',q:'How many usable hosts does a /24 network have?',a:'254',e:'2^8=256 minus 2 (network-ID + broadcast) = 254 usable hosts.'},
+{id:48,ch:4,t:'mcq',q:'Which is a private IP address?',o:['8.8.8.8','46.231.189.26','192.168.1.100','216.58.214.100'],a:2,e:'192.168.1.100 is in the Class C private range.'},
+{id:49,ch:4,t:'tf',q:'Private IP addresses are routable on the internet.',a:false,e:'False — private IPs are NOT routable on the internet. NAT is required.'},
+{id:50,ch:4,t:'fill',q:'What IP does Windows assign when DHCP is unavailable? (range start)',a:'169.254.0.1',e:'APIPA assigns 169.254.0.1 to 169.254.255.254 when DHCP fails.'},
+{id:51,ch:4,t:'fill',q:'What protocol automatically assigns IP addresses?',a:'DHCP',e:'DHCP (Dynamic Host Configuration Protocol) automates IP assignment.'},
+{id:52,ch:4,t:'mcq',q:'Which Windows command opens network adapter settings?',o:['netstat','getmac','ncpa.cpl','ipconfig'],a:2,e:'ncpa.cpl opens Network Connections for IP configuration.'},
+{id:53,ch:4,t:'fill',q:'What is the CIDR notation for 255.255.0.0?',a:'/16',e:'255.255.0.0 = 16 network bits = /16.'},
+{id:54,ch:5,t:'fill',q:'How many possible port numbers exist?',a:'65536',e:'Ports are 16-bit: 2^16 = 65,536 (0-65535).'},
+{id:55,ch:5,t:'mcq',q:'What port does HTTP use?',o:['443','21','80','22'],a:2,e:'HTTP uses TCP port 80.'},
+{id:56,ch:5,t:'fill',q:'What port does HTTPS use?',a:'443',e:'HTTPS uses TCP port 443.'},
+{id:57,ch:5,t:'tf',q:'A socket is a combination of IP address and port number.',a:true,e:'A socket uniquely identifies a service on a device.'},
+{id:58,ch:5,t:'fill',q:'What port does RDP use?',a:'3389',e:'RDP uses TCP port 3389.'},
+{id:59,ch:5,t:'fill',q:'What port does SSH use?',a:'22',e:'SSH uses TCP port 22.'},
+{id:60,ch:5,t:'mcq',q:'Which transport protocol does DNS use?',o:['TCP','UDP','Both','Neither'],a:1,e:'DNS uses UDP port 53.'},
+{id:61,ch:5,t:'fill',q:'What ports does DHCP use? (server/client)',a:'67/68',e:'DHCP uses UDP 67 (server) and UDP 68 (client).'},
+{id:62,ch:5,t:'tf',q:'TCP is faster than UDP because it checks for errors.',a:false,e:'False — UDP is FASTER because it does NOT check for errors.'},
+{id:63,ch:5,t:'mcq',q:'What is the well-known port range?',o:['0 to 1023','1024 to 49151','49152 to 65535','0 to 65535'],a:0,e:'Well-known ports: 0-1023, assigned by IANA.'},
+{id:64,ch:5,t:'fill',q:'What port does FTP use?',a:'21',e:'FTP uses TCP port 21.'},
+{id:65,ch:5,t:'mcq',q:'Which CMD command shows all open ports and connections?',o:['getmac','ipconfig /all','netstat -an','arp -a'],a:2,e:'netstat -an shows all active connections and listening ports.'},
+{id:66,ch:5,t:'fill',q:'What port does SMTP use?',a:'25',e:'SMTP uses TCP port 25.'},
+{id:67,ch:5,t:'fill',q:'What port does SMB use?',a:'445',e:'SMB uses TCP port 445 (Windows file sharing).'},
+{id:68,ch:5,t:'tf',q:'DHCP uses TCP on ports 67 and 68.',a:false,e:'False — DHCP uses UDP (not TCP) on ports 67 and 68.'},
+{id:69,ch:5,t:'fill',q:'What port does Telnet use?',a:'23',e:'Telnet uses TCP port 23.'},
+{id:70,ch:6,t:'fill',q:'ARP stands for ___ Resolution Protocol.',a:'Address',e:'ARP = Address Resolution Protocol.'},
+{id:71,ch:6,t:'mcq',q:'An ARP request is sent as a ___.',o:['Unicast','Multicast','Broadcast','Direct frame'],a:2,e:'ARP requests are broadcast (FF:FF:FF:FF:FF:FF).'},
+{id:72,ch:6,t:'tf',q:'An ARP reply is sent as a unicast.',a:true,e:'ARP replies go directly (unicast) from respondent to requester.'},
+{id:73,ch:6,t:'fill',q:'Which CMD command shows the ARP table?',a:'arp -a',e:'arp -a displays all IP-to-MAC mappings.'},
+{id:74,ch:6,t:'mcq',q:'How many ICMP packets does a default ping send?',o:['1','2','4','8'],a:2,e:'A standard ping sends 4 ICMP echo requests, each 32 bytes.'},
+{id:75,ch:6,t:'tf',q:'A GARP is an ARP reply sent without a prior ARP request.',a:true,e:'Gratuitous ARP is unsolicited — used for announcements or failover.'},
+{id:76,ch:6,t:'fill',q:'Which CMD command deletes all ARP cache entries?',a:'arp -d *',e:'arp -d * clears the entire ARP table.'},
+{id:77,ch:6,t:'mcq',q:'What does ICMP stand for?',o:['Internet Control Message Protocol','Internal Command Message Protocol','Internet Connection Monitor Protocol','Interconnect Media Protocol'],a:0,e:'ICMP = Internet Control Message Protocol.'},
+{id:78,ch:6,t:'tf',q:'Asterisks (*) in ping output always mean the device is offline.',a:false,e:'False — asterisks can mean ICMP is blocked by a firewall.'},
+{id:79,ch:6,t:'fill',q:'Which ping option runs continuously? ping ___ [IP]',a:'-t',e:'ping -t runs until Ctrl+C.'},
+{id:80,ch:6,t:'mcq',q:'Which command shows the route (hops) to a destination?',o:['ping','arp -a','tracert','netstat -an'],a:2,e:'tracert shows each router hop to the destination.'},
+{id:81,ch:7,t:'mcq',q:'What does a hub do when it receives a packet?',o:['Sends to destination only','Sends to all ports','Checks MAC table','Drops unknown MACs'],a:1,e:'A hub sends every packet to ALL ports — no intelligence.'},
+{id:82,ch:7,t:'tf',q:'A switch uses a MAC address table to direct traffic.',a:true,e:'Switches learn which MACs are on which ports and direct traffic accordingly.'},
+{id:83,ch:7,t:'mcq',q:'What cable connects a PC to a switch?',o:['Crossover','Straight-through','Coaxial','Fibre'],a:1,e:'PC (MDI) -> Switch (MDIX) = straight-through cable.'},
+{id:84,ch:7,t:'tf',q:'A router connects two devices within the SAME IP network.',a:false,e:'False — a router connects DIFFERENT networks. Same-network devices use a switch.'},
+{id:85,ch:7,t:'fill',q:'The Default Gateway is the ___ of the router on the LAN side.',a:'IP address',e:'Default Gateway = LAN-side IP address of the router.'},
+{id:86,ch:7,t:'fill',q:'What four items does DHCP provide to a client?',a:'IP address, subnet mask, default gateway, DNS server',e:'DHCP provides all four TCP/IP settings automatically.'},
+{id:87,ch:7,t:'mcq',q:'What is a managed switch?',o:['A hub with display','Configurable via CLI','A router with wireless','A 2-port switch'],a:1,e:'A managed switch can be configured via CLI for VLANs, port security, etc.'},
+{id:88,ch:7,t:'fill',q:'What DNS record type maps a hostname to an IP address?',a:'A',e:'An A Record maps a hostname directly to an IPv4 address.'},
+{id:89,ch:7,t:'mcq',q:'What does a CNAME DNS record do?',o:['Maps IP to MAC','Maps hostname to IP','Creates a domain alias','Stores DNS cache'],a:2,e:'CNAME maps one domain name to another — an alias.'},
+{id:90,ch:7,t:'fill',q:'FQDN stands for Fully ___ Domain Name.',a:'Qualified',e:'FQDN = Fully Qualified Domain Name.'},
+{id:91,ch:7,t:'mcq',q:'Technology that auto-detects straight-through vs crossover cable?',o:['MDI','MDIX','Auto-MDI/MDIX','IEEE 802'],a:2,e:'Auto-MDI/MDIX automatically detects and adapts to either cable type.'},
+{id:92,ch:7,t:'fill',q:'A router needs at minimum ___ network interfaces.',a:'2',e:'A router needs at least 2 NICs — one per connected network.'},
+{id:93,ch:7,t:'tf',q:'DHCP assigns permanent IP addresses.',a:false,e:'False — DHCP assigns temporary IPs with a lease time.'},
+{id:94,ch:7,t:'tf',q:'If DHCP is unavailable Windows assigns an APIPA address in the 169.254.x.x range.',a:true,e:'Correct — APIPA assigns 169.254.0.1-169.254.255.254 when DHCP fails.'},
+{id:95,ch:8,t:'mcq',q:'An orange dot on a cable in Packet Tracer means ___.',o:['Connected and active','Link not yet active','No connection','Wireless link'],a:1,e:'Orange = link not yet active. Use Fast Forward to activate.'},
+{id:96,ch:8,t:'fill',q:'What file extension do Cisco Packet Tracer files use?',a:'.pkt',e:'Packet Tracer files use the .pkt extension.'},
+{id:97,ch:8,t:'tf',q:'A straight-through cable connects a PC to a switch in Packet Tracer.',a:true,e:'Correct — PC (MDI) to Switch (MDIX) = straight-through cable.'},
+{id:98,ch:8,t:'fill',q:'Command to test connectivity between two PCs in Packet Tracer?',a:'ping',e:'ping sends ICMP echo requests to test reachability.'},
+{id:99,ch:8,t:'tf',q:'In Simulation mode you can filter which protocols to observe.',a:true,e:'Edit Filters in the Simulation panel lets you select protocols like ARP and ICMP.'},
+{id:100,ch:8,t:'mcq',q:'What happens FIRST when PC3 pings PC4 for the first time?',o:['ICMP request','DNS query','ARP broadcast','TCP handshake'],a:2,e:'ARP runs first to discover PC4 MAC. Then ICMP ping can be sent.'},
+{id:101,ch:8,t:'fill',q:'What button activates orange dot links in Packet Tracer?',a:'Fast Forward',e:'The Fast Forward button turns orange links to green (active).'},
+{id:102,ch:8,t:'mcq',q:'In Packet Tracer simulation: after an ARP broadcast from PC3, who sends the ARP reply?',o:['All PCs','The switch','Only PC4','The router'],a:2,e:'Only PC4 recognises its own IP and sends a unicast ARP reply back to PC3.'},
+{id:103,ch:9,t:'mcq',q:'How many layers does the TCP/IP model have?',o:['3','4','5','7'],a:1,e:'TCP/IP model has 4 layers: Network Access, Internet, Transport, Application.'},
+{id:104,ch:9,t:'fill',q:'NAT stands for ___ Address Translation.',a:'Network',e:'NAT = Network Address Translation.'},
+{id:105,ch:9,t:'tf',q:'The TCP/IP model is purely theoretical like the OSI model.',a:false,e:'False — TCP/IP is PRACTICAL (real protocols). OSI is the theoretical model.'},
+{id:106,ch:9,t:'mcq',q:'What is the PDU at the Transport Layer?',o:['Frame','Packet','Segment','Data'],a:2,e:'Transport Layer PDU = Segment (contains TCP/UDP header with port numbers).'},
+{id:107,ch:9,t:'fill',q:'What is the PDU at the Network Access Layer?',a:'Frame',e:'Network Access Layer PDU = Frame (Ethernet Frame with MAC addresses).'},
+{id:108,ch:9,t:'mcq',q:'Which TCP/IP layer handles routing between different networks?',o:['Network Access','Internet','Transport','Application'],a:1,e:'Internet Layer handles IP addressing and routing. Routers operate here.'},
+{id:109,ch:9,t:'fill',q:'What is the PDU at the Internet Layer?',a:'Packet',e:'Internet Layer PDU = Packet (IP Packet with source/destination IPs).'},
+{id:110,ch:9,t:'tf',q:'A NAT router is also called an Edge Router.',a:true,e:'Correct — it sits at the edge between the LAN and the internet.'},
+{id:111,ch:9,t:'mcq',q:'What does a NAT router replace in outgoing packets?',o:['Destination MAC','Source port','Private source IP with router public IP','Destination IP'],a:2,e:'NAT replaces the private source IP with the router public WAN IP.'},
+{id:112,ch:9,t:'fill',q:'The process of adding headers at each layer when sending is called ___.',a:'encapsulation',e:'Encapsulation = wrapping data with headers as it moves down the TCP/IP stack.'},
+{id:113,ch:9,t:'mcq',q:'Which protocols operate at the Internet Layer of TCP/IP?',o:['HTTP and FTP','TCP and UDP','IP, ICMP and ARP','Ethernet and Wi-Fi'],a:2,e:'Internet Layer: IP (routing), ICMP (diagnostics), ARP (address resolution).'},
+{id:114,ch:9,t:'tf',q:'Regular internet routers perform NAT on all packets they forward.',a:false,e:'False — only EDGE routers at the network boundary perform NAT.'},
+{id:115,ch:1,t:'fill',q:'Convert hex FF to decimal.',a:'255',e:'F(15)x16 + F(15)x1 = 240+15 = 255.'},
+{id:116,ch:4,t:'fill',q:'What is the Network-ID of 10.24.10.2/8?',a:'10.0.0.0',e:'Class A /8: set last 24 bits to 0 -> 10.0.0.0'},
+{id:117,ch:4,t:'fill',q:'How many usable hosts does a /16 network have?',a:'65534',e:'2^16 = 65536 minus 2 = 65534.'},
+{id:118,ch:5,t:'tf',q:'Port 443 uses TCP transport.',a:true,e:'HTTPS uses TCP port 443.'},
+{id:119,ch:6,t:'tf',q:'ICMP carries application data between programs.',a:false,e:'False — ICMP carries only control and error messages, not application data.'},
+{id:120,ch:7,t:'mcq',q:'Which DHCP step does the server send an available IP to the client?',o:['Discover','Offer','Request','Acknowledge'],a:1,e:'DHCP Offer: server responds to client Discover with an available IP.'},
+{id:121,ch:2,t:'fill',q:'How many unique MAC addresses does EUI-48 provide? (use 2^n)',a:'2^48',e:'EUI-48 provides 2^48 = 281,474,976,710,656 unique combinations.'},
+{id:122,ch:3,t:'mcq',q:'Which uses broadcast communication?',o:['Watching Netflix','Video calling a friend','DHCP Discovery','Downloading a file'],a:2,e:'DHCP Discovery uses broadcast because client does not know DHCP server address.'},
+{id:123,ch:9,t:'mcq',q:'What information is added at the Transport Layer?',o:['MAC addresses','IP addresses','Port numbers','Domain names'],a:2,e:'Transport Layer adds TCP/UDP header with source and destination port numbers.'},
+{id:124,ch:4,t:'mcq',q:'Which IP class is 10.10.10.5?',o:['Class A','Class B','Class C','Class D'],a:0,e:'First octet 10 is in range 1-126 -> Class A.'},
+{id:125,ch:7,t:'tf',q:'Hubs are still widely used in modern networks.',a:false,e:'False — hubs are obsolete. Switches replaced them completely.'},
+{id:126,ch:5,t:'mcq',q:'Which is connection-oriented?',o:['UDP','ICMP','TCP','ARP'],a:2,e:'TCP is connection-oriented — establishes connection before sending data.'},
+{id:127,ch:6,t:'fill',q:'What size (bytes) are packets in a default ping?',a:'32',e:'Default ping sends 4 packets of 32 bytes each.'},
+{id:128,ch:9,t:'fill',q:'The correct PDU order sending down the stack is Data -> Segment -> Packet -> ___.',a:'Frame',e:'Data(App) -> Segment(Transport) -> Packet(Internet) -> Frame(Network Access).'},
+{id:129,ch:2,t:'tf',q:'Windows displays MAC addresses with colons (AA:BB:CC:DD:EE:FF).',a:false,e:'False — Windows uses dashes: AA-BB-CC-DD-EE-FF. Theory uses colons.'},
+{id:130,ch:4,t:'mcq',q:'Which IP class does 224.0.0.5 belong to?',o:['Class A','Class B','Class C','Class D'],a:3,e:'First octet 224 is in range 224-239 -> Class D (multicast).'},
+{id:131,ch:5,t:'fill',q:'What does IANA stand for?',a:'Internet Assigned Numbers Authority',e:'IANA manages standard port number assignments globally.'},
+{id:132,ch:6,t:'tf',q:'ARP resolves IP addresses to MAC addresses.',a:true,e:'ARP finds the MAC address corresponding to a known IP address.'},
+{id:133,ch:9,t:'fill',q:'Removing headers when receiving data up the stack is called ___.',a:'decapsulation',e:'Decapsulation = stripping headers as data moves UP the TCP/IP stack.'},
+{id:134,ch:7,t:'fill',q:'What is the LAN-side IP address of a router called?',a:'Default Gateway',e:'Default Gateway = LAN-side IP of the router.'},
+{id:135,ch:1,t:'mcq',q:'What is the hexadecimal equivalent of decimal 10?',o:['9','A','B','10'],a:1,e:'Decimal 10 = hex A. A=10, B=11, C=12, D=13, E=14, F=15.'},
+];
+
+/* ── STATE ── */
+var SK = 'bsn_exam_en_v1';
+var examQs = [];
+var answers = {};   /* {id: value} */
+var curIdx = 0;
+var timerSecs = 2700;
+var timerInt = null;
+var examRunning = false;
+
+/* ── SHUFFLE ── */
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+
+/* ── BUILD 80-Q EXAM (proportional by chapter) ── */
+function buildExam(){
+  /* ~9 questions per chapter, total 80 */
+  var perCh = {1:9,2:7,3:5,4:10,5:9,6:8,7:9,8:7,9:9}; /* sums to 73 — top up below */
+  var pool = [];
+  for(var ch=1;ch<=9;ch++){
+    var chQs = [];
+    for(var i=0;i<BANK.length;i++){ if(BANK[i].ch===ch) chQs.push(BANK[i]); }
+    var take = perCh[ch] || 8;
+    var picked = shuffle(chQs).slice(0, take);
+    for(var j=0;j<picked.length;j++) pool.push(picked[j]);
+  }
+  /* pad to exactly 80 from remaining questions */
+  var usedIds = {};
+  for(var i=0;i<pool.length;i++) usedIds[pool[i].id]=true;
+  var extras = [];
+  for(var i=0;i<BANK.length;i++){ if(!usedIds[BANK[i].id]) extras.push(BANK[i]); }
+  extras = shuffle(extras);
+  for(var i=0;i<extras.length && pool.length<80;i++) pool.push(extras[i]);
+  examQs = shuffle(pool.slice(0,80));
+}
+
+/* ── START ── */
+function startExam(){
+  buildExam();
+  answers = {};
+  curIdx = 0;
+  timerSecs = 2700;
+  examRunning = true;
+
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('examScreen').style.display = 'block';
+
+  buildNavDots();
+  renderQ();
+  startTimer();
+}
+
+/* ── TIMER ── */
+function startTimer(){
+  if(timerInt) clearInterval(timerInt);
+  timerInt = setInterval(function(){
+    timerSecs--;
+    updateTimerDisplay();
+    if(timerSecs <= 0){ clearInterval(timerInt); finishExam(); }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  var el = document.getElementById('timerEl');
+  if(!el) return;
+  var m = Math.floor(timerSecs/60);
+  var s = timerSecs % 60;
+  el.textContent = (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  if(timerSecs <= 300) el.classList.add('urgent');
+  else el.classList.remove('urgent');
+}
+
+/* ── NAV DOTS ── */
+function buildNavDots(){
+  var h = '';
+  for(var i=0;i<examQs.length;i++){
+    h += '<div class="q-dot" id="dot_'+i+'" onclick="jumpTo('+i+')">'+(i+1)+'</div>';
+  }
+  document.getElementById('navDots').innerHTML = h;
+  updateDots();
+}
+
+function updateDots(){
+  for(var i=0;i<examQs.length;i++){
+    var dot = document.getElementById('dot_'+i);
+    if(!dot) continue;
+    dot.className = 'q-dot';
+    var q = examQs[i];
+    var hasAnswer = answers[q.id] !== undefined && answers[q.id] !== '';
+    if(hasAnswer) dot.classList.add('answered');
+    if(i === curIdx) dot.classList.add('current');
+  }
+}
+
+function jumpTo(idx){
+  saveCurrentAnswer();
+  curIdx = idx;
+  renderQ();
+}
+
+/* ── RENDER QUESTION ── */
+function renderQ(){
+  var q = examQs[curIdx];
+  var ch = getChById(q.ch);
+
+  /* progress */
+  var pct = Math.round((curIdx+1)/examQs.length*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('qCounter').textContent = 'Q '+(curIdx+1)+' / '+examQs.length;
+
+  /* update nav */
+  updateDots();
+
+  /* prev/next buttons */
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  if(prevBtn) prevBtn.style.display = curIdx === 0 ? 'none' : 'inline-flex';
+  if(nextBtn){
+    if(curIdx === examQs.length-1){
+      nextBtn.textContent = 'Finish Exam ✓';
+      nextBtn.className = 'btn btn-danger';
+    } else {
+      nextBtn.textContent = 'Next →';
+      nextBtn.className = 'btn btn-primary';
+    }
+  }
+
+  var h = '<div class="qcard">';
+  h += '<div class="qcard-meta">';
+  h += '<span class="qcard-num">Question '+(curIdx+1)+' of '+examQs.length+'</span>';
+  h += '<span class="qcard-ch" style="background:'+ch.color+'22;color:'+ch.color+'">Ch.'+q.ch+' '+ch.name+'</span>';
+  h += '</div>';
+  h += '<div class="q-text">'+q.q+'</div>';
+
+  var saved = answers[q.id];
+
+  if(q.t === 'mcq'){
+    h += '<div class="q-opts">';
+    var L = ['A','B','C','D'];
+    for(var i=0;i<q.o.length;i++){
+      var sel = (saved === i) ? ' sel' : '';
+      h += '<button class="q-opt'+sel+'" data-i="'+i+'" onclick="pickMCQ('+i+')">'
+        +'<span class="q-letter">'+L[i]+'</span>'+q.o[i]+'</button>';
+    }
+    h += '</div>';
+  } else if(q.t === 'tf'){
+    var selT = (saved === 0) ? ' sel' : '';
+    var selF = (saved === 1) ? ' sel' : '';
+    h += '<div class="q-opts">'
+      +'<button class="q-opt'+selT+'" data-i="0" onclick="pickTF(0)"><span class="q-letter">T</span>True</button>'
+      +'<button class="q-opt'+selF+'" data-i="1" onclick="pickTF(1)"><span class="q-letter">F</span>False</button>'
+      +'</div>';
+  } else {
+    var fillVal = (saved !== undefined && saved !== null) ? String(saved) : '';
+    h += '<input class="q-fill" id="fillInp" type="text" value="'+fillVal+'" placeholder="Type your answer here...">';
+  }
+
+  h += '</div>';
+  document.getElementById('qArea').innerHTML = h;
+}
+
+function getChById(id){
+  for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].id===id) return CHAPTERS[i];
+  return {name:'Unknown',color:'#4f8ef7'};
+}
+
+/* ── PICK ANSWER ── */
+function pickMCQ(i){
+  var q = examQs[curIdx];
+  answers[q.id] = i;
+  var opts = document.querySelectorAll('.q-opt');
+  for(var j=0;j<opts.length;j++) opts[j].classList.remove('sel');
+  var btn = document.querySelector('[data-i="'+i+'"]');
+  if(btn) btn.classList.add('sel');
+  updateDots();
+}
+
+function pickTF(i){
+  var q = examQs[curIdx];
+  answers[q.id] = i;
+  var opts = document.querySelectorAll('.q-opt');
+  for(var j=0;j<opts.length;j++) opts[j].classList.remove('sel');
+  var btn = document.querySelector('[data-i="'+i+'"]');
+  if(btn) btn.classList.add('sel');
+  updateDots();
+}
+
+function saveCurrentAnswer(){
+  if(!examQs.length) return;
+  var q = examQs[curIdx];
+  if(q.t === 'fill'){
+    var inp = document.getElementById('fillInp');
+    if(inp) answers[q.id] = inp.value.trim();
+  }
+}
+
+/* ── NAVIGATE ── */
+function navQ(dir){
+  saveCurrentAnswer();
+  if(dir === 1 && curIdx === examQs.length-1){
+    confirmSubmit();
+    return;
+  }
+  curIdx = Math.max(0, Math.min(examQs.length-1, curIdx+dir));
+  renderQ();
+}
+
+/* ── CONFIRM SUBMIT ── */
+function confirmSubmit(){
+  saveCurrentAnswer();
+  var answered = 0;
+  for(var i=0;i<examQs.length;i++){
+    var v = answers[examQs[i].id];
+    if(v !== undefined && v !== '') answered++;
+  }
+  var skipped = examQs.length - answered;
+  var msg = skipped > 0
+    ? 'You have '+skipped+' unanswered question(s). Submit anyway?'
+    : 'Submit your exam? You cannot make changes after submission.';
+  if(confirm(msg)) finishExam();
+}
+
+/* ── FINISH EXAM ── */
+function finishExam(){
+  if(timerInt){ clearInterval(timerInt); timerInt = null; }
+  saveCurrentAnswer();
+  examRunning = false;
+
+  document.getElementById('examScreen').style.display = 'none';
+
+  var correct = 0, wrong = [], skipped = [];
+  var timeTaken = 2700 - timerSecs;
+
+  for(var i=0;i<examQs.length;i++){
+    var q = examQs[i];
+    var ua = answers[q.id];
+    if(ua === undefined || ua === ''){
+      skipped.push(q);
+      continue;
+    }
+    var isOk;
+    if(q.t === 'mcq') isOk = (ua === q.a);
+    else if(q.t === 'tf') isOk = (ua === 0) === q.a;
+    else isOk = String(ua).trim().toLowerCase() === String(q.a).trim().toLowerCase();
+    if(isOk) correct++;
+    else wrong.push({q:q, ua:ua});
+  }
+
+  var total = examQs.length;
+  var pct = Math.round(correct/total*100);
+  var pass = pct >= 70;
+  var gradeColor = pass ? '#22d3a5' : '#f43f5e';
+  var gradeText = pass ? 'PASS' : 'FAIL';
+  var tm = Math.floor(timeTaken/60);
+  var ts = timeTaken % 60;
+
+  /* save to localStorage */
+  try{
+    var hist = JSON.parse(localStorage.getItem(SK) || '[]');
+    hist.push({date: new Date().toISOString(), pct: pct, pass: pass});
+    if(hist.length > 10) hist = hist.slice(-10);
+    localStorage.setItem(SK, JSON.stringify(hist));
+  }catch(e){}
+
+  var rs = document.getElementById('resultsScreen');
+  rs.className = 'wrap results-screen show';
+
+  var html = '<div class="result-hero">';
+  html += '<div class="result-pct" style="color:'+gradeColor+'">'+pct+'%</div>';
+  html += '<div class="result-grade" style="color:'+gradeColor+'">'+gradeText+'</div>';
+  html += '<div class="result-detail">'+correct+' of '+total+' correct &nbsp;&bull;&nbsp; '
+        + (pass ? 'Well done! Score 70% or above.' : 'Score below 70%. Keep studying!')+'</div>';
+  html += '<div class="result-grid">';
+  html += '<div class="result-cell"><div class="result-cell-val" style="color:#22d3a5">'+correct+'</div><div class="result-cell-key">Correct</div></div>';
+  html += '<div class="result-cell"><div class="result-cell-val" style="color:#f43f5e">'+wrong.length+'</div><div class="result-cell-key">Wrong</div></div>';
+  html += '<div class="result-cell"><div class="result-cell-val" style="color:#facc15">'+skipped.length+'</div><div class="result-cell-key">Skipped</div></div>';
+  html += '<div class="result-cell"><div class="result-cell-val" style="color:#4f8ef7">'+tm+'m'+ts+'s</div><div class="result-cell-key">Time</div></div>';
+  html += '</div></div>';
+
+  /* action buttons */
+  html += '<div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem">';
+  html += '<button class="btn btn-primary" onclick="location.reload()">&#9201; Try Again</button>';
+  html += '<a href="BSN_StudyApp_EN.html" class="btn btn-ghost">&#127919; Practice Mode</a>';
+  html += '<a href="index.html" class="btn btn-ghost">&larr; Hub</a>';
+  html += '</div>';
+
+  /* wrong answer review */
+  if(wrong.length > 0){
+    html += '<div class="review-section">';
+    html += '<button class="section-toggle open" onclick="toggleReview(this)"><span>&#10007; Wrong Answers ('+wrong.length+')</span><span class="arrow">&#9658;</span></button>';
+    html += '<div class="section-body open" id="wrongBody">';
+    for(var i=0;i<wrong.length;i++){
+      var item = wrong[i];
+      var correctAns = item.q.t==='mcq' ? item.q.o[item.q.a]
+                     : item.q.t==='tf'  ? (item.q.a ? 'True' : 'False')
+                     : item.q.a;
+      html += '<div class="review-card">';
+      html += '<div class="review-q">'+item.q.q+'</div>';
+      html += '<div class="review-ans review-wrong">&#10007; Your answer: <strong>'
+        + (item.q.t==='mcq' ? item.q.o[item.ua] : item.q.t==='tf' ? (item.ua===0?'True':'False') : item.ua)
+        + '</strong> &nbsp;|&nbsp; Correct: <strong>'+correctAns+'</strong><br>'
+        + '<span style="opacity:.8">'+item.q.e+'</span></div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  /* skipped review */
+  if(skipped.length > 0){
+    html += '<div class="review-section">';
+    html += '<button class="section-toggle" onclick="toggleReview(this)"><span>&#9888; Skipped Questions ('+skipped.length+')</span><span class="arrow">&#9658;</span></button>';
+    html += '<div class="section-body" id="skippedBody">';
+    for(var i=0;i<skipped.length;i++){
+      var q = skipped[i];
+      var ans = q.t==='mcq' ? q.o[q.a] : q.t==='tf' ? (q.a?'True':'False') : q.a;
+      html += '<div class="review-card">';
+      html += '<div class="review-q">'+q.q+'</div>';
+      html += '<div class="review-ans review-skipped">&#9888; Not answered &nbsp;|&nbsp; Correct answer: <strong>'+ans+'</strong><br>'
+        + '<span style="opacity:.8">'+q.e+'</span></div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  rs.innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+function toggleReview(btn){
+  btn.classList.toggle('open');
+  var body = btn.nextElementSibling;
+  if(body) body.classList.toggle('open');
+}
+
+/* ── CONFIRM LEAVE ── */
+window.addEventListener('beforeunload', function(e){
+  if(examRunning){ e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>

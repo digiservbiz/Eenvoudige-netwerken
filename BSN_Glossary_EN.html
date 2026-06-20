@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Glossary — Eenvoudige Netwerken</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07090f;color:rgba(255,255,255,0.92);font-family:'Space Grotesk',sans-serif;line-height:1.6;min-height:100vh}
+.topnav{position:sticky;top:0;z-index:200;height:52px;background:#07090f;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px}
+.hublink:hover{color:rgba(255,255,255,0.6)}
+.nllink{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);text-decoration:none}
+.nllink:hover{background:#111720;color:rgba(255,255,255,0.85)}
+/* TOOLBAR */
+.toolbar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.08);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;position:sticky;top:52px;z-index:100}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:380px}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:13px;color:rgba(255,255,255,0.3);pointer-events:none}
+.search-wrap input{width:100%;background:#111720;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:.5rem .75rem .5rem 2rem;color:rgba(255,255,255,0.92);font-size:.875rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:#4f8ef7}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.fpill{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:#111720;color:rgba(255,255,255,0.5);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8)}
+.fpill.active{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+.sort-btn{margin-left:auto;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#111720;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;white-space:nowrap}
+.sort-btn:hover{background:#18202e;color:rgba(255,255,255,0.85)}
+.sort-btn.active{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+/* STATS BAR */
+.stats-bar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.06);padding:.45rem 1.5rem;font-size:11px;color:rgba(255,255,255,0.38);display:flex;align-items:center;gap:1rem}
+.stats-count{font-family:'Space Mono',monospace;font-weight:700;color:rgba(255,255,255,0.6)}
+/* CONTENT */
+.content{max-width:860px;margin:0 auto;padding:1.25rem 1.5rem 4rem}
+/* ALPHA GROUP */
+.alpha-group{margin-bottom:1.5rem}
+.alpha-head{font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:.12em;text-transform:uppercase;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:.6rem}
+/* TERM CARD */
+.term-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;margin-bottom:.5rem;overflow:hidden;transition:border-color .15s}
+.term-card:hover{border-color:rgba(255,255,255,0.18)}
+.term-card.open{border-color:rgba(255,255,255,0.2)}
+.term-header{display:flex;align-items:center;gap:.85rem;padding:.8rem 1rem;cursor:pointer}
+.term-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.term-name{font-size:.92rem;font-weight:700;color:rgba(255,255,255,0.92);flex:1}
+.term-ch{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0}
+.term-also-preview{font-size:11px;color:rgba(255,255,255,0.35);flex-shrink:0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.term-arrow{font-size:10px;color:rgba(255,255,255,0.3);transition:transform .2s;flex-shrink:0}
+.term-card.open .term-arrow{transform:rotate(90deg)}
+.term-body{display:none;padding:.1rem 1rem 1rem 2.7rem}
+.term-card.open .term-body{display:block}
+.term-def{font-size:.875rem;color:rgba(255,255,255,0.82);line-height:1.7;margin-bottom:.6rem}
+.term-def strong{color:rgba(255,255,255,0.95)}
+.term-def code{font-family:'Space Mono',monospace;font-size:.78rem;background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.term-also{font-size:.82rem;color:rgba(255,255,255,0.45);font-style:italic;margin-top:.25rem}
+.term-also strong{color:rgba(255,255,255,0.55);font-style:normal}
+/* EMPTY */
+.empty-msg{padding:3rem;text-align:center;color:rgba(255,255,255,0.35);display:none}
+.empty-msg.show{display:block}
+/* RESPONSIVE */
+@media(max-width:640px){
+  .toolbar{padding:.6rem 1rem}
+  .content{padding:1rem}
+  .term-also-preview{display:none}
+  .sort-btn{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tnl">
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Glossary &middot; EN</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <a href="BSN_Glossary.html" class="nllink">&#127463;&#127466; NL</a>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search terms, definitions, aliases..." oninput="render()">
+  </div>
+  <div class="filter-pills" id="filterPills"></div>
+  <button class="sort-btn" id="sortBtn" onclick="toggleSort()">A&#8211;Z</button>
+</div>
+
+<div class="stats-bar">
+  <span>Showing <span class="stats-count" id="countEl">0</span> terms</span>
+</div>
+
+<div class="content" id="content">
+  <div class="empty-msg" id="emptyMsg">No terms match your search.</div>
+</div>
+
+<script>
+var TERMS = [{"id": "binary", "ch": 1, "term": "Binary", "def": "A base-2 number system using only digits <strong>0</strong> and <strong>1</strong>. Each digit is called a <strong>bit</strong>. Groups of 8 bits form a <strong>byte</strong>. Binary is used internally by all digital systems and is the foundation for IP subnet masks and MAC addresses.", "also": "Base-2, base two"}, {"id": "decimal", "ch": 1, "term": "Decimal", "def": "The standard base-10 number system using digits <strong>0–9</strong>. This is how humans normally read and write numbers, including IP addresses in their dotted-decimal notation (e.g. <code>192.168.1.1</code>).", "also": "Base-10, base ten"}, {"id": "hexadecimal", "ch": 1, "term": "Hexadecimal", "def": "A base-16 number system using digits <strong>0–9</strong> and letters <strong>A–F</strong>, where A=10, B=11, C=12, D=13, E=14, F=15. One hex digit represents exactly 4 binary bits (a nibble). Used in MAC addresses and memory addresses.", "also": "Hex, base-16, base sixteen"}, {"id": "bit", "ch": 1, "term": "Bit", "def": "The smallest unit of digital data — a single binary digit, either <strong>0</strong> or <strong>1</strong>. 8 bits = 1 byte. Network speeds are measured in bits per second (bps, Mbps, Gbps).", "also": "Binary digit"}, {"id": "byte", "ch": 1, "term": "Byte", "def": "A group of <strong>8 bits</strong>. The standard unit for measuring data storage and address lengths. A MAC address is 6 bytes (48 bits). An IPv4 address is 4 bytes (32 bits).", "also": "Octet"}, {"id": "nibble", "ch": 1, "term": "Nibble", "def": "A group of <strong>4 binary bits</strong>, equal to exactly one hexadecimal digit. Example: binary <code>1010</code> = hex <code>A</code> = decimal <code>10</code>.", "also": "Half-byte, nybble"}, {"id": "octet", "ch": 1, "term": "Octet", "def": "Another name for a <strong>byte (8 bits)</strong>. In networking, particularly in IPv4, each of the four sections of an IP address separated by dots is called an octet. Each octet has a value of 0–255.", "also": "Byte"}, {"id": "positional_value", "ch": 1, "term": "Positional Value", "def": "The value of a digit based on its position in a number. In 8-bit binary: positions have values <strong>128, 64, 32, 16, 8, 4, 2, 1</strong> (powers of 2 from left to right). To convert binary to decimal, add positional values where the bit is 1.", "also": "Place value, positional notation"}, {"id": "cidr", "ch": 1, "term": "CIDR Notation", "def": "<strong>Classless Inter-Domain Routing</strong>. A shorthand for subnet masks using a forward slash and the number of network bits. Example: <code>/24</code> = 24 network bits = subnet mask <code>255.255.255.0</code>. More compact than writing the full mask.", "also": "Slash notation, prefix length"}, {"id": "mac", "ch": 2, "term": "MAC Address", "def": "A <strong>Media Access Control</strong> address — a unique 48-bit (6-byte) identifier permanently assigned to a NIC by its manufacturer. Written in hex as <code>00:0C:6E:D2:11:E6</code>. Operates at the Data Link layer and is only valid within a single LAN segment — changes at every router hop.", "also": "Physical address, hardware address, ethernet address, burned-in address (BIA)"}, {"id": "oui", "ch": 2, "term": "OUI", "def": "<strong>Organizational Unique Identifier</strong>. The first 3 bytes (24 bits) of a MAC address, assigned by the IEEE to identify the manufacturer. Example: Cisco devices start with <code>00-0C-6E</code>. Look up any OUI at ouilookup.com.", "also": "Vendor prefix, manufacturer ID"}, {"id": "nic", "ch": 2, "term": "NIC", "def": "<strong>Network Interface Controller</strong> (also: Network Interface Card). The hardware component in a device that connects it to a network. Each NIC has a unique MAC address burned in by the manufacturer. A router needs at least 2 NICs.", "also": "Network Interface Card, network adapter, ethernet adapter"}, {"id": "eui48", "ch": 2, "term": "EUI-48", "def": "<strong>Extended Unique Identifier — 48 bit</strong>. The IEEE standard that defines MAC address format and assignment. Provides 2⁴⁸ (281 trillion+) unique address combinations. The first 24 bits are the OUI; the last 24 bits are device-specific.", "also": "IEEE 802 MAC address standard"}, {"id": "broadcast_mac", "ch": 2, "term": "Broadcast MAC Address", "def": "The special address <code>FF:FF:FF:FF:FF:FF</code> — all 48 bits set to 1. Any frame sent to this address is delivered to <strong>every device on the LAN</strong>. Used by ARP requests, DHCP Discovery, and other broadcast protocols.", "also": "FF:FF:FF:FF:FF:FF"}, {"id": "getmac", "ch": 2, "term": "getmac", "def": "A Windows CMD command that displays the MAC address(es) of all network adapters on the computer. Shows output as the <strong>Physical Address</strong> field in dash notation (e.g. <code>B4-B6-86-27-1D-B8</code>).", "also": "getmac command"}, {"id": "ipconfig_all", "ch": 2, "term": "ipconfig /all", "def": "A Windows CMD command that displays the complete TCP/IP configuration of all network adapters, including: <strong>Physical Address (MAC)</strong>, IP address, subnet mask, default gateway, DNS servers, DHCP status and lease times.", "also": "ipconfig all"}, {"id": "unicast", "ch": 3, "term": "Unicast", "def": "A network communication mode where data is sent from <strong>one source to exactly one destination</strong>. The destination MAC is the specific MAC of the intended recipient. Most common type of network communication — used by web browsing, file transfers, video calls.", "also": "One-to-one communication"}, {"id": "multicast", "ch": 3, "term": "Multicast", "def": "A network communication mode where data is sent from one source to a <strong>subscribed group of devices</strong>. Multicast MAC addresses start with <code>01-00-5E</code>. IPv4 multicast IPs use the Class D range: <strong>224.0.0.0 – 239.255.255.255</strong>.", "also": "One-to-many (subscribed), group communication"}, {"id": "broadcast", "ch": 3, "term": "Broadcast", "def": "A network communication mode where data is sent to <strong>ALL devices on the LAN</strong>. The destination MAC is <code>FF:FF:FF:FF:FF:FF</code>. Every device must process the frame. Used by ARP requests and DHCP Discovery. Excessive broadcasts can cause network congestion.", "also": "One-to-all communication"}, {"id": "ip", "ch": 4, "term": "IP Address", "def": "A <strong>logical 32-bit address</strong> (IPv4) assigned to each network interface. Written in dotted-decimal notation as 4 octets (e.g. <code>192.168.1.50</code>). Unlike MAC addresses, IP addresses are logical — they can be changed and are assigned by administrators or DHCP.", "also": "Internet Protocol address, logical address, layer-3 address"}, {"id": "class_a", "ch": 4, "term": "Class A", "def": "IPv4 address class with first octet range <strong>1–126</strong>. Default subnet mask: <code>255.0.0.0</code> (/8). Supports up to 16,777,214 hosts per network. Private range: <code>10.0.0.0 – 10.255.255.255</code>.", "also": ""}, {"id": "class_b", "ch": 4, "term": "Class B", "def": "IPv4 address class with first octet range <strong>128–191</strong>. Default subnet mask: <code>255.255.0.0</code> (/16). Supports up to 65,534 hosts per network. Private range: <code>172.16.0.0 – 172.31.255.255</code>.", "also": ""}, {"id": "class_c", "ch": 4, "term": "Class C", "def": "IPv4 address class with first octet range <strong>192–223</strong>. Default subnet mask: <code>255.255.255.0</code> (/24). Supports up to 254 hosts per network. Private range: <code>192.168.0.0 – 192.168.255.255</code>.", "also": ""}, {"id": "class_d", "ch": 4, "term": "Class D", "def": "IPv4 address class reserved for <strong>multicast</strong>. First octet range: <strong>224–239</strong>. Not used for regular host addressing — no subnet mask or host count. Multicast groups subscribe to addresses in this range.", "also": "Multicast range"}, {"id": "network_id", "ch": 4, "term": "Network-ID", "def": "The address that identifies a network — found by setting the <strong>host portion of an IP address to all zeros</strong>. Cannot be assigned to a host. Example: for <code>192.168.50.112/24</code>, the Network-ID is <code>192.168.50.0</code>.", "also": "Network address, network identifier"}, {"id": "broadcast_addr", "ch": 4, "term": "Broadcast Address", "def": "The highest address in a subnet — found by setting the <strong>host portion to all ones (255)</strong>. Frames sent to this address reach all hosts in the subnet. Cannot be assigned to a host. Example: for <code>192.168.50.0/24</code>, broadcast is <code>192.168.50.255</code>.", "also": "Directed broadcast"}, {"id": "subnet_mask", "ch": 4, "term": "Subnet Mask", "def": "A 32-bit value that separates an IP address into its <strong>network portion</strong> (bits = 1) and <strong>host portion</strong> (bits = 0). Always consists of consecutive 1s followed by 0s. Example: <code>255.255.255.0</code> = /24 = 24 network bits.", "also": "Network mask, netmask"}, {"id": "private_ip", "ch": 4, "term": "Private IP Address", "def": "IP addresses reserved for use within private networks — <strong>not routable on the public internet</strong>. Three private ranges: Class A: <code>10.0.0.0/8</code>, Class B: <code>172.16.0.0/12</code>, Class C: <code>192.168.0.0/16</code>. Require NAT to access the internet.", "also": "RFC 1918 addresses, non-routable addresses"}, {"id": "public_ip", "ch": 4, "term": "Public IP Address", "def": "An IP address that is <strong>globally unique and routable on the internet</strong>. Assigned by Internet Service Providers (ISPs). All internet-facing servers have public IPs. Devices in a LAN share one public IP through NAT.", "also": "Global IP, routable IP"}, {"id": "loopback", "ch": 4, "term": "Loopback Address", "def": "The address range <strong>127.0.0.0 – 127.255.255.255</strong>, most commonly <code>127.0.0.1</code>. Used to test the local TCP/IP stack without sending data over the network. Pinging 127.0.0.1 tests whether TCP/IP is working on the local device. NOT assignable to a network host.", "also": "localhost, 127.0.0.1"}, {"id": "apipa", "ch": 4, "term": "APIPA", "def": "<strong>Automatic Private IP Addressing</strong>. When a Windows device cannot reach a DHCP server, it automatically assigns itself an address in the range <code>169.254.0.1 – 169.254.255.254</code> with mask <code>255.255.0.0</code>. APIPA devices can communicate with other APIPA devices on the LAN but cannot reach the internet.", "also": "Link-local address, 169.254.x.x"}, {"id": "dhcp", "ch": 4, "term": "DHCP", "def": "<strong>Dynamic Host Configuration Protocol</strong>. Automatically assigns TCP/IP configuration to devices. Provides 4 settings: IP address, subnet mask, default gateway, DNS server. Uses UDP ports 67 (server) and 68 (client). Process: <strong>Discover → Offer → Request → Acknowledge</strong>. Assignments have a lease time and are temporary.", "also": "Dynamic Host Configuration Protocol"}, {"id": "static_ip", "ch": 4, "term": "Static IP Address", "def": "A manually configured, permanent IP address that does not change unless manually updated. Used for servers, printers, routers and other devices that need a consistent address. Configured via <code>ncpa.cpl</code> in Windows.", "also": "Fixed IP, manual IP"}, {"id": "ncpa_cpl", "ch": 4, "term": "ncpa.cpl", "def": "A Windows Run command that opens the <strong>Network Connections</strong> control panel. Used to configure static IP addresses, view adapter settings, enable/disable adapters. Type in the Start menu search or Win+R to open.", "also": "Network Connections panel"}, {"id": "port", "ch": 5, "term": "Port", "def": "A 16-bit number (0–65535) that identifies a specific <strong>application or service</strong> on a device. An IP address identifies the device; a port identifies the service. Together they form a <strong>socket</strong>. Total possible ports: 2¹⁶ = <strong>65,536</strong>.", "also": "Port number, TCP/UDP port"}, {"id": "socket", "ch": 5, "term": "Socket", "def": "The combination of an <strong>IP address + port number</strong> (e.g. <code>192.168.1.50:80</code>). Uniquely identifies a specific service on a specific device. A network connection uses two sockets: one on the client side and one on the server side.", "also": "Network socket, endpoint"}, {"id": "well_known_ports", "ch": 5, "term": "Well-Known Ports", "def": "Port numbers in the range <strong>0–1023</strong>, assigned by IANA to fundamental internet services. Examples: HTTP=80, HTTPS=443, FTP=21, SSH=22, SMTP=25, DNS=53, DHCP=67/68. Cannot be used by regular applications without administrator privileges.", "also": "System ports, IANA ports"}, {"id": "tcp", "ch": 5, "term": "TCP", "def": "<strong>Transmission Control Protocol</strong>. A connection-oriented transport protocol that provides <strong>reliable, ordered delivery</strong>. Establishes a connection (3-way handshake) before sending data and checks that all data arrives correctly. Slower than UDP but reliable. Used by HTTP, HTTPS, FTP, SSH, SMTP, RDP.", "also": "Transmission Control Protocol, reliable transport"}, {"id": "udp", "ch": 5, "term": "UDP", "def": "<strong>User Datagram Protocol</strong>. A connectionless transport protocol with <strong>no error checking or guaranteed delivery</strong>. Faster than TCP. Used where speed matters more than reliability: DNS, DHCP, video streaming, gaming. DNS uses UDP 53; DHCP uses UDP 67/68.", "also": "User Datagram Protocol, unreliable transport, fast transport"}, {"id": "http_port", "ch": 5, "term": "HTTP (Port 80)", "def": "<strong>Hypertext Transfer Protocol</strong>. The protocol used to transfer web pages between a browser and web server. Uses <strong>TCP port 80</strong>. Unencrypted — all data is sent in plain text. Replaced by HTTPS (port 443) for secure connections.", "also": "Port 80, web protocol"}, {"id": "https_port", "ch": 5, "term": "HTTPS (Port 443)", "def": "<strong>HTTP Secure</strong>. Encrypted version of HTTP using TLS/SSL. Uses <strong>TCP port 443</strong>. All data between browser and server is encrypted, preventing eavesdropping. Standard for all modern websites.", "also": "Port 443, secure web, HTTP over TLS"}, {"id": "dns_port", "ch": 5, "term": "DNS (Port 53)", "def": "<strong>Domain Name System</strong>. Translates domain names to IP addresses. Uses <strong>UDP port 53</strong> (important: UDP, not TCP). A DNS query asks: 'What is the IP for www.encora.be?' and the DNS server responds with the IP.", "also": "Port 53, domain name resolution"}, {"id": "dhcp_port", "ch": 5, "term": "DHCP (Ports 67/68)", "def": "<strong>Dynamic Host Configuration Protocol</strong>. Uses <strong>UDP port 67</strong> (server listens) and <strong>UDP port 68</strong> (client listens). Important: uses UDP, not TCP. Both ports must be open for DHCP to function.", "also": "Port 67, port 68"}, {"id": "ftp_port", "ch": 5, "term": "FTP (Port 21)", "def": "<strong>File Transfer Protocol</strong>. Used to transfer files between a client and server. Uses <strong>TCP port 21</strong> for control commands and TCP port 20 for data transfer. Unencrypted — SFTP (port 22) or FTPS are the secure alternatives.", "also": "Port 21, file transfer"}, {"id": "ssh_port", "ch": 5, "term": "SSH (Port 22)", "def": "<strong>Secure Shell</strong>. Provides encrypted remote command-line access to a device. Uses <strong>TCP port 22</strong>. Replaced Telnet (port 23) as the standard for remote administration because all traffic is encrypted.", "also": "Port 22, Secure Shell, remote access"}, {"id": "smtp_port", "ch": 5, "term": "SMTP (Port 25)", "def": "<strong>Simple Mail Transfer Protocol</strong>. Used to send emails between mail servers and from email clients to servers. Uses <strong>TCP port 25</strong>.", "also": "Port 25, email sending protocol"}, {"id": "smb_port", "ch": 5, "term": "SMB (Port 445)", "def": "<strong>Server Message Block</strong>. Protocol for Windows file sharing, printer sharing and network resource access. Uses <strong>TCP port 445</strong>. Allows Windows computers to share files and printers over a network.", "also": "Port 445, Windows file sharing"}, {"id": "rdp_port", "ch": 5, "term": "RDP (Port 3389)", "def": "<strong>Remote Desktop Protocol</strong>. Allows a user to remotely control another computer's desktop over the network. Uses <strong>TCP port 3389</strong>. Built into Windows as Remote Desktop Connection.", "also": "Port 3389, Remote Desktop Protocol"}, {"id": "telnet_port", "ch": 5, "term": "Telnet (Port 23)", "def": "An older remote access protocol that provides command-line access to devices. Uses <strong>TCP port 23</strong>. Completely <strong>unencrypted</strong> — all data including passwords is sent as plain text. Replaced by SSH (port 22).", "also": "Port 23, teletype network"}, {"id": "iana", "ch": 5, "term": "IANA", "def": "<strong>Internet Assigned Numbers Authority</strong>. The organization responsible for assigning standard port numbers, IP address ranges and protocol numbers globally. Maintains the official registry of well-known ports (0–1023).", "also": "Internet Assigned Numbers Authority"}, {"id": "netstat", "ch": 5, "term": "netstat -an", "def": "A Windows CMD command that displays all <strong>active network connections and listening ports</strong>. Shows: protocol (TCP/UDP), local address and port, foreign address and port, and connection state (LISTENING, ESTABLISHED, etc.).", "also": "netstat, network statistics"}, {"id": "arp", "ch": 6, "term": "ARP", "def": "<strong>Address Resolution Protocol</strong>. Resolves IP addresses to MAC addresses within a LAN. When a device knows a destination IP but not its MAC, it sends an ARP request (broadcast). The target device replies with a unicast ARP reply containing its MAC. <strong>ARP is the first protocol activated when two LAN hosts communicate.</strong>", "also": "Address Resolution Protocol"}, {"id": "arp_request", "ch": 6, "term": "ARP Request", "def": "A <strong>broadcast</strong> frame sent to <code>FF:FF:FF:FF:FF:FF</code> asking 'Who has IP x.x.x.x? Tell [my IP].' All devices on the LAN receive it. Only the device with the matching IP responds. Contains the sender's IP and MAC.", "also": "ARP broadcast"}, {"id": "arp_reply", "ch": 6, "term": "ARP Reply", "def": "A <strong>unicast</strong> frame sent directly from the target device back to the requester. Contains the target's MAC address. After receiving this, the requester adds the IP-to-MAC mapping to its ARP table and can now send frames directly.", "also": "ARP response, ARP unicast"}, {"id": "arp_table", "ch": 6, "term": "ARP Table", "def": "A cache stored in each device mapping <strong>IP addresses to MAC addresses</strong>. Prevents repeated ARP requests for known devices. Viewed with <code>arp -a</code>. Cleared with <code>arp -d *</code>. Entries are marked as dynamic (learned via ARP) or static (manually added).", "also": "ARP cache, ARP cache table"}, {"id": "garp", "ch": 6, "term": "GARP", "def": "<strong>Gratuitous ARP</strong>. An ARP reply sent <strong>without a prior ARP request</strong>. Used to: (1) announce a new device to the network, (2) update other devices' ARP tables after a failover or IP change. Appears as <strong>'ARP Probe'</strong> in Wireshark. The sender sends its own IP and MAC.", "also": "Gratuitous ARP, ARP Probe (in Wireshark), unsolicited ARP"}, {"id": "icmp", "ch": 6, "term": "ICMP", "def": "<strong>Internet Control Message Protocol</strong>. Sends diagnostic and error messages in IP networks. Carries no application data — only control information. Used by <code>ping</code> (echo request/reply) and <code>tracert</code> (TTL exceeded messages). Operates at the Internet layer.", "also": "Internet Control Message Protocol, ping protocol"}, {"id": "ping", "ch": 6, "term": "ping", "def": "A CMD command that tests network reachability using ICMP echo requests. Default: sends <strong>4 packets of 32 bytes</strong>. Options: <code>ping -t</code> (continuous), <code>ping -4</code> (force IPv4), <code>ping -6</code> (force IPv6). Asterisks (*) in output mean ICMP is blocked — NOT necessarily that the device is offline.", "also": "ICMP echo request, ping command"}, {"id": "tracert", "ch": 6, "term": "tracert", "def": "A Windows CMD command that shows the <strong>route packets take</strong> to a destination, listing each router hop. Uses ICMP with incrementing TTL values. Useful for diagnosing where a connection fails or is slow. Linux equivalent: <code>traceroute</code>.", "also": "traceroute, trace route, hop trace"}, {"id": "hub", "ch": 7, "term": "Hub", "def": "A Layer 1 network device that connects multiple devices. When it receives a frame, it <strong>sends it to ALL ports</strong> regardless of destination MAC. Has no intelligence whatsoever. Creates excessive traffic and collisions. <strong>Obsolete — completely replaced by switches.</strong>", "also": "Ethernet hub, dumb switch"}, {"id": "switch", "ch": 7, "term": "Switch", "def": "A Layer 2 intelligent network device that connects devices in a LAN. Maintains a <strong>MAC address table</strong> (learned by observing traffic) and sends frames only to the <strong>correct destination port</strong>. Eliminates unnecessary traffic and collisions. Can be unmanaged (plug-and-play) or managed (configurable via CLI).", "also": "Ethernet switch, Layer-2 switch, network switch"}, {"id": "managed_switch", "ch": 7, "term": "Managed Switch", "def": "A switch that can be configured via <strong>CLI or web interface</strong>. Supports advanced features: port speed settings, port security, VLANs, link aggregation, spanning tree. Used in enterprise networks where fine control is needed.", "also": "Intelligent switch, configurable switch"}, {"id": "router", "ch": 7, "term": "Router", "def": "A Layer 3 device that <strong>connects two or more different IP networks</strong> and routes packets between them. Has at least 2 NICs (LAN and WAN). Makes routing decisions based on IP addresses (not MAC addresses). The LAN-side IP is the Default Gateway for all devices.", "also": "Layer-3 device, gateway"}, {"id": "default_gateway", "ch": 7, "term": "Default Gateway", "def": "The <strong>LAN-side IP address of the router</strong>. When a device wants to send traffic to a different network (e.g. the internet), it sends the packet to the Default Gateway. The router then forwards it via its WAN interface. Configured as part of the TCP/IP settings.", "also": "Gateway, router IP, next hop"}, {"id": "straight_through", "ch": 7, "term": "Straight-Through Cable", "def": "An Ethernet cable where both ends use the <strong>same wiring standard</strong>. Used to connect <strong>MDI to MDIX</strong> devices — typically PC to switch, or PC to router. The most common cable type in modern networks.", "also": "Patch cable, MDI-MDIX cable"}, {"id": "crossover", "ch": 7, "term": "Crossover Cable", "def": "An Ethernet cable where the transmit and receive pairs are <strong>swapped between ends</strong>. Used to connect <strong>same-type devices</strong>: switch to switch, PC to PC. Largely replaced by Auto-MDI/MDIX, which automatically detects the cable type needed.", "also": "MDI-MDI cable, crossed cable"}, {"id": "auto_mdix", "ch": 7, "term": "Auto-MDI/MDIX", "def": "A feature on modern network devices that <strong>automatically detects</strong> whether a straight-through or crossover cable is connected and adjusts the port accordingly. Eliminates the need to worry about cable type — either type works.", "also": "Auto-sensing, automatic crossover"}, {"id": "dns", "ch": 7, "term": "DNS", "def": "<strong>Domain Name System</strong>. A distributed database that translates human-readable <strong>domain names to IP addresses</strong> (forward lookup) and IP addresses to domain names (reverse lookup). Without DNS, users would need to memorise IP addresses for every website.", "also": "Domain Name System, name resolution"}, {"id": "a_record", "ch": 7, "term": "A Record", "def": "A DNS record type that maps a <strong>hostname to an IPv4 address</strong>. Example: <code>www.encora.be → 212.123.0.115</code>. The most fundamental DNS record type — every website needs one to be accessible by name.", "also": "Address record, IPv4 record"}, {"id": "cname", "ch": 7, "term": "CNAME Record", "def": "<strong>Canonical Name</strong> record. A DNS record that maps one domain name to another domain name (an alias). Example: <code>mail.encora.be → encora.be</code>. Used to create aliases that point to a canonical (official) hostname.", "also": "Canonical Name record, alias record"}, {"id": "fqdn", "ch": 7, "term": "FQDN", "def": "<strong>Fully Qualified Domain Name</strong>. The complete, unambiguous domain name of a host, specifying its exact location in the DNS hierarchy. Components: <strong>hostname + domain name + TLD</strong>. Example: <code>mailserver.encora.be</code> (hostname: mailserver, domain: encora, TLD: .be).", "also": "Fully Qualified Domain Name, full domain name"}, {"id": "dhcp_process", "ch": 7, "term": "DHCP Process (DORA)", "def": "The four-step process for automatic IP assignment: <strong>D</strong>iscover (client broadcasts seeking DHCP server), <strong>O</strong>ffer (server offers an available IP), <strong>R</strong>equest (client accepts the offer), <strong>A</strong>cknowledge (server confirms assignment). All four steps must complete for successful IP configuration.", "also": "DORA, DHCP handshake, DHCP negotiation"}, {"id": "lease_time", "ch": 7, "term": "Lease Time", "def": "The duration for which a DHCP-assigned IP address is valid. When the lease expires, the device automatically requests a renewal. If the DHCP server is unavailable at renewal, the device may lose its IP configuration and fall back to APIPA.", "also": "DHCP lease, IP lease"}, {"id": "packet_tracer", "ch": 8, "term": "Cisco Packet Tracer", "def": "A <strong>network simulation software</strong> by Cisco. Allows building, configuring and testing virtual networks without physical hardware. Available free at <strong>skillsforall.com</strong>. Supports routers, switches, PCs, servers and cables. Files use the <strong>.pkt</strong> extension.", "also": "PT, Packet Tracer"}, {"id": "simulation_mode", "ch": 8, "term": "Simulation Mode", "def": "A Packet Tracer mode that shows <strong>how data travels step-by-step</strong> through the network. Packets are visualised as envelopes. Use Edit Filters to select which protocols to display (e.g. only ARP and ICMP). Click the play triangle to advance one step at a time.", "also": "PT simulation, step-by-step mode"}, {"id": "fast_forward", "ch": 8, "term": "Fast Forward", "def": "A Packet Tracer button that <strong>skips the initialization wait time</strong>, turning orange link indicators to green (active). Must be clicked after connecting cables and before testing connectivity. Essential step when setting up any Packet Tracer network.", "also": "PT fast forward button"}, {"id": "pkt_file", "ch": 8, "term": ".pkt File", "def": "The file extension used by <strong>Cisco Packet Tracer</strong> to save network topology files. Contains the complete network design including devices, cables, configurations and IP settings. File naming convention for BSN: <code>Voornaam_OEF1_ARP_ICMP.pkt</code>.", "also": "Packet Tracer file, PT file"}, {"id": "link_status", "ch": 8, "term": "Link Status Indicators", "def": "Coloured dots in Packet Tracer indicating cable connection status: <strong>Green</strong> = connected and active, <strong>Orange</strong> = not yet active (click Fast Forward), <strong>Red</strong> = no connection (check cable and ports).", "also": "PT link indicators, connection dots"}, {"id": "tcpip_model", "ch": 9, "term": "TCP/IP Model", "def": "A <strong>practical 4-layer networking model</strong> describing how internet communication actually works. Layers (top to bottom): Application (Data), Transport (Segment), Internet (Packet), Network Access (Frame). Based on real protocols — unlike the theoretical 7-layer OSI model.", "also": "Internet model, DoD model, 4-layer model"}, {"id": "application_layer", "ch": 9, "term": "Application Layer", "def": "The top layer (Layer 4) of the TCP/IP model. Where end-user applications and high-level protocols operate. <strong>PDU = Data</strong>. Protocols: HTTP, HTTPS, FTP, DNS, SMTP, SSH, RDP. This is where the user's data originates.", "also": "Layer 4 TCP/IP, top layer"}, {"id": "transport_layer", "ch": 9, "term": "Transport Layer", "def": "Layer 3 of the TCP/IP model. Handles <strong>port-based addressing and reliable delivery</strong>. <strong>PDU = Segment</strong>. Protocols: TCP (reliable) and UDP (fast). Adds source and destination port numbers to the data header.", "also": "Layer 3 TCP/IP"}, {"id": "internet_layer", "ch": 9, "term": "Internet Layer", "def": "Layer 2 of the TCP/IP model. Handles <strong>IP addressing and routing between networks</strong>. <strong>PDU = Packet</strong>. Protocols: IP, ICMP, ARP. Routers operate at this layer. Adds source and destination IP addresses.", "also": "Layer 2 TCP/IP, network layer"}, {"id": "network_access_layer", "ch": 9, "term": "Network Access Layer", "def": "The bottom layer (Layer 1) of the TCP/IP model. Handles <strong>physical transmission</strong>: NICs, cables, switches. <strong>PDU = Frame</strong>. Protocols: Ethernet, Wi-Fi. Adds source and destination MAC addresses and a CRC trailer for error detection.", "also": "Layer 1 TCP/IP, data link + physical layers"}, {"id": "pdu", "ch": 9, "term": "PDU", "def": "<strong>Protocol Data Unit</strong>. The name given to data at each TCP/IP layer as headers are added or removed. Going DOWN the stack (sending): Data → Segment → Packet → Frame. Going UP the stack (receiving): Frame → Packet → Segment → Data.", "also": "Protocol Data Unit, data unit"}, {"id": "frame", "ch": 9, "term": "Frame", "def": "The PDU at the <strong>Network Access Layer</strong> (Layer 1 TCP/IP). An Ethernet frame contains: destination MAC, source MAC, type field, payload (IP packet), and CRC trailer. Created when the Internet layer packet is passed down to the Network Access layer.", "also": "Ethernet frame, L1 PDU, data link frame"}, {"id": "packet", "ch": 9, "term": "Packet", "def": "The PDU at the <strong>Internet Layer</strong> (Layer 2 TCP/IP). An IP packet contains: source IP address, destination IP address, TTL, protocol field, and payload (TCP/UDP segment). Routers forward packets based on their destination IP.", "also": "IP packet, L2 PDU, datagram"}, {"id": "segment", "ch": 9, "term": "Segment", "def": "The PDU at the <strong>Transport Layer</strong> (Layer 3 TCP/IP). A TCP/UDP segment contains: source port, destination port, sequence number (TCP), and payload (application data). The segment is passed down to the Internet layer to become a packet.", "also": "TCP segment, UDP datagram, L3 PDU"}, {"id": "encapsulation", "ch": 9, "term": "Encapsulation", "def": "The process of <strong>adding protocol headers</strong> at each layer as data moves DOWN the TCP/IP stack during transmission. Application data gets a Transport header (segment), then an Internet header (packet), then a Network Access header+trailer (frame). Each layer wraps the data from the layer above.", "also": "Data encapsulation, wrapping"}, {"id": "decapsulation", "ch": 9, "term": "Decapsulation", "def": "The reverse of encapsulation. As data moves <strong>UP the TCP/IP stack</strong> at the receiving device, each layer strips its header and passes the remaining data up. Frame → remove MAC header → Packet → remove IP header → Segment → remove port header → Data.", "also": "Unwrapping, de-encapsulation"}, {"id": "nat", "ch": 9, "term": "NAT", "def": "<strong>Network Address Translation</strong>. Allows multiple devices with private IP addresses to share a single public IP address to access the internet. Performed by the <strong>Edge Router</strong> at the LAN/internet boundary. Outgoing: replaces private source IP with router's public IP. Incoming: checks NAT table and forwards to correct device.", "also": "Network Address Translation, IP masquerading"}, {"id": "edge_router", "ch": 9, "term": "Edge Router", "def": "A router positioned at the <strong>boundary between a private LAN and the public internet</strong>. Performs NAT, acting as the gateway between the private and public addressing worlds. All internet-bound traffic passes through the edge router. Also called the NAT router or border router.", "also": "NAT router, border router, gateway router"}, {"id": "osi_model", "ch": 9, "term": "OSI Model", "def": "The <strong>Open Systems Interconnection</strong> model — a theoretical 7-layer framework for understanding network communication. Layers: Physical, Data Link, Network, Transport, Session, Presentation, Application. Contrast with TCP/IP model which is practical and has only 4 layers.", "also": "Open Systems Interconnection, 7-layer model"}];
+
+var activeCh = 0;
+var sortAZ = true;
+
+function init(){
+  buildPills();
+  render();
+}
+
+function buildPills(){
+  var CHS = [
+    {id:1,label:'Ch.1 Numbers',color:'#4f8ef7'},
+    {id:2,label:'Ch.2 MAC',color:'#22d3a5'},
+    {id:3,label:'Ch.3 Comm.',color:'#f97316'},
+    {id:4,label:'Ch.4 TCP/IP',color:'#e879f9'},
+    {id:5,label:'Ch.5 Ports',color:'#facc15'},
+    {id:6,label:'Ch.6 ARP & ICMP',color:'#f43f5e'},
+    {id:7,label:'Ch.7 Devices',color:'#a78bfa'},
+    {id:8,label:'Ch.8 PT',color:'#38bdf8'},
+    {id:9,label:'Ch.9 NAT',color:'#fb923c'},
+  ];
+  var h = '<div class="fpill active" id="pill_0" onclick="setCh(0)">All</div>';
+  for(var i=0;i<CHS.length;i++){
+    var c=CHS[i];
+    h += '<div class="fpill" id="pill_'+c.id+'" onclick="setCh('+c.id+')" style="border-color:'+c.color+'33">'+c.label+'</div>';
+  }
+  document.getElementById('filterPills').innerHTML = h;
+}
+
+var CH_COLORS = {1:'#4f8ef7',2:'#22d3a5',3:'#f97316',4:'#e879f9',5:'#facc15',6:'#f43f5e',7:'#a78bfa',8:'#38bdf8',9:'#fb923c'};
+
+function setCh(id){
+  activeCh = id;
+  var pills = document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  var p = document.getElementById('pill_'+id);
+  if(p) p.classList.add('active');
+  render();
+}
+
+function toggleSort(){
+  sortAZ = !sortAZ;
+  var btn = document.getElementById('sortBtn');
+  if(btn){
+    btn.textContent = sortAZ ? 'A\u2013Z' : 'Z\u2013A';
+    btn.classList.toggle('active', !sortAZ);
+  }
+  render();
+}
+
+function render(){
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  var filtered = [];
+  for(var i=0;i<TERMS.length;i++){
+    var t = TERMS[i];
+    if(activeCh && t.ch !== activeCh) continue;
+    if(q){
+      var hay = (t.term+' '+t.def+' '+(t.also||'')).toLowerCase();
+      if(hay.indexOf(q) < 0) continue;
+    }
+    filtered.push(t);
+  }
+
+  /* sort */
+  filtered.sort(function(a,b){
+    var r = a.term.toLowerCase() < b.term.toLowerCase() ? -1 : 1;
+    return sortAZ ? r : -r;
+  });
+
+  document.getElementById('countEl').textContent = filtered.length;
+
+  var em = document.getElementById('emptyMsg');
+  if(!filtered.length){
+    if(em) em.className = 'empty-msg show';
+    document.getElementById('content').innerHTML = '<div class="empty-msg show">No terms match your search.</div>';
+    return;
+  }
+  if(em) em.className = 'empty-msg';
+
+  /* group by first letter */
+  var groups = {};
+  var order = [];
+  for(var i=0;i<filtered.length;i++){
+    var t = filtered[i];
+    var letter = t.term[0].toUpperCase();
+    if(!groups[letter]){ groups[letter]=[]; order.push(letter); }
+    groups[letter].push(t);
+  }
+  if(!sortAZ) order.reverse();
+
+  var html = '';
+  for(var li=0;li<order.length;li++){
+    var letter = order[li];
+    var terms = groups[letter];
+    html += '<div class="alpha-group"><div class="alpha-head">'+letter+'</div>';
+    for(var ti=0;ti<terms.length;ti++){
+      var t = terms[ti];
+      var cc = CH_COLORS[t.ch] || '#4f8ef7';
+      html += '<div class="term-card" id="tc_'+t.id+'">';
+      html += '<div class="term-header" onclick="toggleTerm(\'tc_'+t.id+'\')">';
+      html += '<div class="term-dot" style="background:'+cc+'"></div>';
+      html += '<div class="term-name">'+t.term+'</div>';
+      html += '<span class="term-ch" style="background:'+cc+'22;color:'+cc+'">Ch.'+t.ch+'</span>';
+      if(t.also) html += '<span class="term-also-preview">'+t.also+'</span>';
+      html += '<span class="term-arrow">&#9658;</span>';
+      html += '</div>';
+      html += '<div class="term-body">';
+      html += '<div class="term-def">'+t.def+'</div>';
+      if(t.also) html += '<div class="term-also"><strong>Also known as:</strong> '+t.also+'</div>';
+      html += '</div></div>';
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('content').innerHTML = html;
+  /* auto-open if search active */
+  if(q) openAll();
+}
+
+function toggleTerm(id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+function openAll(){
+  var cards = document.querySelectorAll('.term-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.add('open');
+}
+
+init();
+</script>
+</body>
+</html>

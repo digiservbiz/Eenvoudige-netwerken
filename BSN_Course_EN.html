@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+/* FORCE DARK — overrides any host or iframe background */
+html, body, #__next, #root, .layout, .main, .topnav, .sidebar, 
+.chome, .lview, section, nav, main, aside, footer, div {
+  box-sizing: border-box;
+}
+html { background: #07090f !important; }
+body { background: #07090f !important; color: rgba(255,255,255,0.92) !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Course — Eenvoudige Netwerken (EN)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0d1117;--bg3:#131a24;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:rgba(255,255,255,0.92);--text2:rgba(255,255,255,0.60);--text3:rgba(255,255,255,0.38);
+  --accent:#4f8ef7;--accent2:#7c5cfc;--green:#22d3a5;--orange:#f97316;
+  --pink:#e879f9;--yellow:#facc15;--red:#f43f5e;--sidebar-w:272px;
+}
+html{scroll-behavior:smooth;background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+body{background:#07090f !important;color:rgba(255,255,255,0.92) !important;font-family:'Space Grotesk',sans-serif;
+  line-height:1.6;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+*{color:inherit}
+/* NAV */
+.topnav{position:sticky;top:0;z-index:200;height:52px;
+  background:#07090f;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+  padding:0 1.25rem;gap:1rem;flex-shrink:0}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.xpbadge{background:rgba(250,204,21,0.12);border:1px solid rgba(250,204,21,0.28);
+  border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:#facc15}
+.ptext{font-size:11px;color:rgba(255,255,255,0.70)}
+.menubtn{background:none;border:1px solid rgba(255,255,255,0.1);border-radius:6px;
+  color:rgba(255,255,255,0.60);padding:4px 9px;cursor:pointer;font-size:15px;display:none}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px;transition:color .2s}
+.hublink:hover{color:rgba(255,255,255,0.60)}
+/* LAYOUT */
+.layout{display:flex;flex-direction:row;flex:1;min-height:0;background:#07090f}
+/* SIDEBAR */
+.sidebar{width:272px;flex-shrink:0;background:#0d1117;
+  border-right:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;
+  position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.09);border-radius:2px}
+.sbhome{display:flex;align-items:center;gap:8px;padding:.9rem 1.2rem;
+  border-bottom:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.60);font-size:13px;
+  font-weight:500;cursor:pointer;transition:color .2s}
+.sbhome:hover{color:rgba(255,255,255,0.92)}
+.chhead{display:flex;align-items:center;gap:9px;padding:.5rem 1.2rem;
+  cursor:pointer;border-left:3px solid transparent;transition:background .15s}
+.chhead:hover{background:#111720}
+.chhead.open{border-left-color:#4f8ef7;background:#111820}
+.chdot{width:21px;height:21px;border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.chlabel{font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.60);flex:1}
+.chhead.open .chlabel{color:rgba(255,255,255,0.92)}
+.charrow{font-size:9px;color:rgba(255,255,255,0.38);transition:transform .2s}
+.chhead.open .charrow{transform:rotate(90deg)}
+.chlessons{display:none;padding-left:2.4rem}
+.chlessons.open{display:block}
+.llink{display:flex;align-items:center;gap:7px;padding:.38rem .7rem;
+  border-radius:5px;font-size:11.5px;color:rgba(255,255,255,0.38);cursor:pointer;
+  transition:color .15s,background .15s}
+.llink:hover{color:rgba(255,255,255,0.60);background:#111720}
+.llink.active{color:rgba(255,255,255,0.92);background:rgba(255,255,255,0.06)}
+.llink.done{color:#22d3a5}
+.lcheck{font-size:9px;flex-shrink:0}
+.sbprog{padding:.9rem 1.2rem;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto}
+.progbar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin:.45rem 0}
+.progfill{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px;transition:width .4s}
+.proglabel{font-size:10.5px;color:rgba(255,255,255,0.65);display:flex;justify-content:space-between}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:#07090f}
+/* HOME */
+.chome{max-width:740px;margin:0 auto;padding:2.5rem 2rem 4rem;display:none}
+.chome.vis{display:block}
+.htag{display:inline-block;background:rgba(79,142,247,0.12);
+  border:1px solid rgba(79,142,247,0.25);border-radius:20px;padding:3px 12px;
+  font-size:11px;font-weight:700;color:#4f8ef7;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:.9rem}
+.chome h1{font-size:2rem;font-weight:700;line-height:1.2;margin-bottom:.7rem}
+.chome h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.chome p{color:rgba(255,255,255,0.82);margin-bottom:2rem;line-height:1.7}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.9rem;margin-top:1.25rem}
+.hcard{background:#0f1520;border:1px solid rgba(255,255,255,0.12);border-radius:11px;
+  padding:1.15rem;cursor:pointer;transition:border-color .2s,transform .2s;
+  position:relative;overflow:hidden}
+.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cc,var(--accent))}
+.hcard:hover{border-color:var(--border2);transform:translateY(-2px)}
+.hcnum{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.60);margin-bottom:.45rem}
+.hctitle{font-size:.9rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.hcsub{font-size:11px;color:rgba(255,255,255,0.70)}
+.hcprog{margin-top:.65rem;height:2px;background:rgba(255,255,255,0.08);border-radius:2px}
+.hcprogf{height:2px;border-radius:2px;transition:width .4s}
+/* LESSON VIEW */
+.lview{max-width:780px;margin:0 auto;padding:2rem 2rem 5rem;display:none}
+.lview.vis{display:block}
+.lbread{font-size:11.5px;color:rgba(255,255,255,0.38);margin-bottom:.9rem}
+.lbread span{color:rgba(255,255,255,0.60)}
+.ltitle{font-size:1.85rem;font-weight:700;line-height:1.2;margin-bottom:.45rem}
+.lmeta{display:flex;gap:.75rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.lbadge{background:#181f2e;border:1px solid rgba(255,255,255,0.15);
+  border-radius:20px;padding:2px 9px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.60)}
+/* BLOCKS */
+.blk{margin-bottom:1.6rem}
+.btitle{font-size:1rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.65rem;
+  display:flex;align-items:center;gap:.5rem;padding-left:.7rem;
+  border-left:3px solid var(--cc,var(--accent))}
+/* Info cards */
+.ic{border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.85rem}
+.ic.blue{background:#0d1825;border:1px solid #2d5a9e;border-left:4px solid #4f8ef7}
+.ic.green{background:#0b1e1a;border:1px solid #1a6b57;border-left:4px solid #22d3a5}
+.ic.orange{background:#1a1208;border:1px solid #7a3d0a;border-left:4px solid #f97316}
+.ic.yellow{background:#1a1800;border:1px solid #7a6600;border-left:4px solid #facc15}
+.ic.red{background:#1a0810;border:1px solid #8a1530;border-left:4px solid #f43f5e}
+.ic.purple{background:#110d20;border:1px solid #4a3580;border-left:4px solid #a78bfa}
+.ilabel{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:.45rem;display:block}
+.ilabel.blue{color:#4f8ef7}.ilabel.green{color:#22d3a5}.ilabel.orange{color:#f97316}
+.ilabel.yellow{color:#facc15}.ilabel.red{color:#f43f5e}.ilabel.purple{color:#e879f9}
+.ic p{font-size:.875rem;color:rgba(255,255,255,0.88);line-height:1.68}
+.ic p strong{color:rgba(255,255,255,0.92)}
+.ic p code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+/* hbox */
+.hbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.65rem;margin-bottom:.75rem}
+.hbcard{background:#181f2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:.9rem;text-align:center}
+.hbval{font-size:1.25rem;font-weight:700;line-height:1;margin-bottom:.2rem}
+.hbkey{font-size:10px;color:rgba(255,255,255,0.38);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+/* table */
+.tw{overflow-x:auto;border-radius:9px;border:1px solid rgba(255,255,255,0.1);margin-bottom:.85rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#131a24;padding:.62rem 1rem;text-align:left;font-size:10px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,0.38);
+  border-bottom:1px solid rgba(255,255,255,0.1)}
+td{padding:.58rem 1rem;border-bottom:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.82);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+td strong{color:rgba(255,255,255,0.92);font-weight:600}
+td code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;color:#22d3a5}
+/* code block */
+.codeblk{background:#0b0f18;border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  overflow:hidden;margin-bottom:.85rem}
+.codehdr{display:flex;align-items:center;justify-content:space-between;
+  padding:.55rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);background:#080c13}
+.codehdr-l{display:flex;align-items:center;gap:.65rem}
+.dots{display:flex;gap:4px}
+.dot{width:9px;height:9px;border-radius:50%}
+.clang{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.38)}
+.ccopy{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  color:rgba(255,255,255,0.38);font-size:10.5px;font-weight:600;padding:2px 7px;cursor:pointer;
+  transition:background .2s,color .2s;font-family:'Space Grotesk',sans-serif}
+.ccopy:hover{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.60)}
+.ccopy.copied{color:#22d3a5;border-color:rgba(34,211,165,0.3)}
+pre{padding:1.1rem 1.2rem;overflow-x:auto;font-family:'Space Mono',monospace;
+  font-size:.79rem;line-height:1.72;color:rgba(255,255,255,0.82)}
+/* steps */
+.steps{display:flex;flex-direction:column;gap:.65rem;margin-bottom:.85rem}
+.step{display:flex;gap:.9rem;align-items:flex-start;background:#111720;
+  border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.9rem}
+.stepn{width:26px;height:26px;border-radius:6px;
+  background:linear-gradient(135deg,var(--cc,var(--accent)),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.stepc{flex:1;min-width:0}
+.stept{font-weight:700;font-size:.875rem;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.stepd{font-size:.84rem;color:rgba(255,255,255,0.82);line-height:1.6}
+.stepd code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;color:#22d3a5}
+/* trap */
+.trap{background:#1a0810;border:1px solid rgba(244,63,94,0.45);
+  border-radius:8px;padding:.9rem 1.1rem;margin-bottom:.75rem;display:flex;gap:.7rem}
+.trapicon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.traptxt{font-size:.84rem;color:rgba(255,255,255,0.92);line-height:1.62}
+.traptxt strong{color:#f43f5e}
+/* quiz */
+.qsec{background:#0f1520;border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  padding:1.4rem;margin-top:2rem}
+.qtitle{font-size:.95rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.qsub{font-size:11px;color:rgba(255,255,255,0.38);margin-bottom:1.3rem}
+.qblock{margin-bottom:1.1rem}
+.qtext{font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.92);margin-bottom:.65rem;line-height:1.5}
+.qopts{display:flex;flex-direction:column;gap:.42rem}
+.qopt{display:flex;align-items:flex-start;gap:.65rem;background:#111720;
+  border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:.58rem .85rem;cursor:pointer;
+  transition:background .15s,border-color .15s;font-size:.84rem;color:rgba(255,255,255,0.60);
+  text-align:left;width:100%;font-family:'Space Grotesk',sans-serif}
+.qopt:hover{background:#18202e;border-color:var(--border2)}
+.qopt.sel{border-color:#4f8ef7;background:#0e1c38;color:rgba(255,255,255,0.92)}
+.qopt.ok{border-color:#22d3a5;background:#0b2018;color:rgba(255,255,255,0.92)}
+.qopt.bad{border-color:#f43f5e;background:#200812;color:rgba(255,255,255,0.92)}
+.qletter{width:20px;height:20px;border-radius:4px;background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;
+  color:rgba(255,255,255,0.38);flex-shrink:0}
+.qfb{margin-top:.5rem;padding:.58rem .85rem;border-radius:6px;font-size:.82rem;display:none;line-height:1.5}
+.qfb.show{display:block}
+.qfb.ok{background:#0b2018;border:1px solid rgba(34,211,165,0.45);color:#22d3a5}
+.qfb.bad{background:#200812;border:1px solid rgba(244,63,94,0.45);color:#f43f5e}
+.qfill{width:100%;background:#0f1520;border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;padding:.55rem .85rem;color:rgba(255,255,255,0.92);font-size:.84rem;
+  font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.qfill:focus{border-color:#4f8ef7}
+.qfill.ok{border-color:#22d3a5}
+.qfill.bad{border-color:#f43f5e}
+.qsubmit{margin-top:.9rem;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;border-radius:7px;padding:.68rem 1.6rem;font-size:.875rem;
+  font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:opacity .2s}
+.qsubmit:hover{opacity:.87}
+.qresult{margin-top:.9rem;padding:.9rem;border-radius:7px;text-align:center;
+  font-weight:700;font-size:.9rem;display:none}
+.qresult.show{display:block}
+/* lesson nav */
+.lnav{display:flex;justify-content:space-between;align-items:center;
+  margin-top:2.25rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.1);
+  gap:.75rem;flex-wrap:wrap}
+.lnavbtn{display:inline-flex;align-items:center;gap:.45rem;padding:.62rem 1.1rem;
+  border-radius:7px;font-size:.84rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.1);background:#0f1520;color:rgba(255,255,255,0.60);
+  transition:background .2s,color .2s;font-family:'Space Grotesk',sans-serif}
+.lnavbtn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.92)}
+.lnavbtn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;color:#fff}
+.lnavbtn.primary:hover{opacity:.87}
+.markbtn{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .9rem;
+  border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(34,211,165,0.25);background:rgba(34,211,165,0.06);
+  color:#22d3a5;font-family:'Space Grotesk',sans-serif;transition:background .2s}
+.markbtn:hover{background:rgba(34,211,165,0.12)}
+.markbtn.done{background:rgba(34,211,165,0.15);border-color:rgba(34,211,165,0.4)}
+@media(max-width:900px){
+  .sidebar{position:fixed;top:52px;left:-100%;width:272px;height:calc(100vh - 52px);
+    z-index:150;transition:left .28s;box-shadow:4px 0 28px rgba(0,0,0,.45)}
+  .sidebar.open{left:0}
+  .menubtn{display:flex}
+  .lview,.chome{padding:1.4rem 1.1rem 3.5rem}
+}
+@media(max-width:480px){.hbox{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="tnl">
+    <button class="menubtn" id="menuBtn">☰</button>
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Course &middot; EN</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <span class="ptext" id="navProg">0 / 0</span>
+    <span class="xpbadge" id="navXP">&#9889; 0 XP</span>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="sbhome" onclick="goHome()">&#127968; Course Home</div>
+  <div id="sbChapters"></div>
+  <div class="sbprog">
+    <div class="proglabel"><span>Progress</span><span id="progPct">0%</span></div>
+    <div class="progbar"><div class="progfill" id="progFill" style="width:0%"></div></div>
+    <div style="font-size:10.5px;color:rgba(255,255,255,0.38)" id="progDetail">0 of 0 completed</div>
+  </div>
+</aside>
+<main class="main" id="mainArea">
+  <div class="chome vis" id="courseHome">
+    <div class="htag">BSN &middot; ICT &middot; CVO Encora &middot; 2025&#8211;2026</div>
+    <h1>Interactive Course:<br><span>Eenvoudige Netwerken</span></h1>
+    <p>All 9 chapters with full theory, conversion tables, step-by-step guides, code blocks and mini quizzes. Progress is saved automatically in your browser. Start from the beginning or jump to any chapter.</p>
+    <div class="hgrid" id="homeGrid"></div>
+  </div>
+  <div class="lview" id="lessonView"></div>
+</main>
+</div>
+<script>
+var SK='bsn_course_en_v1';
+var ST={done:{},xp:0};
+try{var _s=localStorage.getItem(SK);if(_s)ST=JSON.parse(_s);}catch(e){}
+function sv(){try{localStorage.setItem(SK,JSON.stringify(ST));}catch(e){}}
+
+/* =====================================================================
+   CHAPTERS DATA — 9 chapters, 22 lessons, ~90 quiz questions
+   ===================================================================== */
+var CH=[
+/* ── CH 1 ── */
+{id:'c1',cc:'#4f8ef7',em:'&#128290;',ti:'Number Systems',su:'Binary &middot; Decimal &middot; Hex',ls:[
+ {id:'c1l1',ti:'Introduction to Number Systems',bl:[
+  {t:'ic',v:'blue',lb:'Definition',tx:'A <strong>number system</strong> is a method for representing values using a fixed set of symbols. In networking you must master three systems: <strong>Binary (base-2)</strong>, <strong>Decimal (base-10)</strong> and <strong>Hexadecimal (base-16)</strong>.'},
+  {t:'hb',cs:[{v:'Base 2',k:'Binary',c:'#4f8ef7'},{v:'Base 10',k:'Decimal',c:'#22d3a5'},{v:'Base 16',k:'Hexadecimal',c:'#f97316'}]},
+  {t:'ic',v:'green',lb:'Why this matters',tx:'IP subnet masks are calculated in <strong>binary</strong>. MAC addresses are written in <strong>hexadecimal</strong>. Humans read and enter <strong>decimal</strong>. You will constantly convert between all three.'},
+  {t:'tb',hs:['System','Base','Symbols','Example'],rs:[['Binary','2','0 and 1','1010 1100'],['Decimal','10','0 &ndash; 9','172'],['Hexadecimal','16','0&ndash;9, A&ndash;F','AC']]},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Hex letters are not random &mdash; they represent decimal values. A=10, B=11, C=12, D=13, E=14, F=15. Always remember this mapping.'},
+ ],qz:[
+  {t:'mcq',q:'How many unique digits does the binary system use?',o:['8','2','16','10'],a:1,e:'Binary is base-2: only 0 and 1.'},
+  {t:'mcq',q:'What decimal value does hex digit D represent?',o:['12','14','13','15'],a:2,e:'D = 13. Remember A=10 B=11 C=12 D=13 E=14 F=15.'},
+  {t:'tf',q:'Hexadecimal uses digits 0-9 plus letters A to F.',a:true,e:'Correct &mdash; hex is base 16: ten digits plus six letters.'},
+ ]},
+ {id:'c1l2',ti:'Binary \u2192 Decimal Conversion',bl:[
+  {t:'ic',v:'blue',lb:'Method &mdash; Positional Values',tx:'Each bit position has a fixed power-of-2 value. Write the 8 positional values (128 64 32 16 8 4 2 1) and place the binary digits below. <strong>Add the values where the bit is 1</strong>.'},
+  {t:'code',ln:'EXAMPLE &mdash; 11001010 to Decimal',li:['Position: 128  64  32  16   8   4   2   1','Bits:       1   1   0   0   1   0   1   0','Values:   128  64   0   0   8   0   2   0','','Result: 128 + 64 + 8 + 2 = 202']},
+  {t:'steps',st:[
+   {h:'Write positional values left to right',d:'128, 64, 32, 16, 8, 4, 2, 1 (powers of 2 from 2\u2077 to 2\u2070).'},
+   {h:'Place binary digits below each value',d:'Write each bit (0 or 1) directly under its positional value.'},
+   {h:'Keep values where bit = 1, zero the rest',d:'Positions with a 1 contribute their value; positions with 0 contribute nothing.'},
+   {h:'Sum all remaining values',d:'Add the non-zero values together to get the decimal number.'},
+  ]},
+  {t:'ic',v:'yellow',lb:'Key tip',tx:'You only need to add positions where the bit is <strong>1</strong>. Ignore zeros completely.'},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Always write 8 bits. Decimal 5 in binary is <strong>0000 0101</strong>, NOT just 101. Pad with leading zeros.'},
+ ],qz:[
+  {t:'mcq',q:'What is the decimal value of binary 10000000?',o:['64','128','256','16'],a:1,e:'10000000 = 2\u2077 = 128.'},
+  {t:'fill',q:'Convert 01000010 to decimal: ___',a:'66',e:'64 + 2 = 66.'},
+  {t:'mcq',q:'What is 11111111 in decimal?',o:['254','255','256','128'],a:1,e:'128+64+32+16+8+4+2+1 = 255. Maximum 8-bit value.'},
+  {t:'tf',q:'Binary 00000000 equals decimal 0.',a:true,e:'All bits = 0, so sum = 0.'},
+ ]},
+ {id:'c1l3',ti:'Decimal \u2192 Binary Conversion',bl:[
+  {t:'ic',v:'blue',lb:'Method &mdash; Subtraction Table',tx:'Use the positional table (128 64 32 16 8 4 2 1). Work <strong>left to right</strong>. At each position: can you subtract this value from your number? YES &rarr; write 1, subtract. NO &rarr; write 0.'},
+  {t:'code',ln:'EXAMPLE &mdash; Convert 202 to Binary',li:['202 \u2265 128 \u2192 YES \u2192 write 1, remainder = 74',' 74 \u2265  64 \u2192 YES \u2192 write 1, remainder = 10',' 10 \u2265  32 \u2192 NO  \u2192 write 0',' 10 \u2265  16 \u2192 NO  \u2192 write 0',' 10 \u2265   8 \u2192 YES \u2192 write 1, remainder = 2','  2 \u2265   4 \u2192 NO  \u2192 write 0','  2 \u2265   2 \u2192 YES \u2192 write 1, remainder = 0','  0 \u2265   1 \u2192 NO  \u2192 write 0','','Result: 11001010']},
+  {t:'ic',v:'green',lb:'Key values to memorise',tx:'<strong>128</strong> = 1000 0000 &nbsp; <strong>192</strong> = 1100 0000 &nbsp; <strong>255</strong> = 1111 1111 &nbsp; <strong>0</strong> = 0000 0000<br>These appear constantly in IP addresses and subnet masks.'},
+ ],qz:[
+  {t:'fill',q:'Convert decimal 128 to binary (8 bits): ___',a:'10000000',e:'128 = 2\u2077 = 10000000.'},
+  {t:'fill',q:'Convert decimal 192 to binary (8 bits): ___',a:'11000000',e:'192 = 128+64 = 11000000. Used in subnet masks!'},
+  {t:'fill',q:'What is decimal 255 in binary (8 bits)? ___',a:'11111111',e:'255 = all 8 bits set to 1.'},
+ ]},
+ {id:'c1l4',ti:'Binary \u2194 Hexadecimal',bl:[
+  {t:'ic',v:'blue',lb:'Key Rule',tx:'<strong>1 hex digit = exactly 4 binary bits</strong> (one nibble). Split binary into groups of 4 and convert each group independently.'},
+  {t:'tb',hs:['Decimal','Binary','Hex'],rs:[['0','0000','0'],['1','0001','1'],['2','0010','2'],['3','0011','3'],['4','0100','4'],['5','0101','5'],['6','0110','6'],['7','0111','7'],['8','1000','8'],['9','1001','9'],['10','1010','A'],['11','1011','B'],['12','1100','C'],['13','1101','D'],['14','1110','E'],['15','1111','F']]},
+  {t:'code',ln:'Binary \u2192 Hex Examples',li:['1001 0111  \u2192  9  7  \u2192  0x97','1111 1111  \u2192  F  F  \u2192  0xFF  (= 255 decimal)','0000 0000  \u2192  0  0  \u2192  0x00  (= 0 decimal)']},
+  {t:'code',ln:'Hex \u2192 Binary Examples',li:['AC  \u2192  A(1010) C(1100)  \u2192  1010 1100','FF  \u2192  F(1111) F(1111)  \u2192  1111 1111','B5  \u2192  B(1011) 5(0101)  \u2192  1011 0101']},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Always write exactly 4 bits per hex digit. Hex 3 = <strong>0011</strong> not 11. Never pad with fewer than 4 bits.'},
+ ],qz:[
+  {t:'fill',q:'Convert binary 10010111 to hex: ___',a:'97',e:'1001=9, 0111=7 \u2192 97.'},
+  {t:'fill',q:'Convert hex FF to binary (8 bits): ___',a:'11111111',e:'F=1111, F=1111 \u2192 11111111.'},
+  {t:'mcq',q:'How many binary bits equal one hex digit?',o:['2','8','4','16'],a:2,e:'1 hex digit = 4 binary bits (nibble).'},
+  {t:'fill',q:'Convert hex AC to binary: ___',a:'10101100',e:'A=1010, C=1100 \u2192 10101100.'},
+ ]},
+ {id:'c1l5',ti:'Hexadecimal \u2194 Decimal',bl:[
+  {t:'ic',v:'blue',lb:'Method 1 &mdash; Positional Values',tx:'Each hex position has a power-of-16 value: 16\u2070=1, 16\u00b9=16, 16\u00b2=256. Multiply each hex digit\u2019s decimal value by its positional value and add.'},
+  {t:'code',ln:'EXAMPLE &mdash; Hex D4 to Decimal',li:['Position:  16\u00b9   16\u2070','             16     1','Hex digit:    D     4','Decimal:     13     4','','(13 \u00d7 16) + (4 \u00d7 1) = 208 + 4 = 212']},
+  {t:'ic',v:'green',lb:'Method 2 &mdash; Via Binary',tx:'Convert hex \u2192 binary (expand each digit to 4 bits), then binary \u2192 decimal using the positional table. Both methods give identical results.'},
+  {t:'code',ln:'EXAMPLE &mdash; Hex D4 via Binary',li:['D = 1101,  4 = 0100  \u2192  11010100','','Position: 128  64  32  16   8   4   2   1','Bits:       1   1   0   1   0   1   0   0','','128 + 64 + 16 + 4 = 212 \u2713']},
+  {t:'trap',tx:'<strong>Remember:</strong> Hex letters represent their decimal values when calculating. D = 13, not "D".'},
+ ],qz:[
+  {t:'fill',q:'Convert hex 1F to decimal: ___',a:'31',e:'1\u00d716 + F(15)\u00d71 = 16+15 = 31.'},
+  {t:'fill',q:'Convert hex FF to decimal: ___',a:'255',e:'F(15)\u00d716 + F(15)\u00d71 = 240+15 = 255.'},
+  {t:'tf',q:'Hex 10 equals decimal 16.',a:true,e:'1\u00d716 + 0\u00d71 = 16. Hex 10 = sixteen, not ten!'},
+ ]},
+ {id:'c1l6',ti:'Binary Addressing',bl:[
+  {t:'ic',v:'blue',lb:'Concept',tx:'To address N devices in binary you need enough bits so that <strong>2<sup>n</sup> \u2265 N</strong>. Find the smallest n where 2<sup>n</sup> covers the required count.'},
+  {t:'tb',hs:['Bits (n)','2\u207f (addresses)'],rs:[['1','2'],['2','4'],['3','8'],['4','16'],['5','32'],['6','64'],['7','128'],['8','256']]},
+  {t:'code',ln:'EXAMPLE &mdash; Address 21 computers',li:['Need: 2\u207f \u2265 21','2\u2074 = 16 \u2192 too few','2\u2075 = 32 \u2192 enough!','','Minimum bits needed: 5','Binary addresses: 00000 through 10100']},
+  {t:'trap',tx:'<strong>Exam tip:</strong> For 21 computers you need 5 bits, NOT 4. 2\u2074=16 is insufficient; 2\u2075=32 is the first power that fits.'},
+ ],qz:[
+  {t:'fill',q:'How many bits do you need to address 13 computers? ___',a:'4',e:'2\u00b3=8 too few, 2\u2074=16 enough. Answer: 4 bits.'},
+  {t:'mcq',q:'How many unique addresses can 3 bits create?',o:['3','6','8','16'],a:2,e:'2\u00b3 = 8 unique combinations (000 through 111).'},
+  {t:'fill',q:'What is decimal 5 in 4 binary bits? ___',a:'0101',e:'5 = 4+1 = 0101 in 4-bit binary.'},
+ ]},
+]},
+
+/* ── CH 2 ── */
+{id:'c2',cc:'#22d3a5',em:'&#128268;',ti:'MAC Addresses',su:'NIC &middot; OUI &middot; IEEE &middot; Broadcast',ls:[
+ {id:'c2l1',ti:'What is a MAC Address?',bl:[
+  {t:'ic',v:'green',lb:'Definition',tx:'<strong>MAC</strong> = <strong>Media Access Control</strong>. A MAC address is a <strong>unique 48-bit (6-byte)</strong> identifier permanently assigned to a <strong>NIC (Network Interface Controller)</strong> by its manufacturer. Also called: <strong>hardware address</strong>, <strong>ethernet address</strong> or <strong>physical address</strong>.'},
+  {t:'hb',cs:[{v:'48 bits',k:'Address Length',c:'#22d3a5'},{v:'6 bytes',k:'= 12 hex chars',c:'#4f8ef7'},{v:'NIC',k:'Assigned to',c:'#f97316'}]},
+  {t:'ic',v:'blue',lb:'Purpose',tx:'The MAC address identifies a device <strong>within a LAN</strong>. Routers and switches use MAC addresses to deliver frames to the correct device. MAC addresses are <strong>local only</strong> &mdash; they change every time a packet crosses a router.'},
+  {t:'trap',tx:'<strong>Exam trap:</strong> MAC addresses are NOT routed on the internet. They work only within a LAN. At every router hop, both source and destination MAC addresses are replaced.'},
+ ],qz:[
+  {t:'fill',q:'What does MAC stand for? (three words)',a:'Media Access Control',e:'MAC = Media Access Control.'},
+  {t:'mcq',q:'How many bits does a MAC address contain?',o:['32','64','48','128'],a:2,e:'MAC addresses are 48 bits (6 bytes).'},
+  {t:'tf',q:'A MAC address remains unchanged when a packet crosses a router.',a:false,e:'False &mdash; MAC addresses change at every router hop. Only IP addresses persist end-to-end.'},
+ ]},
+ {id:'c2l2',ti:'MAC Format: OUI &amp; NIC Specific',bl:[
+  {t:'ic',v:'green',lb:'Structure',tx:'A MAC address is written in hex, e.g. <code>00:0C:6E:D2:11:E6</code>. It is split into two equal halves of 3 bytes (24 bits) each.'},
+  {t:'hb',cs:[{v:'OUI',k:'First 3 bytes &mdash; Manufacturer',c:'#4f8ef7'},{v:'NIC Specific',k:'Last 3 bytes &mdash; Device',c:'#22d3a5'}]},
+  {t:'ic',v:'blue',lb:'OUI &mdash; Organizational Unique Identifier',tx:'The <strong>first 3 bytes</strong> identify the <strong>manufacturer</strong>. The IEEE assigns each manufacturer a unique OUI. Example: Cisco = <code>00-0C-6E</code>. Look up at ouilookup.com.'},
+  {t:'ic',v:'purple',lb:'NIC Specific',tx:'The <strong>last 3 bytes</strong> are assigned by the manufacturer to uniquely identify each individual device in their production.'},
+  {t:'ic',v:'yellow',lb:'IEEE 802 Standard',tx:'The <strong>IEEE</strong> manages MAC address assignments under <strong>IEEE 802</strong> (EUI-48). This provides 2\u2078\u2078 = 281,474,976,710,656 unique combinations.'},
+  {t:'code',ln:'MAC Address Breakdown',li:['00:0C:6E : D2:11:E6','\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518','   OUI       NIC Specific','(Manufacturer)  (Device)','','Lookup manufacturer: https://ouilookup.com']},
+ ],qz:[
+  {t:'fill',q:'The first 3 bytes of a MAC address form the ___.',a:'OUI',e:'OUI = Organizational Unique Identifier \u2014 identifies the manufacturer.'},
+  {t:'mcq',q:'Who assigns OUI codes to manufacturers?',o:['IANA','Cisco','IEEE','ISO'],a:2,e:'The IEEE assigns OUI codes under the IEEE 802 standard.'},
+  {t:'tf',q:'The last 3 bytes of a MAC address identify the manufacturer.',a:false,e:'False \u2014 the FIRST 3 bytes (OUI) identify the manufacturer. The LAST 3 bytes identify the specific device.'},
+ ]},
+ {id:'c2l3',ti:'Broadcast MAC &amp; CMD Commands',bl:[
+  {t:'ic',v:'red',lb:'Broadcast MAC Address',tx:'<code>FF:FF:FF:FF:FF:FF</code> &mdash; all 48 bits set to 1. Frames sent to this address are delivered to <strong>every device on the LAN</strong>. Used by ARP requests and DHCP discovery.'},
+  {t:'hb',cs:[{v:'FF:FF:FF:FF:FF:FF',k:'Broadcast MAC',c:'#f43f5e'},{v:'All 48 bits = 1',k:'Bit pattern',c:'#f97316'}]},
+  {t:'tb',hs:['Command','What it shows'],rs:[['<code>getmac</code>','MAC address(es) of your computer (Physical Address field)'],['<code>ipconfig /all</code>','Full network config including MAC (Physical Address field)']]},
+  {t:'code',ln:'CMD &mdash; getmac',li:['C:\\> getmac','Physical Address    Transport Name','==================  ==================================','B4-B6-86-27-1D-B8   \\Device\\Tcpip_{...}']},
+  {t:'code',ln:'CMD &mdash; ipconfig /all (excerpt)',li:['Ethernet adapter Ethernet:','   Physical Address. . . : B4-B6-86-27-1D-B8','   IPv4 Address. . . . . : 192.168.1.50','   Subnet Mask . . . . . : 255.255.255.0','   Default Gateway . . . : 192.168.1.1']},
+  {t:'trap',tx:'<strong>Note:</strong> Windows shows MAC with dashes: <code>B4-B6-86-27-1D-B8</code>. Networking theory uses colons: <code>B4:B6:86:27:1D:B8</code>. Same address, different notation.'},
+ ],qz:[
+  {t:'fill',q:'What is the broadcast MAC address?',a:'FF:FF:FF:FF:FF:FF',e:'Broadcast MAC = FF:FF:FF:FF:FF:FF \u2014 all 48 bits are 1.'},
+  {t:'mcq',q:'Which CMD command shows ONLY MAC addresses?',o:['ipconfig','netstat -an','getmac','arp -a'],a:2,e:'getmac shows Physical Addresses (MAC addresses).'},
+  {t:'tf',q:'FF:FF:FF:FF:FF:FF frames are delivered to all devices on the LAN.',a:true,e:'Correct \u2014 the broadcast MAC causes a frame to be delivered to every device in the LAN.'},
+ ]},
+]},
+
+/* ── CH 3 ── */
+{id:'c3',cc:'#f97316',em:'&#128225;',ti:'Network Communication',su:'Unicast &middot; Multicast &middot; Broadcast',ls:[
+ {id:'c3l1',ti:'Unicast, Multicast and Broadcast',bl:[
+  {t:'ic',v:'orange',lb:'Three Communication Types',tx:'Data in a network can be addressed three ways, determining how many devices receive it. Understanding these is essential for both MAC-level and IP-level networking.'},
+  {t:'bt',tx:'Unicast \u2014 One Specific Device'},
+  {t:'ic',v:'blue',lb:'Unicast',tx:'Data is sent to <strong>one specific device</strong>. The destination MAC is the exact MAC of the intended recipient. This is the most common type (web browsing, file transfers, video calls).'},
+  {t:'bt',tx:'Multicast \u2014 A Group of Devices'},
+  {t:'ic',v:'green',lb:'Multicast',tx:'Data is sent to a <strong>group of devices</strong> that have opted in. Multicast MAC addresses start with <code>01-00-5E</code> in hex. IPv4 multicast IP range: 224.0.0.0 \u2013 239.255.255.255.'},
+  {t:'bt',tx:'Broadcast \u2014 All Devices on the LAN'},
+  {t:'ic',v:'red',lb:'Broadcast',tx:'Data is sent to <strong>every device</strong> on the network. Destination MAC = <code>FF:FF:FF:FF:FF:FF</code>. All devices must receive and process the frame. Used by ARP requests and DHCP discovery.'},
+  {t:'tb',hs:['Type','Recipients','Destination MAC','Typical Use'],rs:[['Unicast','1 device','Specific device MAC','Web browsing, file transfer'],['Multicast','Group of devices','01-00-5E-xx-xx-xx','Video streaming, routing protocols'],['Broadcast','ALL devices in LAN','FF:FF:FF:FF:FF:FF','ARP requests, DHCP discovery']]},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Broadcasts go to ALL devices and cause network congestion. This is why switches (which learn MAC addresses) replaced hubs (which broadcast everything to all ports).'},
+ ],qz:[
+  {t:'mcq',q:'What type of communication sends data to ALL devices on the network?',o:['Unicast','Anycast','Multicast','Broadcast'],a:3,e:'Broadcast sends to all devices via FF:FF:FF:FF:FF:FF.'},
+  {t:'mcq',q:'Multicast MAC addresses begin with which prefix?',o:['FF-FF-FF','00-00-00','01-00-5E','AC-DE-48'],a:2,e:'IPv4 multicast MACs always start with 01-00-5E.'},
+  {t:'tf',q:'In unicast communication, the destination MAC is FF:FF:FF:FF:FF:FF.',a:false,e:'False \u2014 FF:FF:FF:FF:FF:FF is BROADCAST. Unicast uses the specific recipient\u2019s MAC.'},
+  {t:'mcq',q:'ARP requests use which communication type?',o:['Unicast','Multicast','Broadcast','None'],a:2,e:'ARP requests are broadcasts \u2014 the sender doesn\u2019t know the MAC yet, so it asks everyone.'},
+ ]},
+]},
+
+/* ── CH 4 ── */
+{id:'c4',cc:'#e879f9',em:'&#127760;',ti:'TCP/IP',su:'IP Classes &middot; Subnet &middot; CIDR &middot; DHCP',ls:[
+ {id:'c4l1',ti:'IP Addresses &amp; TCP/IP',bl:[
+  {t:'ic',v:'purple',lb:'TCP/IP',tx:'<strong>TCP/IP</strong> is a protocol suite for communication between network devices. <strong>TCP</strong> (Transmission Control Protocol) provides reliable, ordered delivery. <strong>IP</strong> (Internet Protocol) provides logical addressing and routing.'},
+  {t:'ic',v:'blue',lb:'Client-Server Model',tx:'Network communication is a process of <strong>request and response</strong>. A <strong>client</strong> sends a request (e.g. asks for a web page). A <strong>server</strong> processes it and responds (e.g. returns the page). This model applies to HTTP, DNS, DHCP and most network services.'},
+  {t:'ic',v:'green',lb:'IP Address',tx:'A <strong>32-bit logical address</strong> assigned to each network device. Written in <strong>dotted-decimal notation</strong>: four octets separated by dots, e.g. <code>192.168.1.50</code>. Each octet = 8 bits, value 0&ndash;255.'},
+  {t:'hb',cs:[{v:'32 bits',k:'IPv4 size',c:'#e879f9'},{v:'4 octets',k:'Written as',c:'#4f8ef7'},{v:'0\u2013255',k:'Each octet',c:'#22d3a5'}]},
+  {t:'trap',tx:'<strong>Key difference:</strong> MAC = physical/hardware address (permanent). IP = logical address (can be changed, assigned by admin or DHCP).'},
+ ],qz:[
+  {t:'fill',q:'IP stands for ___ Protocol.',a:'Internet',e:'IP = Internet Protocol.'},
+  {t:'mcq',q:'How many bits is an IPv4 address?',o:['16','48','64','32'],a:3,e:'IPv4 = 32 bits = 4 octets of 8 bits each.'},
+  {t:'tf',q:'An IP address is a permanent hardware address that cannot be changed.',a:false,e:'False \u2014 IP addresses are LOGICAL and changeable. MAC addresses are the hardware/physical addresses.'},
+ ]},
+ {id:'c4l2',ti:'IP Address Classes',bl:[
+  {t:'ic',v:'purple',lb:'Five Classes (A\u2013E)',tx:'IPv4 addresses are divided into <strong>5 classes</strong> determined by the first octet. Classes A, B, C are for host addressing. D = multicast. E = reserved.'},
+  {t:'tb',hs:['Class','First Octet','Default Mask','CIDR','Hosts/Network'],rs:[['A','1 \u2013 126','255.0.0.0','/8','16,777,214'],['B','128 \u2013 191','255.255.0.0','/16','65,534'],['C','192 \u2013 223','255.255.255.0','/24','254'],['D','224 \u2013 239','Multicast','&mdash;','&mdash;'],['E','240 \u2013 255','Reserved','&mdash;','&mdash;']]},
+  {t:'code',ln:'Identifying IP Classes',li:['10.10.10.5     \u2192 first octet 10  \u2192 Class A','172.168.50.4   \u2192 first octet 172 \u2192 Class B','192.168.60.5   \u2192 first octet 192 \u2192 Class C','224.0.0.1      \u2192 first octet 224 \u2192 Class D (multicast)']},
+  {t:'trap',tx:'<strong>Exam trap:</strong> 127.x.x.x is the LOOPBACK range (127.0.0.1 = localhost). It is NOT usable Class A host space. Class A starts at 1, not 0.'},
+ ],qz:[
+  {t:'mcq',q:'To which class does 192.168.1.1 belong?',o:['Class A','Class B','Class C','Class D'],a:2,e:'First octet 192 is in range 192\u2013223 \u2192 Class C.'},
+  {t:'fill',q:'What is the default subnet mask for Class B?',a:'255.255.0.0',e:'Class B = 255.255.0.0 (/16).'},
+  {t:'mcq',q:'Which class is reserved for multicast?',o:['Class A','Class B','Class C','Class D'],a:3,e:'Class D (224\u2013239) is used for multicast.'},
+  {t:'tf',q:'127.0.0.1 is a valid Class A host address.',a:false,e:'False \u2014 127.x.x.x is the loopback range and cannot be assigned to a network host.'},
+ ]},
+ {id:'c4l3',ti:'Network-ID, Broadcast &amp; Subnet Mask',bl:[
+  {t:'ic',v:'purple',lb:'Network-ID',tx:'Found by setting the <strong>host portion to all zeros</strong>. Identifies the network itself. <strong>Cannot be assigned to a host.</strong>'},
+  {t:'ic',v:'red',lb:'Broadcast Address',tx:'Found by setting the <strong>host portion to all ones (255)</strong>. Sends to ALL devices in the network. <strong>Cannot be assigned to a host.</strong>'},
+  {t:'code',ln:'Network-ID and Broadcast \u2014 Examples',li:['Class A:  10.24.10.2/8    \u2192 Network-ID: 10.0.0.0     Broadcast: 10.255.255.255','Class B: 172.252.65.23/16 \u2192 Network-ID: 172.252.0.0  Broadcast: 172.252.255.255','Class C: 192.168.50.112/24\u2192 Network-ID: 192.168.50.0 Broadcast: 192.168.50.255']},
+  {t:'ic',v:'blue',lb:'Subnet Mask',tx:'A <strong>32-bit value</strong> separating IP into network (bits=1) and host (bits=0) portions. Always starts with consecutive 1s followed by 0s.'},
+  {t:'tb',hs:['Class','Subnet Mask','CIDR','Binary'],rs:[['A','255.0.0.0','/8','11111111.00000000.00000000.00000000'],['B','255.255.0.0','/16','11111111.11111111.00000000.00000000'],['C','255.255.255.0','/24','11111111.11111111.11111111.00000000']]},
+  {t:'ic',v:'green',lb:'CIDR Notation',tx:'<strong>CIDR</strong> shortens the subnet mask. Instead of writing 255.255.255.0, write <strong>/24</strong> \u2014 the count of network (1) bits. Example: 192.168.1.1<strong>/24</strong>.'},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Two addresses CANNOT be assigned to hosts: (1) the Network-ID (host bits all 0) and (2) the Broadcast address (host bits all 1). A /24 has 256 addresses but only <strong>254 usable hosts</strong>.'},
+ ],qz:[
+  {t:'fill',q:'What is the Network-ID of 192.168.50.112/24?',a:'192.168.50.0',e:'Set last octet to 0: 192.168.50.0'},
+  {t:'fill',q:'What is the broadcast address of 172.16.0.1/16?',a:'172.16.255.255',e:'Set last 16 bits to all 1s: 172.16.255.255'},
+  {t:'mcq',q:'What does /24 mean in CIDR?',o:['24 hosts','24 network bits set to 1','24 total bits','24 subnets'],a:1,e:'/24 = 24 network bits = subnet mask 255.255.255.0.'},
+  {t:'fill',q:'How many usable hosts does a /24 network have?',a:'254',e:'2\u2078 = 256 minus 2 (network-ID + broadcast) = 254 usable hosts.'},
+ ]},
+ {id:'c4l4',ti:'Static &amp; Dynamic IPs &middot; Public &amp; Private',bl:[
+  {t:'ic',v:'purple',lb:'Static IP',tx:'Manually configured, permanent IP address. Never changes unless you change it. Used for servers, printers, routers. Configure via <code>ncpa.cpl</code> in Windows.'},
+  {t:'ic',v:'green',lb:'Dynamic IP (DHCP)',tx:'Automatically assigned by a <strong>DHCP server</strong>. Temporary \u2014 has a lease time. Renews automatically. Used for most end-user devices.'},
+  {t:'tb',hs:['Range','Type','Class'],rs:[['10.0.0.0 \u2013 10.255.255.255','Private','A'],['172.16.0.0 \u2013 172.31.255.255','Private','B'],['192.168.0.0 \u2013 192.168.255.255','Private','C']]},
+  {t:'ic',v:'yellow',lb:'APIPA',tx:'When DHCP is unavailable, Windows assigns an <strong>APIPA</strong> address in the <code>169.254.x.x</code> range (255.255.0.0 mask). Can ping other APIPA devices on the LAN but NOT the internet.'},
+  {t:'trap',tx:'<strong>Key rule:</strong> Private IPs are NEVER routable on the internet. Only public IPs are globally routable. NAT at the router translates private IPs to a public IP before traffic leaves the LAN.'},
+ ],qz:[
+  {t:'mcq',q:'Which IP is private?',o:['8.8.8.8','46.231.189.26','192.168.1.100','172.217.0.1'],a:2,e:'192.168.1.100 is in the Class C private range 192.168.0.0\u2013192.168.255.255.'},
+  {t:'tf',q:'A private IP address can be used directly on the internet.',a:false,e:'False \u2014 private IPs cannot be routed on the internet. NAT is required.'},
+  {t:'fill',q:'What protocol automatically assigns IP addresses?',a:'DHCP',e:'DHCP (Dynamic Host Configuration Protocol) automates IP assignment.'},
+  {t:'fill',q:'What Windows command opens network adapter settings?',a:'ncpa.cpl',e:'ncpa.cpl opens the Network Connections panel for IP configuration.'},
+ ]},
+]},
+
+/* ── CH 5 ── */
+{id:'c5',cc:'#facc15',em:'&#128279;',ti:'Ports',su:'TCP &middot; UDP &middot; Well-known Ports &middot; Socket',ls:[
+ {id:'c5l1',ti:'What is a Port?',bl:[
+  {t:'ic',v:'yellow',lb:'Definition',tx:'A <strong>port</strong> is an address within an IP address that identifies a specific <strong>application or service</strong> on that device. An IP address identifies the device; a port identifies the service. Together they form a <strong>socket</strong>.'},
+  {t:'code',ln:'Socket = IP Address + Port',li:['192.168.30.10:80   \u2192 Web server (HTTP)','192.168.30.10:3389 \u2192 Remote Desktop (RDP)','192.168.30.10:443  \u2192 Secure web (HTTPS)','','Same IP, different ports = different services']},
+  {t:'ic',v:'blue',lb:'Port Range',tx:'Ports are <strong>16-bit numbers</strong>: <strong>2\u00b9\u2076 = 65,536 possible ports</strong> (0\u201365535).'},
+  {t:'tb',hs:['Category','Range','Description'],rs:[['Well-known','0 \u2013 1023','Fundamental apps assigned by IANA'],['Registered','1024 \u2013 49151','Apps registered with IANA'],['Private/Dynamic','49152 \u2013 65535','Client local ports, assigned per session']]},
+  {t:'ic',v:'green',lb:'IANA',tx:'<strong>IANA (Internet Assigned Numbers Authority)</strong> manages the assignment of standard port numbers to protocols globally.'},
+ ],qz:[
+  {t:'fill',q:'How many possible port numbers exist?',a:'65536',e:'2\u00b9\u2076 = 65,536 ports (0\u201365535).'},
+  {t:'mcq',q:'What is a socket?',o:['A type of cable','IP address + port number','A type of NIC','A wireless signal'],a:1,e:'A socket = IP address + port number, identifying a specific service on a device.'},
+  {t:'fill',q:'Well-known ports range from 0 to ___.',a:'1023',e:'Well-known ports: 0\u20131023, assigned by IANA.'},
+ ]},
+ {id:'c5l2',ti:'TCP vs UDP &amp; Port Table',bl:[
+  {t:'tb',hs:['Feature','TCP','UDP'],rs:[['Full name','Transmission Control Protocol','User Datagram Protocol'],['Connection','Connection-oriented','Connectionless'],['Reliability','Reliable, retransmits lost data','No error checking'],['Speed','Slower','Faster'],['Use cases','HTTP, HTTPS, FTP, SSH, RDP, SMTP','DNS, DHCP, streaming']]},
+  {t:'bt',tx:'Must-Know Port Numbers'},
+  {t:'tb',hs:['Protocol','Full Name','Transport','Port'],rs:[['HTTP','Hypertext Transfer Protocol','TCP','80'],['HTTPS','HTTP Secure','TCP','443'],['DNS','Domain Name System','<strong>UDP</strong>','53'],['DHCP','Dynamic Host Config Protocol','<strong>UDP</strong>','67/68'],['FTP','File Transfer Protocol','TCP','21'],['SSH','Secure Shell','TCP','22'],['SMTP','Simple Mail Transfer Protocol','TCP','25'],['SMB','Server Message Block','TCP','445'],['RDP','Remote Desktop Protocol','TCP','3389'],['TELNET','Teletype Network','TCP','23']]},
+  {t:'ic',v:'blue',lb:'Local vs Remote Ports',tx:'<strong>Local port</strong>: client-side, dynamically chosen (49152\u201365535).<br><strong>Remote port</strong>: server-side, usually a well-known port (80, 443, 3389\u2026).'},
+  {t:'code',ln:'CMD &mdash; View connections and ports',li:['C:\\> netstat -an','','Proto  Local Address        Foreign Address      State','TCP    0.0.0.0:80           0.0.0.0:0            LISTENING','TCP    192.168.1.50:51106   93.184.216.34:443    ESTABLISHED','UDP    0.0.0.0:53           *:*']},
+  {t:'trap',tx:'<strong>Exam traps:</strong> DNS uses <strong>UDP 53</strong> (NOT TCP). DHCP uses <strong>UDP 67/68</strong> (NOT TCP). These are the most common wrong answers on exams!'},
+ ],qz:[
+  {t:'fill',q:'What port does HTTPS use?',a:'443',e:'HTTPS uses TCP port 443.'},
+  {t:'mcq',q:'Which transport protocol does DNS use?',o:['TCP','UDP','Both','Neither'],a:1,e:'DNS uses UDP port 53. UDP is faster; DNS queries are small.'},
+  {t:'fill',q:'What port does RDP use?',a:'3389',e:'RDP (Remote Desktop Protocol) uses TCP port 3389.'},
+  {t:'fill',q:'What port does SSH use?',a:'22',e:'SSH (Secure Shell) uses TCP port 22.'},
+  {t:'tf',q:'TCP is faster than UDP because it checks for errors.',a:false,e:'False \u2014 UDP is FASTER because it does NOT check for errors. TCP is reliable but slower.'},
+  {t:'mcq',q:'A client connects to an HTTP server. What is the destination port?',o:['443','51106','80','3389'],a:2,e:'HTTP destination port = 80 on the server.'},
+ ]},
+]},
+
+/* ── CH 6 ── */
+{id:'c6',cc:'#f43f5e',em:'&#128246;',ti:'ARP &amp; ICMP',su:'Address Resolution &middot; Ping &middot; Tracert',ls:[
+ {id:'c6l1',ti:'ARP &mdash; Address Resolution Protocol',bl:[
+  {t:'ic',v:'red',lb:'What is ARP?',tx:'<strong>ARP (Address Resolution Protocol)</strong> is the <strong>first protocol activated</strong> when two hosts in a LAN want to communicate. The sender knows the destination IP but needs the <strong>MAC address</strong> to build an Ethernet frame.'},
+  {t:'steps',st:[
+   {h:'Host A wants to reach Host B',d:'Host A knows Host B\'s IP (e.g. 192.168.50.14) but does not know its MAC address.'},
+   {h:'Host A sends an ARP Request (broadcast)',d:'Destination MAC = FF:FF:FF:FF:FF:FF. Message: "Who has 192.168.50.14? Tell 192.168.50.12." ALL devices receive this.'},
+   {h:'Only Host B responds (unicast ARP Reply)',d:'Host B recognises its own IP and replies directly to Host A: "I am 192.168.50.14, my MAC is 6a:02:b8:82:bc:f3."'},
+   {h:'Host A stores the mapping in its ARP table',d:'Host A caches the IP-to-MAC mapping so it doesn\'t need to repeat ARP for this destination.'},
+  ]},
+  {t:'tb',hs:['Step','Frame Type','Destination MAC','Content'],rs:[['ARP Request','Broadcast','FF:FF:FF:FF:FF:FF','Target IP address'],['ARP Reply','Unicast','Host A\'s MAC','Host B\'s MAC address']]},
+  {t:'ic',v:'green',lb:'GARP &mdash; Gratuitous ARP',tx:'A <strong>Gratuitous ARP</strong> is an <strong>ARP reply sent without a prior ARP request</strong>. Sent as a broadcast to announce a device or update other devices\u2019 ARP caches (e.g. during failover). Shown as <strong>ARP Probe</strong> in Wireshark.'},
+  {t:'code',ln:'CMD &mdash; ARP Table Commands',li:['arp -a      # View ARP table (IP-to-MAC mappings)','arp -d *    # Delete all ARP cache entries','','Example output of arp -a:','  192.168.0.1    6a-02-b8-82-bc-f3  dynamic','  192.168.0.255  ff-ff-ff-ff-ff-ff  static']},
+ ],qz:[
+  {t:'fill',q:'What does ARP stand for?',a:'Address Resolution Protocol',e:'ARP = Address Resolution Protocol.'},
+  {t:'mcq',q:'An ARP request is sent as a ___.',o:['Unicast','Multicast','Broadcast','Direct message'],a:2,e:'ARP requests are broadcasts (FF:FF:FF:FF:FF:FF) because the sender doesn\'t know the destination MAC.'},
+  {t:'mcq',q:'An ARP reply is sent as a ___.',o:['Broadcast','Unicast','Multicast','GARP'],a:1,e:'ARP replies are unicast \u2014 sent directly to the requesting host.'},
+  {t:'fill',q:'What CMD command views the ARP table?',a:'arp -a',e:'arp -a displays the ARP cache.'},
+  {t:'tf',q:'A GARP is an ARP reply sent without a prior ARP request.',a:true,e:'Correct \u2014 Gratuitous ARP is unsolicited, used for announcements or failover.'},
+ ]},
+ {id:'c6l2',ti:'ICMP \u2014 Ping and Tracert',bl:[
+  {t:'ic',v:'red',lb:'ICMP',tx:'<strong>ICMP (Internet Control Message Protocol)</strong> sends <strong>control and error messages</strong> in IP networks. It carries no application data \u2014 only diagnostics. Used to test connectivity and identify network problems.'},
+  {t:'tb',hs:['Command','Description'],rs:[['<code>ping [IP/host]</code>','Tests reachability. Sends 4 ICMP echo requests (32 bytes each).'],['<code>ping -t [IP]</code>','Continuous ping until Ctrl+C. Tests connection stability.'],['<code>ping -4 [host]</code>','Forces IPv4.'],['<code>ping -6 [host]</code>','Forces IPv6.'],['<code>tracert [IP]</code>','Shows each router hop (route) the packet takes to the destination.']]},
+  {t:'code',ln:'CMD &mdash; ping output',li:['C:\\> ping 192.168.1.1','','Pinging 192.168.1.1 with 32 bytes of data:','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','','Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)']},
+  {t:'ic',v:'yellow',lb:'Asterisks (*) in ping / tracert',tx:'Asterisks mean either: (1) the device <strong>does not respond to ICMP</strong> (firewall blocking) OR (2) the route is broken. An asterisk does NOT always mean the device is offline!'},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Default ping sends <strong>4 packets of 32 bytes</strong>. Asterisks (*) can mean ICMP is blocked by a firewall \u2014 the device may be online and accessible via other protocols.'},
+ ],qz:[
+  {t:'fill',q:'How many packets does a default ping send?',a:'4',e:'A standard ping sends 4 ICMP echo requests, each 32 bytes.'},
+  {t:'mcq',q:'Which command shows the path packets take to a destination?',o:['ping','arp -a','tracert','netstat'],a:2,e:'tracert shows each router hop between you and the destination.'},
+  {t:'tf',q:'Asterisks (*) in ping output always mean the device is offline.',a:false,e:'False \u2014 asterisks can indicate ICMP is blocked by a firewall. The device may be online.'},
+  {t:'fill',q:'Which ping option runs continuously? ping ___ [IP]',a:'-t',e:'ping -t runs until you press Ctrl+C.'},
+ ]},
+]},
+
+/* ── CH 7 ── */
+{id:'c7',cc:'#a78bfa',em:'&#128421;',ti:'Network Devices',su:'Hub &middot; Switch &middot; Router &middot; DHCP &middot; DNS',ls:[
+ {id:'c7l1',ti:'Hub vs Switch',bl:[
+  {t:'ic',v:'purple',lb:'Hub',tx:'Connects devices in a wired LAN. <strong>Sends every packet to ALL ports</strong> regardless of destination. No intelligence whatsoever. Hubs are obsolete today.'},
+  {t:'ic',v:'blue',lb:'Switch',tx:'Connects devices in a wired LAN. <strong>Sends packets only to the destination port</strong> by maintaining a MAC address table. Intelligent, efficient, standard today.'},
+  {t:'tb',hs:['Feature','Hub','Switch'],rs:[['Traffic','ALL ports','Destination port only'],['Intelligence','None','MAC address table'],['Collisions','Many','Minimal'],['Still used?','No (obsolete)','Yes (standard)'],['Types','Unmanaged only','Unmanaged or Managed']]},
+  {t:'ic',v:'green',lb:'Unmanaged vs Managed Switch',tx:'<strong>Unmanaged</strong>: plug-and-play, zero configuration needed.<br><strong>Managed</strong>: configurable via CLI \u2014 set port speeds, port security, VLANs, etc.'},
+  {t:'ic',v:'yellow',lb:'Cabling: MDI / MDIX / Auto-MDI',tx:'<strong>MDI</strong>: wiring for computers. <strong>MDIX</strong>: wiring for switches/hubs.<br>PC \u2192 Switch: <strong>straight-through</strong> cable. Switch \u2192 Switch: <strong>crossover</strong> cable.<br><strong>Auto-MDI/MDIX</strong>: automatically detects and adapts to either cable type.'},
+  {t:'trap',tx:'<strong>Why no more hubs?</strong> A hub sends ALL traffic to ALL ports \u2014 this creates unnecessary congestion and collisions. A switch delivers traffic only to the intended port. This is why hubs are obsolete.'},
+ ],qz:[
+  {t:'mcq',q:'What does a hub do when it receives a data packet?',o:['Sends to destination port','Sends to all ports','Drops unknown MACs','Stores in MAC table'],a:1,e:'A hub sends every packet to ALL ports \u2014 it has no intelligence.'},
+  {t:'mcq',q:'Which cable connects a PC to a switch?',o:['Crossover','Straight-through','Coaxial','Fibre'],a:1,e:'PC (MDI) \u2192 Switch (MDIX) = straight-through cable.'},
+  {t:'tf',q:'A managed switch can be configured via CLI.',a:true,e:'Correct \u2014 managed switches support CLI configuration for ports, VLANs, security, etc.'},
+ ]},
+ {id:'c7l2',ti:'Router &amp; Default Gateway',bl:[
+  {t:'ic',v:'purple',lb:'Router',tx:'A <strong>router connects two or more different IP networks</strong>. It finds the best path and routes packets between networks. Needs <strong>at least 2 NICs</strong>. Has a private <strong>LAN IP</strong> and a public <strong>WAN IP</strong> (assigned by ISP).'},
+  {t:'hb',cs:[{v:'LAN',k:'Private IP (internal)',c:'#a78bfa'},{v:'WAN',k:'Public IP (ISP)',c:'#4f8ef7'},{v:'2+',k:'NICs required',c:'#22d3a5'}]},
+  {t:'ic',v:'blue',lb:'Default Gateway',tx:'The <strong>Default Gateway</strong> is the LAN-side IP of the router. When a device sends data to a different network (e.g. the internet), it sends packets to the Default Gateway. The router forwards them via the WAN interface.'},
+  {t:'code',ln:'Example Network',li:['LAN network: 10.0.1.0/24','Router LAN IP (Default Gateway): 10.0.1.1','Router WAN IP (from ISP):        46.231.189.26','','All LAN devices use 10.0.1.1 as their gateway']},
+ ],qz:[
+  {t:'fill',q:'The Default Gateway is the ___ of the router on the LAN side.',a:'IP address',e:'Default Gateway = LAN-side IP address of the router.'},
+  {t:'mcq',q:'Minimum number of NICs a router needs?',o:['1','2','3','4'],a:1,e:'A router needs at least 2 NICs \u2014 one per connected network.'},
+  {t:'tf',q:'A router connects two devices within the SAME IP network.',a:false,e:'False \u2014 a router connects DIFFERENT networks. Same-network devices communicate via a switch.'},
+ ]},
+ {id:'c7l3',ti:'DHCP Server',bl:[
+  {t:'ic',v:'purple',lb:'DHCP',tx:'<strong>DHCP (Dynamic Host Configuration Protocol)</strong> automatically provides a complete TCP/IP configuration to connecting devices.'},
+  {t:'ic',v:'green',lb:'What DHCP provides',tx:'DHCP assigns all four required TCP/IP settings:<br>1. <strong>IP address</strong> (unique in the network)<br>2. <strong>Subnet mask</strong><br>3. <strong>Default gateway</strong><br>4. <strong>DNS server address</strong>'},
+  {t:'steps',st:[
+   {h:'DHCP Discovery',d:'Device broadcasts: "Is there a DHCP server? I need an IP." (src 0.0.0.0, dst 255.255.255.255)'},
+   {h:'DHCP Offer',d:'DHCP server offers an available IP address.'},
+   {h:'DHCP Request',d:'Client accepts the offer and broadcasts a confirmation request.'},
+   {h:'DHCP Acknowledge',d:'Server confirms the assignment. Client now has a full TCP/IP config.'},
+  ]},
+  {t:'ic',v:'yellow',lb:'Lease Time',tx:'DHCP assignments are <strong>temporary</strong>. The <strong>lease time</strong> determines how long the IP is valid. When it expires the device renews automatically \u2014 transparent to the user.'},
+  {t:'trap',tx:'<strong>Exam trap:</strong> If DHCP is unreachable, Windows assigns <strong>APIPA (169.254.x.x)</strong>. You can reach other APIPA devices on the same LAN but NOT the internet or other networks.'},
+ ],qz:[
+  {t:'mcq',q:'What four items does DHCP provide?',o:['IP, MAC, DNS, NIC','IP, Subnet Mask, Gateway, DNS','IP, MAC, Gateway, Port','IP, Subnet, ICMP, ARP'],a:1,e:'DHCP provides: IP address, Subnet mask, Default gateway, DNS server.'},
+  {t:'tf',q:'DHCP assigns permanent IP addresses.',a:false,e:'False \u2014 DHCP assigns temporary IPs with a lease time.'},
+ ]},
+ {id:'c7l4',ti:'DNS &amp; Web Server',bl:[
+  {t:'ic',v:'purple',lb:'DNS',tx:'<strong>DNS (Domain Name System)</strong> translates <strong>domain names \u2194 IP addresses</strong>. It is a client-server system: your PC queries the DNS server with a name, the server responds with the IP.'},
+  {t:'tb',hs:['Lookup Type','Direction','Example'],rs:[['Forward (lookup)','Domain \u2192 IP','www.encora.be \u2192 212.123.0.115'],['Reverse lookup','IP \u2192 Domain','212.123.0.115 \u2192 www.encora.be']]},
+  {t:'tb',hs:['Record Type','Function','Example'],rs:[['A Record','Maps hostname \u2192 IP address','www.encora.be \u2192 212.123.0.115'],['CNAME Record','Maps name \u2192 another name (alias)','mail.encora.be \u2192 encora.be']]},
+  {t:'ic',v:'blue',lb:'FQDN \u2014 Fully Qualified Domain Name',tx:'The complete address of a host. Parts:<br>&bull; <strong>Hostname</strong>: specific server name (e.g. mailserver)<br>&bull; <strong>Domain name</strong>: org + TLD (e.g. encora.be)<br>&bull; Full FQDN: <code>mailserver.encora.be</code>'},
+  {t:'ic',v:'green',lb:'Web Server',tx:'Uses <strong>HTTP/HTTPS</strong> to serve web pages. Process:<br>1. Browser queries DNS \u2192 gets IP<br>2. Browser sends HTTP request to that IP \u2192 server returns webpage'},
+ ],qz:[
+  {t:'fill',q:'What DNS record type maps a hostname to an IP address?',a:'A',e:'An A Record (Address Record) maps a hostname to an IP address.'},
+  {t:'fill',q:'FQDN stands for Fully ___ Domain Name.',a:'Qualified',e:'FQDN = Fully Qualified Domain Name.'},
+  {t:'mcq',q:'What does a CNAME record do?',o:['Maps IP to MAC','Maps hostname to IP','Maps name to another name','Stores DNS cache'],a:2,e:'CNAME (Canonical Name) maps one domain name to another \u2014 an alias.'},
+  {t:'tf',q:'A DNS lookup translates a domain name to an IP address.',a:true,e:'Correct \u2014 a forward DNS lookup: domain name \u2192 IP address.'},
+ ]},
+]},
+
+/* ── CH 8 ── */
+{id:'c8',cc:'#38bdf8',em:'&#128187;',ti:'Cisco Packet Tracer',su:'Simulation &middot; Setup &middot; Exercises',ls:[
+ {id:'c8l1',ti:'Introduction &amp; Installation',bl:[
+  {t:'ic',v:'blue',lb:'What is Cisco Packet Tracer?',tx:'<strong>Cisco Packet Tracer</strong> is a <strong>network simulation tool</strong> by Cisco. It lets you build, configure and test virtual networks without physical hardware \u2014 faster, cheaper and safer.'},
+  {t:'ic',v:'green',lb:'Installing Packet Tracer',tx:'1. Visit <code>https://skillsforall.com</code> \u2192 create free account<br>2. Find "Getting Started with Cisco Packet Tracer"<br>3. Go to section 1.0.3 \u2192 download installer<br>4. Install and open Packet Tracer'},
+  {t:'tb',hs:['Element','Where','Purpose'],rs:[['Network Devices','Bottom \u2192 Network Devices','Add switches, routers, hubs'],['End Devices','Bottom \u2192 End Devices','Add PCs, servers'],['Connections','Bottom \u2192 Connections','Add cables'],['Simulation','Bottom-right button','Visualise packet flow'],['Place Note','Top toolbar','Label your diagram'],['Fast Forward','Simulation toolbar','Skip wait time (orange \u2192 green)']]},
+  {t:'steps',st:[
+   {h:'Add a switch and PCs',d:'Select switch (2960-24TT) and PCs from toolbar. Click canvas to place.'},
+   {h:'Connect with straight-through cable',d:'Connections \u2192 Copper Straight-Through \u2192 click PC NIC \u2192 click switch port.'},
+   {h:'Assign static IPs',d:'Click PC \u2192 Desktop \u2192 IP Configuration \u2192 enter IP and subnet mask.'},
+   {h:'Label with Place Note',d:'Top toolbar \u2192 Place Note. Click canvas and type your label.'},
+   {h:'Test with ping',d:'PC \u2192 Desktop \u2192 Command Prompt \u2192 ping [other PC IP]'},
+   {h:'Use Fast Forward if links are orange',d:'Click Fast Forward button. Orange \u2192 green = link active and ready.'},
+  ]},
+  {t:'trap',tx:'<strong>Status indicators:</strong> Green dot = connected and active. Orange dot = not yet active (use Fast Forward). Red dot = no connection at all.'},
+ ],qz:[
+  {t:'mcq',q:'An orange dot on a cable in Packet Tracer means ___.',o:['Connected and active','Link not yet active','No connection','Wireless'],a:1,e:'Orange = link not yet active. Use Fast Forward to activate. Green = active. Red = disconnected.'},
+  {t:'mcq',q:'Which cable connects a PC to a switch?',o:['Crossover','Straight-through','Coaxial','Serial'],a:1,e:'Straight-through cable: PC (MDI) \u2192 Switch (MDIX).'},
+  {t:'fill',q:'What command tests connectivity between two hosts?',a:'ping',e:'ping sends ICMP echo requests to test reachability.'},
+ ]},
+ {id:'c8l2',ti:'Simulation Mode &amp; Exercises',bl:[
+  {t:'ic',v:'blue',lb:'Simulation Mode',tx:'Shows how data travels through the network <strong>step by step</strong>. Filter by protocol (e.g. show only ARP and ICMP) and watch packets animate between devices.'},
+  {t:'steps',st:[
+   {h:'Switch to Simulation mode',d:'Click "Simulation" button in the bottom-right corner.'},
+   {h:'Clear all filters',d:'Simulation panel \u2192 "Show All/None" to deselect all protocols.'},
+   {h:'Select protocols to observe',d:'"Edit Filters" \u2192 tick ARP and ICMP \u2192 close.'},
+   {h:'Send a ping',d:'PC \u2192 Desktop \u2192 Command Prompt \u2192 ping [target]. Packet envelopes appear.'},
+   {h:'Step through the flow',d:'Click the play triangle to advance one step at a time.'},
+  ]},
+  {t:'ic',v:'green',lb:'ARP + ICMP Flow in Simulation',tx:'When PC3 pings PC4 for the first time:<br>1. PC3 broadcasts <strong>ARP Request</strong> \u2014 "Who has this IP?"<br>2. All PCs receive it; only PC4 sends unicast <strong>ARP Reply</strong> \u2014 "That\'s me, here\'s my MAC"<br>3. PC3 sends 4 <strong>ICMP ping requests</strong> (unicast) to PC4<br>4. PC4 sends 4 <strong>ICMP ping replies</strong> back to PC3'},
+  {t:'tb',hs:['Exercise','Setup','Goal','File'],rs:[['OEF1 \u2014 ARP &amp; ICMP','5 PCs + switch','Simulate ARP then ICMP, observe frames','Voornaam_OEF1_ARP_ICMP.pkt'],['OEF2 \u2014 Direct','2 PCs, no switch','Connect directly, ping each other','Voornaam_OEF2_2PC_ZONDER_SWITCH.pkt'],['OEF3 \u2014 2 Networks','2 switches + router','Connect two different networks via router','Voornaam_OEF3_2_NETWERKEN.pkt']]},
+ ],qz:[
+  {t:'mcq',q:'What happens FIRST when PC3 pings PC4 for the first time?',o:['ICMP request sent','DNS query','ARP broadcast sent','TCP handshake'],a:2,e:'ARP runs first to discover PC4\'s MAC address. Then ICMP ping can be sent.'},
+  {t:'tf',q:'In Simulation mode you can filter to see only ARP and ICMP traffic.',a:true,e:'Correct \u2014 Edit Filters in the Simulation panel lets you choose protocols.'},
+  {t:'mcq',q:'What file extension does Packet Tracer use?',o:['.cpt','.net','.pkt','.cisco'],a:2,e:'Cisco Packet Tracer files use the .pkt extension.'},
+ ]},
+]},
+
+/* ── CH 9 ── */
+{id:'c9',cc:'#fb923c',em:'&#128260;',ti:'TCP/IP Model &amp; NAT',su:'4 Layers &middot; PDU &middot; NAT Translation',ls:[
+ {id:'c9l1',ti:'The TCP/IP Model \u2014 4 Layers',bl:[
+  {t:'ic',v:'orange',lb:'TCP/IP Model',tx:'A <strong>practical 4-layer model</strong> describing how internet communication actually works. Unlike the theoretical 7-layer OSI model, TCP/IP reflects the real protocols used on the internet.'},
+  {t:'tb',hs:['Layer','Name','Function','Protocols','PDU'],rs:[['1','Network Access','Hardware: NIC, switch, cables. Converts data to signals.','Ethernet, Wi-Fi','Frame'],['2','Internet','IP addressing and routing between networks.','IP, ICMP, ARP','Packet'],['3','Transport','Reliable delivery and port-based addressing.','TCP, UDP','Segment'],['4','Application','End-user apps and high-level protocols.','HTTP, HTTPS, FTP, DNS, SMTP','Data']]},
+  {t:'ic',v:'blue',lb:'PDU \u2014 Protocol Data Unit',tx:'The name given to data at each TCP/IP layer. Moving <strong>down</strong> the stack, each layer adds a header (encapsulation). Moving <strong>up</strong>, headers are stripped (decapsulation).'},
+  {t:'steps',st:[
+   {h:'Application Layer \u2192 DATA',d:'Application creates data (e.g. HTTP request for a web page).'},
+   {h:'Transport Layer \u2192 SEGMENT',d:'TCP/UDP header added: source port, destination port.'},
+   {h:'Internet Layer \u2192 PACKET',d:'IP header added: source IP address, destination IP address.'},
+   {h:'Network Access Layer \u2192 FRAME',d:'Ethernet header (source MAC, destination MAC) and CRC trailer added. Ready for transmission.'},
+  ]},
+  {t:'trap',tx:'<strong>PDU names \u2014 must memorise!</strong> Frame (Layer 1) | Packet / IP Packet (Layer 2) | Segment (Layer 3) | Data (Layer 4). Common exam questions!'},
+ ],qz:[
+  {t:'mcq',q:'What is the PDU at the Transport Layer?',o:['Frame','Packet','Segment','Datagram'],a:2,e:'Transport Layer PDU = Segment. Contains TCP/UDP header with port numbers.'},
+  {t:'mcq',q:'Which layer handles routing between different networks?',o:['Network Access','Transport','Internet','Application'],a:2,e:'Internet Layer (Layer 2) handles IP addressing and routing. Routers operate here.'},
+  {t:'fill',q:'The Network Access Layer adds ___ addresses to form a Frame.',a:'MAC',e:'The Network Access Layer adds MAC addresses to create an Ethernet Frame.'},
+  {t:'mcq',q:'How many layers does the TCP/IP model have?',o:['3','5','7','4'],a:3,e:'TCP/IP model = 4 layers: Network Access, Internet, Transport, Application.'},
+  {t:'tf',q:'The TCP/IP model is purely theoretical and does not match real protocols.',a:false,e:'False \u2014 TCP/IP is PRACTICAL and based on real internet protocols.'},
+ ]},
+ {id:'c9l2',ti:'NAT \u2014 Network Address Translation',bl:[
+  {t:'ic',v:'orange',lb:'What is NAT?',tx:'<strong>NAT (Network Address Translation)</strong> allows multiple devices with <strong>private IP addresses</strong> to share <strong>one public IP</strong> to access the internet. The NAT router (also called <strong>Edge Router</strong>) sits at the boundary between LAN and internet.'},
+  {t:'hb',cs:[{v:'LAN',k:'Private IPs inside',c:'#fb923c'},{v:'NAT Router',k:'Edge Router',c:'#4f8ef7'},{v:'Internet',k:'Public IPs only',c:'#22d3a5'}]},
+  {t:'steps',st:[
+   {h:'PC sends packet to internet',d:'Source IP = private (e.g. 192.168.1.10). Destination = public server IP.'},
+   {h:'NAT router intercepts the packet',d:'Router replaces the private source IP with its own public WAN IP.'},
+   {h:'Modified packet sent to internet',d:'Internet sees only the router\'s public IP. Private network is hidden.'},
+   {h:'Response arrives at router',d:'Router checks NAT table and forwards the response to the correct private-IP device.'},
+  ]},
+  {t:'tb',hs:['Layer','Added at','Key Fields'],rs:[['Network Access','Each hop','Source MAC, Destination MAC'],['Internet','Sender','Source IP (private), Destination IP'],['Transport','Sender','Source Port (local), Destination Port'],['After NAT','Edge Router','Source IP changed to router\'s public IP']]},
+  {t:'trap',tx:'<strong>Exam trap:</strong> Private IPs CANNOT be used on the internet. NAT is what makes it possible for millions of LANs with identical private IP ranges to all access the internet through unique public IPs.'},
+ ],qz:[
+  {t:'fill',q:'NAT stands for ___ ___ ___.',a:'Network Address Translation',e:'NAT = Network Address Translation.'},
+  {t:'mcq',q:'What does a NAT router replace in outgoing packets?',o:['Destination MAC','Source port','Private source IP with router\'s public IP','Destination IP'],a:2,e:'NAT replaces the private source IP with the router\'s public WAN IP.'},
+  {t:'tf',q:'A NAT router is also called an Edge Router.',a:true,e:'Correct \u2014 it sits at the edge of the network between LAN and internet.'},
+  {t:'mcq',q:'What is the main purpose of NAT?',o:['Increase speed','Allow multiple private-IP devices to share one public IP','Assign MACs','Replace DNS'],a:1,e:'NAT allows many devices with private IPs to share a single public IP for internet access.'},
+ ]},
+]},
+];
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+var _total = 0;
+for(var _i=0;_i<CH.length;_i++) _total += CH[_i].ls.length;
+
+/* --- Sidebar --- */
+function buildSB(){
+  var h='';
+  for(var ci=0;ci<CH.length;ci++){
+    var c=CH[ci];
+    h+='<div><div class="chhead" id="chh_'+ci+'" style="--cc:'+c.cc+'" onclick="toggleCH('+ci+')">';
+    h+='<div class="chdot" style="background:'+c.cc+'">'+(ci<9?'0':'')+(ci+1)+'</div>';
+    h+='<span class="chlabel">'+c.em+' '+c.ti+'</span>';
+    h+='<span class="charrow" id="cha_'+ci+'">&#9658;</span></div>';
+    h+='<div class="chlessons" id="chl_'+ci+'">';
+    for(var li=0;li<c.ls.length;li++){
+      var l=c.ls[li];
+      var dn=ST.done[l.id];
+      h+='<div class="llink'+(dn?' done':'')+'" id="ll_'+l.id+'" onclick="openL('+ci+','+li+')">';
+      h+='<span class="lcheck" id="lc_'+l.id+'">'+(dn?'&#10003;':'&#9675;')+'</span> '+l.ti+'</div>';
+    }
+    h+='</div></div>';
+  }
+  document.getElementById('sbChapters').innerHTML=h;
+}
+
+function toggleCH(ci){
+  var el=document.getElementById('chl_'+ci);
+  var ar=document.getElementById('cha_'+ci);
+  if(el.classList.contains('open')){el.classList.remove('open');ar.style.transform='';}
+  else{el.classList.add('open');ar.style.transform='rotate(90deg)';}
+}
+
+/* --- Home grid --- */
+function buildHome(){
+  var h='';
+  for(var ci=0;ci<CH.length;ci++){
+    var c=CH[ci]; var dn=0;
+    for(var li=0;li<c.ls.length;li++){if(ST.done[c.ls[li].id])dn++;}
+    var pct=c.ls.length?Math.round(dn/c.ls.length*100):0;
+    h+='<div class="hcard" style="--cc:'+c.cc+'" onclick="openL('+ci+',0)">';
+    h+='<div class="hcnum">Chapter '+(ci<9?'0':'')+(ci+1)+'</div>';
+    h+='<div class="hctitle">'+c.em+' '+c.ti+'</div>';
+    h+='<div class="hcsub">'+c.su+'</div>';
+    h+='<div class="hcprog"><div class="hcprogf" style="width:'+pct+'%;background:'+c.cc+'"></div></div>';
+    h+='</div>';
+  }
+  document.getElementById('homeGrid').innerHTML=h;
+}
+
+function goHome(){
+  document.getElementById('lessonView').classList.remove('vis');
+  document.getElementById('courseHome').classList.add('vis');
+  buildHome();
+}
+
+/* --- Open Lesson --- */
+function openL(ci,li){
+  var c=CH[ci]; var l=c.ls[li];
+  document.getElementById('courseHome').classList.remove('vis');
+  var lv=document.getElementById('lessonView');
+  lv.style.setProperty('--cc',c.cc);
+  lv.innerHTML=buildLesson(ci,li);
+  lv.classList.add('vis');
+  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+  var links=document.querySelectorAll('.llink');
+  for(var i=0;i<links.length;i++) links[i].classList.remove('active');
+  var al=document.getElementById('ll_'+l.id);
+  if(al){al.classList.add('active');var chl=document.getElementById('chl_'+ci);if(chl&&!chl.classList.contains('open'))toggleCH(ci);}
+  window.scrollTo(0,0);
+  _qs={};
+}
+
+/* --- Build lesson HTML --- */
+function buildLesson(ci,li){
+  var c=CH[ci]; var l=c.ls[li];
+  var done=!!ST.done[l.id];
+  var h='';
+  h+='<div class="lbread">Ch.'+(ci+1)+' <span>'+c.ti+'</span> &rsaquo; '+l.ti+'</div>';
+  h+='<h1 class="ltitle">'+l.ti+'</h1>';
+  h+='<div class="lmeta"><span class="lbadge" style="color:'+c.cc+';border-color:'+c.cc+'44">'+c.em+' Ch.'+(ci+1)+'</span>';
+  if(l.qz) h+='<span class="lbadge">'+l.qz.length+' quiz questions</span>';
+  h+='</div>';
+  for(var bi=0;bi<l.bl.length;bi++) h+=rB(l.bl[bi]);
+  if(l.qz&&l.qz.length) h+=bQ(ci,li,l);
+  /* nav */
+  h+='<div class="lnav"><button class="markbtn'+(done?' done':'')+'" id="mdb" onclick="markDone('+ci+','+li+')">'+(done?'&#10003; Completed':'Mark complete')+'</button><div style="display:flex;gap:.65rem;flex-wrap:wrap">';
+  var pc=ci,pl=li-1;if(pl<0){pc=ci-1;if(pc>=0)pl=CH[pc].ls.length-1;}
+  if(pc>=0&&pl>=0) h+='<button class="lnavbtn" onclick="openL('+pc+','+pl+')">&larr; Previous</button>';
+  var nc=ci,nl=li+1;if(nl>=c.ls.length){nc=ci+1;nl=0;}
+  if(nc<CH.length) h+='<button class="lnavbtn primary" onclick="openL('+nc+','+nl+')">Next &rarr;</button>';
+  h+='</div></div>';
+  return h;
+}
+
+/* --- Render block --- */
+function rB(b){
+  var h='';
+  if(b.t==='ic'){
+    h+='<div class="ic '+b.v+' blk">';
+    if(b.lb) h+='<span class="ilabel '+b.v+'">'+b.lb+'</span>';
+    h+='<p>'+b.tx+'</p></div>';
+  } else if(b.t==='hb'){
+    h+='<div class="hbox blk">';
+    for(var i=0;i<b.cs.length;i++) h+='<div class="hbcard"><div class="hbval" style="color:'+(b.cs[i].c||'#4f8ef7')+'">'+b.cs[i].v+'</div><div class="hbkey">'+b.cs[i].k+'</div></div>';
+    h+='</div>';
+  } else if(b.t==='tb'){
+    h+='<div class="tw blk"><table><thead><tr>';
+    for(var i=0;i<b.hs.length;i++) h+='<th>'+b.hs[i]+'</th>';
+    h+='</tr></thead><tbody>';
+    for(var r=0;r<b.rs.length;r++){h+='<tr>';for(var c=0;c<b.rs[r].length;c++) h+='<td>'+b.rs[r][c]+'</td>';h+='</tr>';}
+    h+='</tbody></table></div>';
+  } else if(b.t==='code'){
+    var id='cb'+Math.random().toString(36).slice(2,6);
+    h+='<div class="codeblk blk"><div class="codehdr"><div class="codehdr-l"><div class="dots"><div class="dot" style="background:#f43f5e"></div><div class="dot" style="background:#facc15"></div><div class="dot" style="background:#22d3a5"></div></div><span class="clang">'+b.ln+'</span></div><button class="ccopy" onclick="cpCode(\''+id+'\',this)">Copy</button></div><pre id="'+id+'">'+b.li.join('\n')+'</pre></div>';
+  } else if(b.t==='steps'){
+    h+='<div class="steps blk">';
+    for(var i=0;i<b.st.length;i++) h+='<div class="step"><div class="stepn">'+(i+1)+'</div><div class="stepc"><div class="stept">'+b.st[i].h+'</div><div class="stepd">'+b.st[i].d+'</div></div></div>';
+    h+='</div>';
+  } else if(b.t==='bt'){
+    h+='<div class="btitle blk">'+b.tx+'</div>';
+  } else if(b.t==='trap'){
+    h+='<div class="trap blk"><div class="trapicon">&#9888;&#65039;</div><div class="traptxt">'+b.tx+'</div></div>';
+  }
+  return h;
+}
+
+/* --- Quiz --- */
+function bQ(ci,li,l){
+  var h='<div class="qsec" id="qs"><div class="qtitle">&#127919; Lesson Quiz</div><div class="qsub">'+l.qz.length+' questions &mdash; test your understanding</div>';
+  for(var qi=0;qi<l.qz.length;qi++){
+    var q=l.qz[qi];
+    h+='<div class="qblock" id="qb_'+qi+'"><div class="qtext"><strong>Q'+(qi+1)+'.</strong> '+q.q+'</div>';
+    if(q.t==='mcq'){
+      h+='<div class="qopts">';
+      var L=['A','B','C','D'];
+      for(var oi=0;oi<q.o.length;oi++) h+='<button class="qopt" id="qo_'+qi+'_'+oi+'" data-qi="'+qi+'" data-oi="'+oi+'" onclick="pO('+ci+','+li+','+qi+','+oi+')"><span class="qletter">'+L[oi]+'</span>'+q.o[oi]+'</button>';
+      h+='</div>';
+    } else if(q.t==='tf'){
+      h+='<div class="qopts"><button class="qopt" id="qo_'+qi+'_0" data-qi="'+qi+'" data-oi="0" onclick="pO('+ci+','+li+','+qi+',0)"><span class="qletter">T</span>True</button><button class="qopt" id="qo_'+qi+'_1" data-qi="'+qi+'" data-oi="1" onclick="pO('+ci+','+li+','+qi+',1)"><span class="qletter">F</span>False</button></div>';
+    } else if(q.t==='fill'){
+      h+='<input class="qfill" id="qf_'+qi+'" type="text" placeholder="Type your answer...">';
+    }
+    h+='<div class="qfb" id="qfb_'+qi+'"></div></div>';
+  }
+  h+='<button class="qsubmit" onclick="subQ('+ci+','+li+')">Check answers</button><div class="qresult" id="qr"></div></div>';
+  return h;
+}
+
+var _qs={};
+function pO(ci,li,qi,oi){
+  _qs[qi]=oi;
+  var bs=document.querySelectorAll('[data-qi="'+qi+'"]');
+  for(var i=0;i<bs.length;i++) bs[i].classList.remove('sel');
+  var b=document.getElementById('qo_'+qi+'_'+oi);
+  if(b) b.classList.add('sel');
+}
+
+function subQ(ci,li){
+  var l=CH[ci].ls[li]; var ok=0;
+  for(var qi=0;qi<l.qz.length;qi++){
+    var q=l.qz[qi]; var fb=document.getElementById('qfb_'+qi); if(!fb)continue;
+    var correct;
+    if(q.t==='mcq'){
+      var ua=_qs[qi];
+      correct=(ua===q.a);
+      var bs=document.querySelectorAll('[data-qi="'+qi+'"]');
+      for(var i=0;i<bs.length;i++){
+        var oi=parseInt(bs[i].getAttribute('data-oi'),10);
+        bs[i].classList.remove('sel');
+        if(oi===q.a) bs[i].classList.add('ok');
+        else if(oi===ua&&!correct) bs[i].classList.add('bad');
+      }
+    } else if(q.t==='tf'){
+      var uaTrue=(_qs[qi]===0);
+      correct=(uaTrue===q.a);
+      var b0=document.getElementById('qo_'+qi+'_0');
+      var b1=document.getElementById('qo_'+qi+'_1');
+      if(b0&&b1){if(q.a){b0.classList.add('ok');if(!correct)b1.classList.add('bad');}else{b1.classList.add('ok');if(!correct)b0.classList.add('bad');}}
+    } else if(q.t==='fill'){
+      var inp=document.getElementById('qf_'+qi);
+      var val=inp?inp.value.trim().toLowerCase():'';
+      var ans=String(q.a).trim().toLowerCase();
+      correct=(val===ans);
+      if(inp){inp.classList.remove('ok','bad');inp.classList.add(correct?'ok':'bad');}
+    }
+    if(correct) ok++;
+    fb.className='qfb show '+(correct?'ok':'bad');
+    fb.textContent=(correct?'\u2713 Correct! ':'\u2717 Incorrect. ')+q.e;
+  }
+  var pct=Math.round(ok/l.qz.length*100);
+  var xp=ok*10;
+  var rr=document.getElementById('qr');
+  if(rr){
+    rr.className='qresult show';
+    rr.style.background=pct>=70?'rgba(34,211,165,0.1)':'rgba(244,63,94,0.1)';
+    rr.style.border='1px solid '+(pct>=70?'rgba(34,211,165,0.3)':'rgba(244,63,94,0.3)');
+    rr.style.color=pct>=70?'#22d3a5':'#f43f5e';
+    rr.textContent=ok+'/'+l.qz.length+' correct ('+pct+'%) \u2014 +'+xp+' XP earned!';
+  }
+  if(pct>=70) markDone(ci,li);
+  ST.xp=(ST.xp||0)+xp; sv(); updProg();
+}
+
+/* --- Progress & Mark Done --- */
+function markDone(ci,li){
+  var l=CH[ci].ls[li];
+  if(!ST.done[l.id]){ST.done[l.id]=true;ST.xp=(ST.xp||0)+20;sv();}
+  var mb=document.getElementById('mdb');
+  if(mb){mb.textContent='\u2713 Completed';mb.classList.add('done');}
+  var ll=document.getElementById('ll_'+l.id);
+  if(ll){ll.classList.add('done');var lc=document.getElementById('lc_'+l.id);if(lc)lc.innerHTML='&#10003;';}
+  updProg();
+}
+
+function updProg(){
+  var dn=0;
+  for(var k in ST.done){if(ST.done[k])dn++;}
+  var pct=_total?Math.round(dn/_total*100):0;
+  var pf=document.getElementById('progFill');if(pf)pf.style.width=pct+'%';
+  var pp=document.getElementById('progPct');if(pp)pp.textContent=pct+'%';
+  var pd=document.getElementById('progDetail');if(pd)pd.textContent=dn+' of '+_total+' completed';
+  var np=document.getElementById('navProg');if(np)np.textContent=dn+' / '+_total;
+  var nx=document.getElementById('navXP');if(nx)nx.textContent='\u26a1 '+(ST.xp||0)+' XP';
+}
+
+/* --- Copy code --- */
+function cpCode(id,btn){
+  var el=document.getElementById(id);if(!el)return;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(el.textContent).then(function(){
+      btn.textContent='Copied!';btn.classList.add('copied');
+      setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},1400);
+    });
+  }
+}
+
+/* --- Menu toggle --- */
+document.getElementById('menuBtn').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.toggle('open');
+});
+document.addEventListener('click',function(e){
+  var sb=document.getElementById('sidebar');
+  var mb=document.getElementById('menuBtn');
+  if(sb&&mb&&!sb.contains(e.target)&&!mb.contains(e.target)&&sb.classList.contains('open')){
+    sb.classList.remove('open');
+  }
+});
+
+/* --- Init --- */
+buildSB();
+buildHome();
+updProg();
+</script>
+</body>
+</html>

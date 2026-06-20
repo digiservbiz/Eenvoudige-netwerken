@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Spiekbrief — Eenvoudige Netwerken (NL)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+html,body{background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07090f;color:rgba(255,255,255,0.92);font-family:'Space Grotesk',sans-serif;line-height:1.6;min-height:100vh}
+.topnav{position:sticky;top:0;z-index:200;height:52px;background:#07090f;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;gap:1rem}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,#4f8ef7,#7c5cfc);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px;transition:color .2s}
+.hublink:hover{color:rgba(255,255,255,0.6)}
+.enllink{background:#0d1117;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);text-decoration:none;transition:background .2s}
+.enllink:hover{background:#111720;color:rgba(255,255,255,0.85)}
+.toolbar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,0.08);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;position:sticky;top:52px;z-index:100}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:360px}
+.search-wrap input{width:100%;background:#111720;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:.5rem .75rem .5rem 2rem;color:rgba(255,255,255,0.92);font-size:.875rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:#4f8ef7}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:13px;color:rgba(255,255,255,0.3);pointer-events:none}
+.filter-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.fpill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);background:#111720;color:rgba(255,255,255,0.5);transition:all .15s;font-family:'Space Grotesk',sans-serif}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:rgba(255,255,255,0.8)}
+.fpill.active{background:#0e1c38;border-color:#4f8ef7;color:#4f8ef7}
+.expand-btn{margin-left:auto;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;background:#111720;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'Space Grotesk',sans-serif;transition:background .2s;white-space:nowrap}
+.expand-btn:hover{background:#18202e;color:rgba(255,255,255,0.85)}
+.content{max-width:900px;margin:0 auto;padding:1.5rem}
+.ch-section{margin-bottom:2rem}
+.ch-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;cursor:pointer;user-select:none}
+.ch-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ch-label{font-size:1rem;font-weight:700;color:rgba(255,255,255,0.92)}
+.ch-count{font-size:11px;color:rgba(255,255,255,0.35);background:#111720;border-radius:20px;padding:1px 8px}
+.ch-toggle{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.35);transition:transform .2s}
+.ch-toggle.open{transform:rotate(90deg)}
+.ch-body{display:none}
+.ch-body.open{display:block}
+.fact-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;margin-bottom:.6rem;overflow:hidden}
+.fact-header{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;cursor:pointer;transition:background .15s}
+.fact-header:hover{background:#111720}
+.fact-icon{font-size:13px;flex-shrink:0}
+.fact-title{font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.88);flex:1}
+.fact-tag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+.tag-def{background:#0e1c38;color:#4f8ef7}
+.tag-trap{background:#200812;color:#f43f5e}
+.tag-cmd{background:#0b2018;color:#22d3a5}
+.tag-table{background:#1a1800;color:#facc15}
+.tag-rule{background:#110d20;color:#a78bfa}
+.fact-arrow{font-size:10px;color:rgba(255,255,255,0.3);transition:transform .2s;flex-shrink:0}
+.fact-card.open .fact-arrow{transform:rotate(90deg)}
+.fact-body{display:none;padding:.1rem 1rem 1rem}
+.fact-card.open .fact-body{display:block}
+.fact-text{font-size:.855rem;color:rgba(255,255,255,0.78);line-height:1.68;margin-bottom:.6rem}
+.fact-text strong{color:rgba(255,255,255,0.95)}
+.fact-text code{font-family:'Space Mono',monospace;font-size:.78rem;background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.ctbl{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.1);margin-bottom:.6rem}
+.ctbl table{width:100%;border-collapse:collapse;font-size:.82rem}
+.ctbl th{background:#111720;padding:.55rem .9rem;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,0.45);border-bottom:1px solid rgba(255,255,255,0.08)}
+.ctbl td{padding:.52rem .9rem;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.78);vertical-align:top}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl tr:hover td{background:rgba(255,255,255,0.02)}
+.ctbl td strong{color:rgba(255,255,255,0.92)}
+.ctbl td code{font-family:'Space Mono',monospace;font-size:.76rem;background:rgba(255,255,255,0.06);padding:1px 4px;border-radius:3px;color:#22d3a5}
+.cmd-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:.6rem}
+.cmd-row{display:flex;align-items:center;gap:.75rem;background:#0b0f18;border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:.55rem .9rem;cursor:pointer;transition:background .15s,border-color .15s}
+.cmd-row:hover{background:#111720;border-color:rgba(255,255,255,0.16)}
+.cmd-code{font-family:'Space Mono',monospace;font-size:.8rem;color:#22d3a5;flex:1}
+.cmd-desc{font-size:.8rem;color:rgba(255,255,255,0.55);flex:1;text-align:right}
+.cmd-copy{font-size:10px;color:rgba(255,255,255,0.25);flex-shrink:0;transition:color .2s}
+.cmd-row:hover .cmd-copy{color:rgba(255,255,255,0.55)}
+.cmd-row.copied{border-color:rgba(34,211,165,0.3);background:#0b2018}
+.cmd-row.copied .cmd-copy{color:#22d3a5}
+.trap-block{background:#1a0810;border:1px solid rgba(244,63,94,0.3);border-radius:7px;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;gap:.65rem}
+.trap-icon{font-size:.9rem;flex-shrink:0;margin-top:1px}
+.trap-text{font-size:.845rem;color:rgba(255,255,255,0.82);line-height:1.6}
+.trap-text strong{color:#f43f5e}
+.conv{display:grid;gap:2px;margin-bottom:.6rem;font-family:'Space Mono',monospace}
+.conv-8{grid-template-columns:repeat(8,1fr)}
+.conv-cell{background:#111720;border:1px solid rgba(255,255,255,0.07);padding:.35rem .2rem;text-align:center;font-size:.72rem;color:rgba(255,255,255,0.65)}
+.conv-cell.hd{background:#0e1c38;color:#4f8ef7;font-weight:700;font-size:.68rem}
+.conv-cell.hi{background:#0b2018;color:#22d3a5;font-weight:700}
+.empty{padding:3rem;text-align:center;color:rgba(255,255,255,0.35);display:none}
+.empty.show{display:block}
+@media(max-width:640px){
+  .toolbar{padding:.6rem 1rem}
+  .content{padding:1rem}
+  .cmd-desc{display:none}
+  .expand-btn{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tnl">
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Spiekbrief &middot; NL</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <a href="BSN_CheatSheet_EN.html" class="enllink">&#127468;&#127463; EN</a>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Zoek onderwerpen, commando's, waarden..." oninput="doSearch()">
+  </div>
+  <div class="filter-pills" id="filterPills"></div>
+  <button class="expand-btn" id="expandBtn" onclick="toggleAll()">Alles uitvouwen</button>
+</div>
+
+<div class="content" id="content">
+  <div class="empty" id="emptyMsg">Geen resultaten gevonden voor je zoekopdracht.</div>
+</div>
+
+<script>
+var SECTIONS = [{"ch": 1, "color": "#4f8ef7", "title": "Hoofdstuk 1 — Talstelsels", "cards": [{"icon": "📖", "title": "De Drie Talstelsels", "tag": "def", "body": "\n<div class=\"fact-text\">In netwerken moet je drie talstelsels beheersen:<br>\n<strong>Binair (grondtal 2)</strong> — gebruikt de cijfers 0 en 1. Gebruikt bij subnetmaskers en IP-berekeningen.<br>\n<strong>Decimaal (grondtal 10)</strong> — gebruikt de cijfers 0–9. Hoe mensen IP-adressen schrijven.<br>\n<strong>Hexadecimaal (grondtal 16)</strong> — gebruikt de cijfers 0–9 en de letters A–F. Gebruikt in MAC-adressen.\n</div>\n<div class=\"ctbl\"><table>\n<tr><th>Stelsel</th><th>Grondtal</th><th>Symbolen</th><th>Voorbeeld</th></tr>\n<tr><td>Binair</td><td>2</td><td>0, 1</td><td><code>1010 1100</code></td></tr>\n<tr><td>Decimaal</td><td>10</td><td>0–9</td><td><code>172</code></td></tr>\n<tr><td>Hexadecimaal</td><td>16</td><td>0–9, A–F</td><td><code>AC</code></td></tr>\n</table></div>"}, {"icon": "⚠️", "title": "Hexadecimale Letterwaarden — Verplicht te kennen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Examenvalkuil:</strong> Hexadecimale letters staan voor decimale waarden. A=10, B=11, C=12, D=13, E=14, F=15.<br>\nOok: hex 10 = decimaal <strong>16</strong> (niet 10!). Hex 10 = 1×16 + 0×1 = 16.\n</div></div>"}, {"icon": "🔢", "title": "8-Bit Positiewaardetabel", "tag": "rule", "body": "\n<div class=\"fact-text\">De basis van binaire omzetting. Elke bitpositie heeft een vaste waarde:</div>\n<div class=\"conv conv-8\">\n<div class=\"conv-cell hd\">2&#x2077;</div><div class=\"conv-cell hd\">2&#x2076;</div><div class=\"conv-cell hd\">2&#x2075;</div><div class=\"conv-cell hd\">2&#x2074;</div><div class=\"conv-cell hd\">2&#xB3;</div><div class=\"conv-cell hd\">2&#xB2;</div><div class=\"conv-cell hd\">2&#xB9;</div><div class=\"conv-cell hd\">2&#x2070;</div>\n<div class=\"conv-cell hi\">128</div><div class=\"conv-cell hi\">64</div><div class=\"conv-cell hi\">32</div><div class=\"conv-cell hi\">16</div><div class=\"conv-cell hi\">8</div><div class=\"conv-cell hi\">4</div><div class=\"conv-cell hi\">2</div><div class=\"conv-cell hi\">1</div>\n</div>\n<div class=\"fact-text\"><strong>Binair &rarr; Decimaal:</strong> Plaats de bits onder de tabel. Tel de waarden op waar de bit = 1.<br>\nVoorbeeld: 1100 1010 = 128+64+8+2 = <strong>202</strong><br><br>\n<strong>Decimaal &rarr; Binair:</strong> Begin bij 128, werk van links naar rechts. Trek af als mogelijk (schrijf 1), sla over als niet mogelijk (schrijf 0).<br>\nVoorbeeld: 202 &rarr; 128&#x2713;74 &rarr; 64&#x2713;10 &rarr; 32&#x2717; &rarr; 16&#x2717; &rarr; 8&#x2713;2 &rarr; 4&#x2717; &rarr; 2&#x2713;0 &rarr; 1&#x2717; = <strong>1100 1010</strong></div>\n<div class=\"fact-text\"><strong>Sleutelwaarden om te onthouden:</strong><br>\n128 = 1000 0000 &nbsp;|&nbsp; 192 = 1100 0000 &nbsp;|&nbsp; 255 = 1111 1111 &nbsp;|&nbsp; 0 = 0000 0000</div>"}, {"icon": "🔄", "title": "Binair &#x2194; Hexadecimaal", "tag": "rule", "body": "\n<div class=\"fact-text\"><strong>Regel: 1 hex-cijfer = 4 binaire bits (nibble)</strong><br>\nSplits binair in groepen van 4, converteer elke groep afzonderlijk.</div>\n<div class=\"ctbl\"><table>\n<tr><th>Dec</th><th>Binair</th><th>Hex</th><th>Dec</th><th>Binair</th><th>Hex</th></tr>\n<tr><td>0</td><td><code>0000</code></td><td><strong>0</strong></td><td>8</td><td><code>1000</code></td><td><strong>8</strong></td></tr>\n<tr><td>1</td><td><code>0001</code></td><td><strong>1</strong></td><td>9</td><td><code>1001</code></td><td><strong>9</strong></td></tr>\n<tr><td>2</td><td><code>0010</code></td><td><strong>2</strong></td><td>10</td><td><code>1010</code></td><td><strong>A</strong></td></tr>\n<tr><td>3</td><td><code>0011</code></td><td><strong>3</strong></td><td>11</td><td><code>1011</code></td><td><strong>B</strong></td></tr>\n<tr><td>4</td><td><code>0100</code></td><td><strong>4</strong></td><td>12</td><td><code>1100</code></td><td><strong>C</strong></td></tr>\n<tr><td>5</td><td><code>0101</code></td><td><strong>5</strong></td><td>13</td><td><code>1101</code></td><td><strong>D</strong></td></tr>\n<tr><td>6</td><td><code>0110</code></td><td><strong>6</strong></td><td>14</td><td><code>1110</code></td><td><strong>E</strong></td></tr>\n<tr><td>7</td><td><code>0111</code></td><td><strong>7</strong></td><td>15</td><td><code>1111</code></td><td><strong>F</strong></td></tr>\n</table></div>\n<div class=\"fact-text\">Voorbeelden: &nbsp; <code>1001 0111</code> &rarr; 9 7 &rarr; <strong>0x97</strong> &nbsp;|&nbsp; <code>AC</code> &rarr; A(1010) C(1100) &rarr; <strong>1010 1100</strong></div>"}, {"icon": "⚠️", "title": "Binaire Adressering — Benodigde Bits", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\nOm N toestellen in binair te adresseren: 2&#x207F; &ge; N vereist. Altijd OMHOOG afronden naar de volgende macht.<br>\n21 computers &rarr; 2&#x2074;=16 (te weinig) &rarr; 2&#x2075;=32 &rarr; <strong>5 bits nodig</strong>.<br>\nBinaire adressen vullen met voorloopnullen: decimaal 5 in 4 bits = <strong>0101</strong>, NIET 101.\n</div></div>"}]}, {"ch": 2, "color": "#22d3a5", "title": "Hoofdstuk 2 — MAC-adressen", "cards": [{"icon": "📖", "title": "MAC-adres Basiskennis", "tag": "def", "body": "\n<div class=\"fact-text\"><strong>MAC</strong> = Media Access Control adres. Ook wel: hardware-adres, ethernet-adres, fysiek adres.<br>\n<strong>48 bits</strong> lang (6 bytes, 12 hex-tekens). Geschreven als: <code>00:0C:6E:D2:11:E6</code><br>\nPermanent toegekend aan de <strong>NIC (Network Interface Controller)</strong> door de fabrikant.<br>\nGeldig <strong>enkel binnen een LAN</strong> — verandert bij elke router-hop.</div>"}, {"icon": "🏗️", "title": "MAC-adres Structuur: OUI + NIC-specifiek", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Deel</th><th>Bytes</th><th>Bits</th><th>Identificeert</th><th>Toegekend door</th></tr>\n<tr><td><strong>OUI</strong></td><td>Eerste 3</td><td>24</td><td>Fabrikant</td><td>IEEE</td></tr>\n<tr><td><strong>NIC-specifiek</strong></td><td>Laatste 3</td><td>24</td><td>Individueel toestel</td><td>Fabrikant</td></tr>\n</table></div>\n<div class=\"fact-text\">OUI = Organizational Unique Identifier. Standaard: <strong>IEEE 802 (EUI-48)</strong> — biedt 2&#x2088;&#x2088; unieke adressen.<br>\nOUI opzoeken via: ouilookup.com &nbsp;|&nbsp; Windows toont MACs met koppeltekens: <code>B4-B6-86-27-1D-B8</code></div>"}, {"icon": "📡", "title": "Broadcast MAC-adres", "tag": "rule", "body": "\n<div class=\"fact-text\"><strong>FF:FF:FF:FF:FF:FF</strong> — alle 48 bits op 1.<br>\nFrames die hierheen worden gestuurd, worden afgeleverd bij <strong>elk toestel op het LAN</strong>.<br>\nGebruikt door: ARP-verzoeken, DHCP Discover en andere broadcast-protocollen.</div>"}, {"icon": "💻", "title": "CMD-commando's voor MAC", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'getmac')\"><span class=\"cmd-code\">getmac</span><span class=\"cmd-desc\">Toon MAC-adres(sen) van deze computer</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ipconfig /all')\"><span class=\"cmd-code\">ipconfig /all</span><span class=\"cmd-desc\">Volledige netwerkconfiguratie inclusief MAC (Physical Address)</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n</div>"}, {"icon": "⚠️", "title": "MAC Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Laatste 3 bytes &#x2260; fabrikant.</strong> De EERSTE 3 bytes (OUI) identificeren de fabrikant. De LAATSTE 3 bytes zijn toestelspecifiek.\n</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>MAC-adressen veranderen bij routers.</strong> MACs zijn enkel lokaal geldig. Telkens een pakket een router passeert, worden zowel het bron- als het doel-MAC-adres vervangen. Enkel IP-adressen blijven van begin tot einde.\n</div></div>"}]}, {"ch": 3, "color": "#f97316", "title": "Hoofdstuk 3 — Netwerkcommunicatie", "cards": [{"icon": "📊", "title": "Unicast / Multicast / Broadcast", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Type</th><th>Ontvangers</th><th>Doel-MAC</th><th>Voorbeeldgebruik</th></tr>\n<tr><td><strong>Unicast</strong></td><td>1 specifiek toestel</td><td>Uniek MAC van toestel</td><td>Surfen, bestandsoverdracht</td></tr>\n<tr><td><strong>Multicast</strong></td><td>Geabonneerde groep</td><td><code>01-00-5E-xx-xx-xx</code></td><td>Videostreaming, OSPF</td></tr>\n<tr><td><strong>Broadcast</strong></td><td>ALLE toestellen op LAN</td><td><code>FF:FF:FF:FF:FF:FF</code></td><td>ARP-verzoek, DHCP Discover</td></tr>\n</table></div>\n<div class=\"fact-text\">IPv4 multicast IP-bereik: <strong>224.0.0.0 – 239.255.255.255</strong> (Klasse D)</div>"}, {"icon": "⚠️", "title": "Examenvalkuilen Communicatietypen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>ARP-verzoeken zijn BROADCAST</strong> — niet unicast. De afzender kent het doel-MAC-adres nog niet, dus vraagt het aan iedereen.<br>ARP-antwoorden zijn unicast (rechtstreeks teruggestuurd naar de aanvrager).\n</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\">\n<strong>Broadcasts veroorzaken congestie</strong> — dit is precies waarom switches (die MACs leren en verkeer sturen) hubs (die alles naar alle poorten broadcasten) hebben vervangen.\n</div></div>"}]}, {"ch": 4, "color": "#e879f9", "title": "Hoofdstuk 4 — TCP/IP &amp; IP-adressering", "cards": [{"icon": "📊", "title": "IP-adresklassen", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Klasse</th><th>Eerste Octet</th><th>Standaard Masker</th><th>CIDR</th><th>Hosts/Netwerk</th></tr>\n<tr><td><strong>A</strong></td><td>1 – 126</td><td><code>255.0.0.0</code></td><td>/8</td><td>16.777.214</td></tr>\n<tr><td><strong>B</strong></td><td>128 – 191</td><td><code>255.255.0.0</code></td><td>/16</td><td>65.534</td></tr>\n<tr><td><strong>C</strong></td><td>192 – 223</td><td><code>255.255.255.0</code></td><td>/24</td><td>254</td></tr>\n<tr><td><strong>D</strong></td><td>224 – 239</td><td>Multicast</td><td>—</td><td>—</td></tr>\n<tr><td><strong>E</strong></td><td>240 – 255</td><td>Gereserveerd</td><td>—</td><td>—</td></tr>\n</table></div>"}, {"icon": "📖", "title": "Netwerk-ID, Broadcast &amp; Subnetmasker", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>Netwerk-ID</strong> — hostgedeelte allemaal nulLen. Identificeert het netwerk zelf. Kan NIET aan een host worden toegekend.<br>\n<code>192.168.50.112/24</code> &rarr; Netwerk-ID: <strong>192.168.50.0</strong><br><br>\n<strong>Broadcastadres</strong> — hostgedeelte allemaal enen (255). Stuurt naar alle toestellen. Kan NIET aan een host worden toegekend.<br>\n<code>192.168.50.112/24</code> &rarr; Broadcast: <strong>192.168.50.255</strong><br><br>\n<strong>Bruikbare hosts</strong> = totale adressen &minus; 2. Een /24 heeft 256 adressen &rarr; <strong>254 bruikbare hosts</strong>.\n</div>\n<div class=\"ctbl\"><table>\n<tr><th>CIDR</th><th>Subnetmasker</th><th>Binair</th></tr>\n<tr><td>/8</td><td><code>255.0.0.0</code></td><td>11111111.00000000.00000000.00000000</td></tr>\n<tr><td>/16</td><td><code>255.255.0.0</code></td><td>11111111.11111111.00000000.00000000</td></tr>\n<tr><td>/24</td><td><code>255.255.255.0</code></td><td>11111111.11111111.11111111.00000000</td></tr>\n</table></div>"}, {"icon": "📊", "title": "Privaat IP-bereiken", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Klasse</th><th>Privaat Bereik</th><th>Masker</th></tr>\n<tr><td>A</td><td><code>10.0.0.0 – 10.255.255.255</code></td><td>/8</td></tr>\n<tr><td>B</td><td><code>172.16.0.0 – 172.31.255.255</code></td><td>/12</td></tr>\n<tr><td>C</td><td><code>192.168.0.0 – 192.168.255.255</code></td><td>/16</td></tr>\n<tr><td>APIPA</td><td><code>169.254.0.1 – 169.254.255.254</code></td><td>/16 — bij DHCP-fout</td></tr>\n</table></div>"}, {"icon": "⚠️", "title": "IP-adressering Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>127.x.x.x = LOOPBACK</strong> — GEEN geldig Klasse A host-adres. 127.0.0.1 = localhost.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Priv&eacute; IP-adressen zijn NIET routeerbaar op het internet.</strong> NAT aan de router vertaalt priv&eacute; &rarr; publiek IP.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Netwerk-ID en Broadcast KUNNEN NIET aan hosts worden toegekend.</strong> Een /24 heeft 254 bruikbare hosts, niet 256.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>APIPA = 169.254.x.x</strong> wordt toegekend als DHCP niet beschikbaar is. Je kan andere APIPA-toestellen op het LAN bereiken maar NIET het internet.</div></div>"}, {"icon": "💻", "title": "IP Config CMD-commando's", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ipconfig /all')\"><span class=\"cmd-code\">ipconfig /all</span><span class=\"cmd-desc\">Volledige IP-configuratie (IP, masker, gateway, DNS, MAC)</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ncpa.cpl')\"><span class=\"cmd-code\">ncpa.cpl</span><span class=\"cmd-desc\">Netwerkverbindingen openen — statisch/dynamisch IP instellen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n</div>"}]}, {"ch": 5, "color": "#facc15", "title": "Hoofdstuk 5 — Poorten", "cards": [{"icon": "📊", "title": "Verplicht te kennen Poortnummers", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Protocol</th><th>Volledige Naam</th><th>Transport</th><th>Poort</th></tr>\n<tr><td><strong>HTTP</strong></td><td>Hypertext Transfer Protocol</td><td>TCP</td><td><strong>80</strong></td></tr>\n<tr><td><strong>HTTPS</strong></td><td>HTTP Secure</td><td>TCP</td><td><strong>443</strong></td></tr>\n<tr><td><strong>DNS</strong></td><td>Domain Name System</td><td><strong style=\"color:#f43f5e\">UDP</strong></td><td><strong>53</strong></td></tr>\n<tr><td><strong>DHCP</strong></td><td>Dynamic Host Config Protocol</td><td><strong style=\"color:#f43f5e\">UDP</strong></td><td><strong>67 / 68</strong></td></tr>\n<tr><td><strong>FTP</strong></td><td>File Transfer Protocol</td><td>TCP</td><td><strong>21</strong></td></tr>\n<tr><td><strong>SSH</strong></td><td>Secure Shell</td><td>TCP</td><td><strong>22</strong></td></tr>\n<tr><td><strong>SMTP</strong></td><td>Simple Mail Transfer Protocol</td><td>TCP</td><td><strong>25</strong></td></tr>\n<tr><td><strong>SMB</strong></td><td>Server Message Block</td><td>TCP</td><td><strong>445</strong></td></tr>\n<tr><td><strong>RDP</strong></td><td>Remote Desktop Protocol</td><td>TCP</td><td><strong>3389</strong></td></tr>\n<tr><td><strong>TELNET</strong></td><td>Teletype Network</td><td>TCP</td><td><strong>23</strong></td></tr>\n</table></div>"}, {"icon": "📊", "title": "TCP vs UDP Vergelijking", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Kenmerk</th><th>TCP</th><th>UDP</th></tr>\n<tr><td>Verbinding</td><td>Verbindingsgericht</td><td>Verbindingsloos</td></tr>\n<tr><td>Betrouwbaarheid</td><td>Betrouwbaar (herzendt verloren data)</td><td>Geen foutcontrole</td></tr>\n<tr><td>Snelheid</td><td>Trager</td><td><strong>Sneller</strong></td></tr>\n<tr><td>Gebruik</td><td>HTTP, HTTPS, FTP, SSH, RDP, SMTP</td><td>DNS, DHCP, streaming</td></tr>\n</table></div>\n<div class=\"fact-text\">Poortbereiken: Bekend: <strong>0–1023</strong> (IANA) &middot; Geregistreerd: <strong>1024–49151</strong> &middot; Dynamisch/Priv&eacute;: <strong>49152–65535</strong> (clientpoorten)<br>Totaal poorten: 2&#xB9;&#x2076; = <strong>65.536</strong> &middot; Socket = IP-adres + poortnummer</div>"}, {"icon": "⚠️", "title": "Poorten Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DNS gebruikt UDP 53</strong> — NIET TCP. Meest voorkomend fout antwoord op examens.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DHCP gebruikt UDP 67/68</strong> — NIET TCP. Server = 67, Client = 68.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>UDP is SNELLER dan TCP</strong> omdat het GEEN fouten controleert. TCP is betrouwbaar maar trager.</div></div>"}, {"icon": "💻", "title": "Poorten CMD-commando's", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'netstat -an')\"><span class=\"cmd-code\">netstat -an</span><span class=\"cmd-desc\">Alle open poorten, verbindingen en hun status tonen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n</div>"}]}, {"ch": 6, "color": "#f43f5e", "title": "Hoofdstuk 6 — ARP &amp; ICMP", "cards": [{"icon": "📖", "title": "ARP — Address Resolution Protocol", "tag": "def", "body": "\n<div class=\"fact-text\"><strong>ARP</strong> zet IP-adressen om naar MAC-adressen. Het is het <strong>eerste protocol dat actief wordt</strong> wanneer twee hosts in een LAN willen communiceren.</div>\n<div class=\"ctbl\"><table>\n<tr><th>Stap</th><th>Type</th><th>Doel-MAC</th><th>Inhoud</th></tr>\n<tr><td>ARP-verzoek</td><td><strong>Broadcast</strong></td><td><code>FF:FF:FF:FF:FF:FF</code></td><td>\"Wie heeft IP x.x.x.x?\"</td></tr>\n<tr><td>ARP-antwoord</td><td><strong>Unicast</strong></td><td>MAC van aanvrager</td><td>\"Ik heb het, mijn MAC is xx:xx:xx\"</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>ARP-tabel</strong> — slaat IP-naar-MAC-koppelingen op om ARP voor bekende toestellen niet te moeten herhalen.<br>\n<strong>GARP (Gratuitous ARP)</strong> — ARP-antwoord zonder voorafgaand verzoek. Gebruikt om een toestel aan te kondigen of ARP-caches bij te werken na failover. Zichtbaar als \"ARP Probe\" in Wireshark.</div>"}, {"icon": "📖", "title": "ICMP — Internet Control Message Protocol", "tag": "def", "body": "\n<div class=\"fact-text\">ICMP verstuurt <strong>fout- en diagnostische berichten</strong> — geen toepassingsdata. Gebruikt door ping en tracert.<br>Standaard ping: <strong>4 pakketten &times; 32 bytes</strong>. Sterretjes (*) in uitvoer = ICMP geblokkeerd door firewall OF route onderbroken — betekent NIET altijd offline.</div>"}, {"icon": "💻", "title": "ARP &amp; ICMP CMD-commando's", "tag": "cmd", "body": "\n<div class=\"cmd-rows\">\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'arp -a')\"><span class=\"cmd-code\">arp -a</span><span class=\"cmd-desc\">ARP-tabel bekijken (IP-naar-MAC-koppelingen)</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'arp -d *')\"><span class=\"cmd-code\">arp -d *</span><span class=\"cmd-desc\">Alle ARP-cache-vermeldingen verwijderen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping 192.168.1.1')\"><span class=\"cmd-code\">ping 192.168.1.1</span><span class=\"cmd-desc\">Bereikbaarheid testen (4 pakketten &times; 32 bytes)</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -t 192.168.1.1')\"><span class=\"cmd-code\">ping -t 192.168.1.1</span><span class=\"cmd-desc\">Continue ping tot Ctrl+C</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -4 google.be')\"><span class=\"cmd-code\">ping -4 google.be</span><span class=\"cmd-desc\">IPv4 ping afdwingen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'ping -6 google.be')\"><span class=\"cmd-code\">ping -6 google.be</span><span class=\"cmd-desc\">IPv6 ping afdwingen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n<div class=\"cmd-row\" onclick=\"copyCmd(this,'tracert 8.8.8.8')\"><span class=\"cmd-code\">tracert 8.8.8.8</span><span class=\"cmd-desc\">Route (elke hop) naar bestemming tonen</span><span class=\"cmd-copy\">&#128203; kopi&euml;ren</span></div>\n</div>"}, {"icon": "⚠️", "title": "ARP &amp; ICMP Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>ARP-verzoek = Broadcast. ARP-antwoord = Unicast.</strong> Verwar de twee nooit.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>GARP = ARP-antwoord zonder voorafgaand verzoek.</strong> In Wireshark zichtbaar als \"ARP Probe\". Gebruikt voor failover-aankondigingen.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Sterretjes (*) in ping &#x2260; toestel offline.</strong> Kan een firewall zijn die ICMP blokkeert. Probeer andere protocollen om te bevestigen.</div></div>"}]}, {"ch": 7, "color": "#a78bfa", "title": "Hoofdstuk 7 — Netwerktoestellen", "cards": [{"icon": "📊", "title": "Hub vs Switch", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Kenmerk</th><th>Hub</th><th>Switch</th></tr>\n<tr><td>Verkeer</td><td>ALLE poorten (dom)</td><td>Enkel doelpoort (slim)</td></tr>\n<tr><td>Intelligentie</td><td>Geen</td><td>MAC-adrestabel</td></tr>\n<tr><td>Botsingen</td><td>Veel</td><td>Minimaal</td></tr>\n<tr><td>Nog in gebruik?</td><td>Nee (verouderd)</td><td>Ja (standaard)</td></tr>\n<tr><td>Types</td><td>Enkel onbeheerd</td><td>Onbeheerd of beheerd</td></tr>\n</table></div>\n<div class=\"fact-text\">\n<strong>Bekabeling:</strong> PC &rarr; Switch = <strong>doorverbindingskabel (straight-through)</strong> (MDI naar MDIX)<br>\nSwitch &rarr; Switch = <strong>kruiskabel (crossover)</strong> (MDIX naar MDIX)<br>\n<strong>Auto-MDI/MDIX</strong> — detecteert automatisch welk kabeltype nodig is.\n</div>"}, {"icon": "📖", "title": "Router &amp; Default Gateway", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>Router</strong> — verbindt 2 of meer verschillende IP-netwerken. Heeft minimaal 2 NIC's (LAN + WAN). Stuurt pakketten tussen netwerken door de beste route te zoeken.<br><br>\n<strong>Default Gateway</strong> — het LAN-kant IP-adres van de router. Alle toestellen sturen off-network verkeer hier naartoe. De router stuurt het door via het WAN-interface naar het internet.\n</div>"}, {"icon": "📖", "title": "DHCP — Wat het voorziet", "tag": "def", "body": "\n<div class=\"fact-text\">DHCP kent automatisch <strong>4 TCP/IP-instellingen</strong> toe aan verbindende toestellen:</div>\n<div class=\"ctbl\"><table>\n<tr><th>#</th><th>Instelling</th><th>Voorbeeld</th></tr>\n<tr><td>1</td><td>IP-adres</td><td><code>192.168.1.50</code></td></tr>\n<tr><td>2</td><td>Subnetmasker</td><td><code>255.255.255.0</code></td></tr>\n<tr><td>3</td><td>Default gateway</td><td><code>192.168.1.1</code></td></tr>\n<tr><td>4</td><td>DNS-server</td><td><code>8.8.8.8</code></td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>DHCP-proces:</strong> Discover &rarr; Offer &rarr; Request &rarr; Acknowledge<br>\nToewijzingen zijn tijdelijk (leaseperiode). Als DHCP mislukt &rarr; APIPA (169.254.x.x).</div>"}, {"icon": "📖", "title": "DNS &amp; Webserver", "tag": "def", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Record</th><th>Functie</th><th>Voorbeeld</th></tr>\n<tr><td><strong>A-record</strong></td><td>Hostnaam &rarr; IP-adres</td><td>www.encora.be &rarr; 212.123.0.115</td></tr>\n<tr><td><strong>CNAME</strong></td><td>Naam &rarr; andere naam (alias)</td><td>mail.encora.be &rarr; encora.be</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>FQDN</strong> (Fully Qualified Domain Name) = hostnaam + domein.<br>\nVoorbeeld: <code>mailserver.encora.be</code> &rarr; hostnaam: mailserver &middot; domein: encora.be &middot; TLD: .be</div>"}, {"icon": "⚠️", "title": "Netwerktoestellen Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Router verbindt VERSCHILLENDE netwerken.</strong> Een switch verbindt toestellen binnen HETZELFDE netwerk. Verwar de twee nooit.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>PC &rarr; Switch gebruikt een doorverbindingskabel.</strong> NIET een kruiskabel. Kruiskabel = switch-naar-switch.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>DHCP kent TIJDELIJKE IP-adressen toe</strong> — niet permanent. Statische IP-adressen zijn permanent.</div></div>"}]}, {"ch": 8, "color": "#38bdf8", "title": "Hoofdstuk 8 — Cisco Packet Tracer", "cards": [{"icon": "📖", "title": "Packet Tracer Statusindicatoren", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Kleur Punt</th><th>Betekenis</th><th>Actie</th></tr>\n<tr><td><strong style=\"color:#22d3a5\">&#x1F7E2; Groen</strong></td><td>Verbonden en actief</td><td>Klaar voor gebruik</td></tr>\n<tr><td><strong style=\"color:#f97316\">&#x1F7E0; Oranje</strong></td><td>Koppeling nog niet actief</td><td>Klik op de knop Snel Vooruitspoelen</td></tr>\n<tr><td><strong style=\"color:#f43f5e\">&#x1F534; Rood</strong></td><td>Helemaal geen verbinding</td><td>Controleer kabel en poorten</td></tr>\n</table></div>"}, {"icon": "📋", "title": "Packet Tracer Installatiestappen", "tag": "rule", "body": "\n<div class=\"fact-text\">\n<strong>1.</strong> Voeg switch (2960-24TT) en pc's toe uit de werkbalk<br>\n<strong>2.</strong> Verbinden: Verbindingen &rarr; Copper Straight-Through &rarr; klik NIC van pc &rarr; klik poort van switch<br>\n<strong>3.</strong> IP instellen: PC &rarr; Desktop &rarr; IP Configuration &rarr; IP-adres + subnetmasker invoeren<br>\n<strong>4.</strong> Labels toevoegen via Noot Plaatsen (bovenbalk)<br>\n<strong>5.</strong> Testen: PC &rarr; Desktop &rarr; Command Prompt &rarr; <code>ping [doel-IP]</code><br>\n<strong>6.</strong> Bij oranje punten: klik op de knop Snel Vooruitspoelen (bovenbalk)\n</div>"}, {"icon": "📊", "title": "ARP + ICMP Simulatiestroom", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Stap</th><th>Protocol</th><th>Type</th><th>Beschrijving</th></tr>\n<tr><td>1</td><td>ARP-verzoek</td><td>Broadcast</td><td>PC3 vraagt: \"Wie heeft dit IP?\"</td></tr>\n<tr><td>2</td><td>ARP-antwoord</td><td>Unicast</td><td>PC4 antwoordt met zijn MAC</td></tr>\n<tr><td>3</td><td>ICMP Ping &times;4</td><td>Unicast</td><td>PC3 pingt PC4 rechtstreeks</td></tr>\n<tr><td>4</td><td>ICMP Antwoord &times;4</td><td>Unicast</td><td>PC4 antwoordt op PC3</td></tr>\n</table></div>"}, {"icon": "📋", "title": "Packet Tracer Oefeningen", "tag": "rule", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Oefening</th><th>Opstelling</th><th>Bestandsnaam</th></tr>\n<tr><td>OEF1 — ARP &amp; ICMP</td><td>5 pc's + switch</td><td>Voornaam_OEF1_ARP_ICMP.pkt</td></tr>\n<tr><td>OEF2 — Rechtstreeks</td><td>2 pc's, geen switch</td><td>Voornaam_OEF2_2PC_ZONDER_SWITCH.pkt</td></tr>\n<tr><td>OEF3 — 2 Netwerken</td><td>2 switches + router</td><td>Voornaam_OEF3_2_NETWERKEN.pkt</td></tr>\n</table></div>"}]}, {"ch": 9, "color": "#fb923c", "title": "Hoofdstuk 9 — TCP/IP-model &amp; NAT", "cards": [{"icon": "📊", "title": "TCP/IP-model — 4 Lagen", "tag": "table", "body": "\n<div class=\"ctbl\"><table>\n<tr><th>Laag</th><th>Naam</th><th>PDU</th><th>Protocollen</th><th>Functie</th></tr>\n<tr><td><strong>4</strong></td><td>Toepassing</td><td>Data</td><td>HTTP, HTTPS, FTP, DNS, SMTP</td><td>Eindgebruikersapps</td></tr>\n<tr><td><strong>3</strong></td><td>Transport</td><td>Segment</td><td>TCP, UDP</td><td>Poortadressering, betrouwbaarheid</td></tr>\n<tr><td><strong>2</strong></td><td>Internet</td><td>Pakket</td><td>IP, ICMP, ARP</td><td>IP-adressering, routering</td></tr>\n<tr><td><strong>1</strong></td><td>Netwerktoegang</td><td>Frame</td><td>Ethernet, Wi-Fi</td><td>Hardware, signalen, MAC</td></tr>\n</table></div>\n<div class=\"fact-text\"><strong>Inkapseling</strong> (verzenden — OMLAAG in de stack): Data &rarr; Segment &rarr; Pakket &rarr; Frame<br>\n<strong>Ontkapseling</strong> (ontvangen — OMHOOG in de stack): Frame &rarr; Pakket &rarr; Segment &rarr; Data</div>"}, {"icon": "📖", "title": "NAT — Network Address Translation", "tag": "def", "body": "\n<div class=\"fact-text\">\n<strong>NAT</strong> laat meerdere toestellen met priv&eacute; IP-adressen toe om via &eacute;&eacute;n publiek IP-adres het internet te benaderen.<br>\nDe <strong>randrouter (Edge Router / NAT-router)</strong> staat op de grens tussen LAN en internet.<br><br>\n<strong>Proces:</strong><br>\n1. PC verstuurt pakket met priv&eacute; bron-IP<br>\n2. NAT-router vervangt priv&eacute; IP door zijn eigen publiek WAN-IP<br>\n3. Pakket verstuurd naar internet (internet ziet enkel publiek IP)<br>\n4. Antwoord arriveert &rarr; router raadpleegt NAT-tabel &rarr; stuurt door naar juist toestel<br><br>\n<strong>Gewone internetrouters voeren GEEN NAT uit</strong> — enkel randrouters doen dat.\n</div>"}, {"icon": "⚠️", "title": "TCP/IP-model &amp; NAT Examenvalkuilen", "tag": "trap", "body": "\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>PDU-namen zijn verplicht:</strong> Frame (L1) &middot; Pakket/IP-pakket (L2) &middot; Segment (L3) &middot; Data (L4). Komen voor op elk examen.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>TCP/IP = PRAKTISCH</strong> model (echte protocollen). OSI = THEORETISCH model. Verwar ze niet.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>Priv&eacute; IP-adressen kunnen niet op het internet worden gebruikt.</strong> NAT maakt internettoegang mogelijk voor priv&eacute; netwerken.</div></div>\n<div class=\"trap-block\"><div class=\"trap-icon\">⚠️</div><div class=\"trap-text\"><strong>NAT = enkel randrouter.</strong> Kern-internetrouters voeren GEEN NAT uit — ze sturen pakketten enkel door.</div></div>"}]}];
+
+var allOpen = false;
+var activeFilter = 'all';
+
+function init(){
+  buildFilterPills();
+  renderAll();
+}
+
+function buildFilterPills(){
+  var CHS = [
+    {id:1,label:'H.1 Talstelsels',color:'#4f8ef7'},
+    {id:2,label:'H.2 MAC',color:'#22d3a5'},
+    {id:3,label:'H.3 Netwerkcommunicatie',color:'#f97316'},
+    {id:4,label:'H.4 TCP/IP',color:'#e879f9'},
+    {id:5,label:'H.5 Poorten',color:'#facc15'},
+    {id:6,label:'H.6 ARP & ICMP',color:'#f43f5e'},
+    {id:7,label:'H.7 Toestellen',color:'#a78bfa'},
+    {id:8,label:'H.8 Packet Tracer',color:'#38bdf8'},
+    {id:9,label:'H.9 NAT',color:'#fb923c'},
+  ];
+  var h = '<div class="fpill active" id="fp_all" onclick="setFilter(\'all\',this)">Alle</div>';
+  for(var i=0;i<CHS.length;i++){
+    var c=CHS[i];
+    h+='<div class="fpill" id="fp_'+c.id+'" onclick="setFilter(\''+c.id+'\',this)" style="border-color:'+c.color+'33">'+c.label+'</div>';
+  }
+  document.getElementById('filterPills').innerHTML=h;
+}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  var pills=document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  btn.classList.add('active');
+  document.getElementById('searchInput').value='';
+  renderAll();
+}
+
+function doSearch(){
+  activeFilter='all';
+  var pills=document.querySelectorAll('.fpill');
+  for(var i=0;i<pills.length;i++) pills[i].classList.remove('active');
+  var fp=document.getElementById('fp_all');if(fp) fp.classList.add('active');
+  renderAll();
+}
+
+function renderAll(){
+  var q=document.getElementById('searchInput').value.toLowerCase();
+  var content=document.getElementById('content');
+  var html='<div class="empty" id="emptyMsg">Geen resultaten gevonden voor je zoekopdracht.</div>';
+  var found=false;
+  for(var si=0;si<SECTIONS.length;si++){
+    var sec=SECTIONS[si];
+    if(activeFilter!=='all' && String(sec.ch)!==String(activeFilter)) continue;
+    var secHtml='';var cardCount=0;
+    for(var ci=0;ci<sec.cards.length;ci++){
+      var card=sec.cards[ci];
+      if(q && card.title.toLowerCase().indexOf(q)<0 && card.body.toLowerCase().indexOf(q)<0) continue;
+      cardCount++;
+      var cid='card_'+sec.ch+'_'+ci;
+      var tagNL=card.tag==='def'?'definitie':card.tag==='trap'?'valkuil':card.tag==='cmd'?'commando':card.tag==='table'?'tabel':'regel';
+      secHtml+='<div class="fact-card" id="'+cid+'">'
+        +'<div class="fact-header" onclick="toggleCard(\''+cid+'\')">'
+        +'<span class="fact-icon">'+card.icon+'</span>'
+        +'<span class="fact-title">'+card.title+'</span>'
+        +'<span class="fact-tag tag-'+card.tag+'">'+tagNL+'</span>'
+        +'<span class="fact-arrow">&#9658;</span>'
+        +'</div>'
+        +'<div class="fact-body">'+card.body+'</div>'
+        +'</div>';
+    }
+    if(!cardCount) continue;
+    found=true;
+    var sid='sec_'+sec.ch;
+    html+='<div class="ch-section" id="'+sid+'">'
+      +'<div class="ch-header" onclick="toggleSection(\''+sid+'\')">'
+      +'<div class="ch-dot" style="background:'+sec.color+'"></div>'
+      +'<span class="ch-label">'+sec.title+'</span>'
+      +'<span class="ch-count">'+cardCount+' kaarten</span>'
+      +'<span class="ch-toggle open" id="ct_'+sid+'">&#9658;</span>'
+      +'</div>'
+      +'<div class="ch-body open" id="cb_'+sid+'">'+secHtml+'</div>'
+      +'</div>';
+  }
+  content.innerHTML=html;
+  var em=document.getElementById('emptyMsg');
+  if(em) em.style.display=found?'none':'block';
+  if(q) openAllCards();
+}
+
+function toggleCard(id){
+  var card=document.getElementById(id);
+  if(card) card.classList.toggle('open');
+}
+
+function toggleSection(sid){
+  var body=document.getElementById('cb_'+sid);
+  var tog=document.getElementById('ct_'+sid);
+  if(!body) return;
+  var isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  if(tog) tog.classList.toggle('open',!isOpen);
+}
+
+function openAllCards(){
+  var cards=document.querySelectorAll('.fact-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.add('open');
+}
+
+function toggleAll(){
+  allOpen=!allOpen;
+  var cards=document.querySelectorAll('.fact-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.toggle('open',allOpen);
+  var bodies=document.querySelectorAll('.ch-body');
+  for(var i=0;i<bodies.length;i++) bodies[i].classList.toggle('open',allOpen);
+  var toggles=document.querySelectorAll('.ch-toggle');
+  for(var i=0;i<toggles.length;i++) toggles[i].classList.toggle('open',allOpen);
+  document.getElementById('expandBtn').textContent=allOpen?'Alles inklappen':'Alles uitvouwen';
+}
+
+function copyCmd(el,cmd){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(cmd).then(function(){
+      el.classList.add('copied');
+      var c=el.querySelector('.cmd-copy');
+      if(c) c.textContent='\u2713 gekopi\u00eberd';
+      setTimeout(function(){
+        el.classList.remove('copied');
+        var c=el.querySelector('.cmd-copy');
+        if(c) c.textContent='\u{1F4CB} kopi\u00ebren';
+      },1400);
+    });
+  }
+}
+
+init();
+</script>
+</body>
+</html>
