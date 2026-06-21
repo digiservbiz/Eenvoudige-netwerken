@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<style>
+/* FORCE DARK */
+html { background: #07090f !important; }
+body { background: #07090f !important; color: rgba(255,255,255,0.92) !important; }
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSN Cursus — Eenvoudige Netwerken (NL)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0d1117;--bg3:#131a24;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:rgba(255,255,255,0.92);--text2:rgba(255,255,255,0.60);--text3:rgba(255,255,255,0.38);
+  --accent:#4f8ef7;--accent2:#7c5cfc;--green:#22d3a5;--orange:#f97316;
+  --pink:#e879f9;--yellow:#facc15;--red:#f43f5e;--sidebar-w:272px;
+}
+html{scroll-behavior:smooth;background:#07090f !important;color:rgba(255,255,255,0.92) !important}
+body{background:#07090f !important;color:rgba(255,255,255,0.92) !important;font-family:'Space Grotesk',sans-serif;
+  line-height:1.6;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+*{color:inherit}
+.topnav{position:sticky;top:0;z-index:200;height:52px;
+  background:#07090f;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+  padding:0 1.25rem;gap:1rem;flex-shrink:0}
+.tnl{display:flex;align-items:center;gap:10px}
+.tnlogo{width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.tntitle{font-size:13px;font-weight:700;color:rgba(255,255,255,0.92)}
+.tnsub{font-size:11px;color:rgba(255,255,255,0.38)}
+.tnr{display:flex;align-items:center;gap:.75rem}
+.xpbadge{background:rgba(250,204,21,0.12);border:1px solid rgba(250,204,21,0.28);
+  border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:#facc15}
+.ptext{font-size:11px;color:rgba(255,255,255,0.70)}
+.menubtn{background:none;border:1px solid rgba(255,255,255,0.1);border-radius:6px;
+  color:rgba(255,255,255,0.60);padding:4px 9px;cursor:pointer;font-size:15px;display:none}
+.hublink{color:rgba(255,255,255,0.38);text-decoration:none;font-size:11px;transition:color .2s}
+.hublink:hover{color:rgba(255,255,255,0.60)}
+.layout{display:flex;flex-direction:row;flex:1;min-height:0;background:#07090f}
+.sidebar{width:272px;flex-shrink:0;background:#0d1117;
+  border-right:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;
+  position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.09);border-radius:2px}
+.sbhome{display:flex;align-items:center;gap:8px;padding:.9rem 1.2rem;
+  border-bottom:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.60);font-size:13px;
+  font-weight:500;cursor:pointer;transition:color .2s}
+.sbhome:hover{color:rgba(255,255,255,0.92)}
+.chhead{display:flex;align-items:center;gap:9px;padding:.5rem 1.2rem;
+  cursor:pointer;border-left:3px solid transparent;transition:background .15s}
+.chhead:hover{background:#111720}
+.chhead.open{border-left-color:#4f8ef7;background:#111820}
+.chdot{width:21px;height:21px;border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.chlabel{font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.60);flex:1}
+.chhead.open .chlabel{color:rgba(255,255,255,0.92)}
+.charrow{font-size:9px;color:rgba(255,255,255,0.38);transition:transform .2s}
+.chhead.open .charrow{transform:rotate(90deg)}
+.chlessons{display:none;padding-left:2.4rem}
+.chlessons.open{display:block}
+.llink{display:flex;align-items:center;gap:7px;padding:.38rem .7rem;
+  border-radius:5px;font-size:11.5px;color:rgba(255,255,255,0.38);cursor:pointer;
+  transition:color .15s,background .15s}
+.llink:hover{color:rgba(255,255,255,0.60);background:#111720}
+.llink.active{color:rgba(255,255,255,0.92);background:rgba(255,255,255,0.06)}
+.llink.done{color:#22d3a5}
+.lcheck{font-size:9px;flex-shrink:0}
+.sbprog{padding:.9rem 1.2rem;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto}
+.progbar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin:.45rem 0}
+.progfill{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:2px;transition:width .4s}
+.proglabel{font-size:10.5px;color:rgba(255,255,255,0.65);display:flex;justify-content:space-between}
+.main{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:#07090f}
+.chome{max-width:740px;margin:0 auto;padding:2.5rem 2rem 4rem;display:none}
+.chome.vis{display:block}
+.htag{display:inline-block;background:rgba(79,142,247,0.12);
+  border:1px solid rgba(79,142,247,0.25);border-radius:20px;padding:3px 12px;
+  font-size:11px;font-weight:700;color:#4f8ef7;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:.9rem}
+.chome h1{font-size:2rem;font-weight:700;line-height:1.2;margin-bottom:.7rem}
+.chome h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.chome p{color:rgba(255,255,255,0.82);margin-bottom:2rem;line-height:1.7}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.9rem;margin-top:1.25rem}
+.hcard{background:#0f1520;border:1px solid rgba(255,255,255,0.12);border-radius:11px;
+  padding:1.15rem;cursor:pointer;transition:border-color .2s,transform .2s;
+  position:relative;overflow:hidden}
+.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cc,var(--accent))}
+.hcard:hover{border-color:var(--border2);transform:translateY(-2px)}
+.hcnum{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.60);margin-bottom:.45rem}
+.hctitle{font-size:.9rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.hcsub{font-size:11px;color:rgba(255,255,255,0.70)}
+.hcprog{margin-top:.65rem;height:2px;background:rgba(255,255,255,0.08);border-radius:2px}
+.hcprogf{height:2px;border-radius:2px;transition:width .4s}
+.lview{max-width:780px;margin:0 auto;padding:2rem 2rem 5rem;display:none}
+.lview.vis{display:block}
+.lbread{font-size:11.5px;color:rgba(255,255,255,0.38);margin-bottom:.9rem}
+.lbread span{color:rgba(255,255,255,0.60)}
+.ltitle{font-size:1.85rem;font-weight:700;line-height:1.2;margin-bottom:.45rem}
+.lmeta{display:flex;gap:.75rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.lbadge{background:#181f2e;border:1px solid rgba(255,255,255,0.15);
+  border-radius:20px;padding:2px 9px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.60)}
+.blk{margin-bottom:1.6rem}
+.btitle{font-size:1rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.65rem;
+  display:flex;align-items:center;gap:.5rem;padding-left:.7rem;
+  border-left:3px solid var(--cc,var(--accent))}
+.ic{border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.85rem}
+.ic.blue{background:#0d1825;border:1px solid #2d5a9e;border-left:4px solid #4f8ef7}
+.ic.green{background:#0b1e1a;border:1px solid #1a6b57;border-left:4px solid #22d3a5}
+.ic.orange{background:#1a1208;border:1px solid #7a3d0a;border-left:4px solid #f97316}
+.ic.yellow{background:#1a1800;border:1px solid #7a6600;border-left:4px solid #facc15}
+.ic.red{background:#1a0810;border:1px solid #8a1530;border-left:4px solid #f43f5e}
+.ic.purple{background:#110d20;border:1px solid #4a3580;border-left:4px solid #a78bfa}
+.ilabel{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:.45rem;display:block}
+.ilabel.blue{color:#4f8ef7}.ilabel.green{color:#22d3a5}.ilabel.orange{color:#f97316}
+.ilabel.yellow{color:#facc15}.ilabel.red{color:#f43f5e}.ilabel.purple{color:#e879f9}
+.ic p{font-size:.875rem;color:rgba(255,255,255,0.88);line-height:1.68}
+.ic p strong{color:rgba(255,255,255,0.92)}
+.ic p code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.hbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.65rem;margin-bottom:.75rem}
+.hbcard{background:#181f2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:.9rem;text-align:center}
+.hbval{font-size:1.25rem;font-weight:700;line-height:1;margin-bottom:.2rem}
+.hbkey{font-size:10px;color:rgba(255,255,255,0.38);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.tw{overflow-x:auto;border-radius:9px;border:1px solid rgba(255,255,255,0.1);margin-bottom:.85rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#131a24;padding:.62rem 1rem;text-align:left;font-size:10px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,0.38);
+  border-bottom:1px solid rgba(255,255,255,0.1)}
+td{padding:.58rem 1rem;border-bottom:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.82);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+td strong{color:rgba(255,255,255,0.92);font-weight:600}
+td code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.codeblk{background:#0b0f18;border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  overflow:hidden;margin-bottom:.85rem}
+.codehdr{display:flex;align-items:center;justify-content:space-between;
+  padding:.55rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);background:#080c13}
+.codehdr-l{display:flex;align-items:center;gap:.65rem}
+.dots{display:flex;gap:4px}
+.dot{width:9px;height:9px;border-radius:50%}
+.clang{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.38)}
+.ccopy{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  color:rgba(255,255,255,0.38);font-size:10.5px;font-weight:600;padding:2px 7px;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;transition:background .2s,color .2s}
+.ccopy:hover{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.60)}
+.ccopy.copied{color:#22d3a5;border-color:rgba(34,211,165,0.3)}
+pre{padding:1.1rem 1.2rem;overflow-x:auto;font-family:'Space Mono',monospace;
+  font-size:.79rem;line-height:1.72;color:rgba(255,255,255,0.82)}
+.steps{display:flex;flex-direction:column;gap:.65rem;margin-bottom:.85rem}
+.step{display:flex;gap:.9rem;align-items:flex-start;background:#111720;
+  border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:.9rem}
+.stepn{width:26px;height:26px;border-radius:6px;
+  background:linear-gradient(135deg,var(--cc,var(--accent)),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.stepc{flex:1;min-width:0}
+.stept{font-weight:700;font-size:.875rem;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.stepd{font-size:.84rem;color:rgba(255,255,255,0.82);line-height:1.6}
+.stepd code{font-family:'Space Mono',monospace;font-size:.78rem;
+  background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;color:#22d3a5}
+.trap{background:#1a0810;border:1px solid rgba(244,63,94,0.45);
+  border-radius:8px;padding:.9rem 1.1rem;margin-bottom:.75rem;display:flex;gap:.7rem}
+.trapicon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.traptxt{font-size:.84rem;color:rgba(255,255,255,0.92);line-height:1.62}
+.traptxt strong{color:#f43f5e}
+.qsec{background:#0f1520;border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  padding:1.4rem;margin-top:2rem}
+.qtitle{font-size:.95rem;font-weight:700;color:rgba(255,255,255,0.92);margin-bottom:.2rem}
+.qsub{font-size:11px;color:rgba(255,255,255,0.38);margin-bottom:1.3rem}
+.qblock{margin-bottom:1.1rem}
+.qtext{font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.92);margin-bottom:.65rem;line-height:1.5}
+.qopts{display:flex;flex-direction:column;gap:.42rem}
+.qopt{display:flex;align-items:flex-start;gap:.65rem;background:#111720;
+  border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:.58rem .85rem;cursor:pointer;
+  transition:background .15s,border-color .15s;font-size:.84rem;color:rgba(255,255,255,0.60);
+  text-align:left;width:100%;font-family:'Space Grotesk',sans-serif}
+.qopt:hover{background:#18202e;border-color:var(--border2)}
+.qopt.sel{border-color:#4f8ef7;background:#0e1c38;color:rgba(255,255,255,0.92)}
+.qopt.ok{border-color:#22d3a5;background:#0b2018;color:rgba(255,255,255,0.92)}
+.qopt.bad{border-color:#f43f5e;background:#200812;color:rgba(255,255,255,0.92)}
+.qletter{width:20px;height:20px;border-radius:4px;background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;
+  color:rgba(255,255,255,0.38);flex-shrink:0}
+.qfb{margin-top:.5rem;padding:.58rem .85rem;border-radius:6px;font-size:.82rem;display:none;line-height:1.5}
+.qfb.show{display:block}
+.qfb.ok{background:#0b2018;border:1px solid rgba(34,211,165,0.45);color:#22d3a5}
+.qfb.bad{background:#200812;border:1px solid rgba(244,63,94,0.45);color:#f43f5e}
+.qfill{width:100%;background:#0f1520;border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;padding:.55rem .85rem;color:rgba(255,255,255,0.92);font-size:.84rem;
+  font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s}
+.qfill:focus{border-color:#4f8ef7}
+.qfill.ok{border-color:#22d3a5}
+.qfill.bad{border-color:#f43f5e}
+.qsubmit{margin-top:.9rem;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;border-radius:7px;padding:.68rem 1.6rem;font-size:.875rem;
+  font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:opacity .2s}
+.qsubmit:hover{opacity:.87}
+.qresult{margin-top:.9rem;padding:.9rem;border-radius:7px;text-align:center;
+  font-weight:700;font-size:.9rem;display:none}
+.qresult.show{display:block}
+.lnav{display:flex;justify-content:space-between;align-items:center;
+  margin-top:2.25rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.1);
+  gap:.75rem;flex-wrap:wrap}
+.lnavbtn{display:inline-flex;align-items:center;gap:.45rem;padding:.62rem 1.1rem;
+  border-radius:7px;font-size:.84rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.1);background:#0f1520;color:rgba(255,255,255,0.60);
+  transition:background .2s,color .2s;font-family:'Space Grotesk',sans-serif}
+.lnavbtn:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.92)}
+.lnavbtn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff}
+.lnavbtn.primary:hover{opacity:.87}
+.markbtn{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .9rem;
+  border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;
+  border:1px solid rgba(34,211,165,0.25);background:rgba(34,211,165,0.06);
+  color:#22d3a5;font-family:'Space Grotesk',sans-serif;transition:background .2s}
+.markbtn:hover{background:rgba(34,211,165,0.12)}
+.markbtn.done{background:rgba(34,211,165,0.15);border-color:rgba(34,211,165,0.4)}
+@media(max-width:900px){
+  .sidebar{position:fixed;top:52px;left:-100%;width:272px;height:calc(100vh - 52px);
+    z-index:150;transition:left .28s;box-shadow:4px 0 28px rgba(0,0,0,.45)}
+  .sidebar.open{left:0}
+  .menubtn{display:flex}
+  .lview,.chome{padding:1.4rem 1.1rem 3.5rem}
+}
+@media(max-width:480px){.hbox{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="tnl">
+    <button class="menubtn" id="menuBtn">&#9776;</button>
+    <div class="tnlogo">BSN</div>
+    <div><div class="tntitle">BSN Cursus &middot; NL</div><div class="tnsub">Eenvoudige Netwerken</div></div>
+  </div>
+  <div class="tnr">
+    <span class="ptext" id="navProg">0 / 0</span>
+    <span class="xpbadge" id="navXP">&#9889; 0 XP</span>
+    <a href="index.html" class="hublink">&larr; Hub</a>
+  </div>
+</nav>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="sbhome" onclick="goHome()">&#127968; Cursus Home</div>
+  <div id="sbChapters"></div>
+  <div class="sbprog">
+    <div class="proglabel"><span>Voortgang</span><span id="progPct">0%</span></div>
+    <div class="progbar"><div class="progfill" id="progFill" style="width:0%"></div></div>
+    <div style="font-size:10.5px;color:rgba(255,255,255,0.38)" id="progDetail">0 van 0 voltooid</div>
+  </div>
+</aside>
+<main class="main" id="mainArea">
+  <div class="chome vis" id="courseHome">
+    <div class="htag">BSN &middot; ICT &middot; CVO Encora &middot; 2025&#8211;2026</div>
+    <h1>Interactieve Cursus:<br><span>Eenvoudige Netwerken</span></h1>
+    <p>Alle 9 hoofdstukken met volledige theorie, omzettingstabellen, stap-voor-stap uitleg, codeblokken en minikwissen. Je voortgang wordt automatisch opgeslagen in je browser. Begin bij hoofdstuk 1 of spring naar elk hoofdstuk.</p>
+    <div class="hgrid" id="homeGrid"></div>
+  </div>
+  <div class="lview" id="lessonView"></div>
+</main>
+</div>
+<script>
+var SK='bsn_course_nl_v1';
+var ST={done:{},xp:0};
+try{var _s=localStorage.getItem(SK);if(_s)ST=JSON.parse(_s);}catch(e){}
+function sv(){try{localStorage.setItem(SK,JSON.stringify(ST));}catch(e){}}
+
+var CH=[
+/* ── HOOFDSTUK 1 ── */
+{id:'c1',cc:'#4f8ef7',em:'&#128290;',ti:'Talstelsels',su:'Binair &middot; Decimaal &middot; Hexadecimaal',ls:[
+ {id:'c1l1',ti:'Inleiding tot Talstelsels',bl:[
+  {t:'ic',v:'blue',lb:'Definitie',tx:'Een <strong>talstelsel</strong> is een methode om waarden voor te stellen met een vaste set symbolen. In netwerken moet je drie stelsels beheersen: <strong>Binair (grondtal 2)</strong>, <strong>Decimaal (grondtal 10)</strong> en <strong>Hexadecimaal (grondtal 16)</strong>.'},
+  {t:'hb',cs:[{v:'Grondtal 2',k:'Binair',c:'#4f8ef7'},{v:'Grondtal 10',k:'Decimaal',c:'#22d3a5'},{v:'Grondtal 16',k:'Hexadecimaal',c:'#f97316'}]},
+  {t:'ic',v:'green',lb:'Waarom dit belangrijk is',tx:'IP-subnetmaskers worden berekend in <strong>binair</strong>. MAC-adressen worden geschreven in <strong>hexadecimaal</strong>. Mensen lezen en typen <strong>decimaal</strong>. Je zal voortdurend tussen deze drie stelsels omzetten.'},
+  {t:'tb',hs:['Stelsel','Grondtal','Symbolen','Voorbeeld'],rs:[['Binair','2','0 en 1','1010 1100'],['Decimaal','10','0 &ndash; 9','172'],['Hexadecimaal','16','0&ndash;9, A&ndash;F','AC']]},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Hexadecimale letters zijn niet willekeurig &mdash; ze staan voor decimale waarden. A=10, B=11, C=12, D=13, E=14, F=15. Onthoud deze reeks!'},
+ ],qz:[
+  {t:'mcq',q:'Hoeveel unieke cijfers gebruikt het binaire stelsel?',o:['8','2','16','10'],a:1,e:'Binair is grondtal 2: enkel 0 en 1.'},
+  {t:'mcq',q:'Welke decimale waarde heeft het hexadecimale cijfer D?',o:['12','14','13','15'],a:2,e:'D = 13 decimaal. Onthoud: A=10 B=11 C=12 D=13 E=14 F=15.'},
+  {t:'tf',q:'Hexadecimaal gebruikt de cijfers 0-9 plus de letters A tot F.',a:true,e:'Juist &mdash; hex is grondtal 16: tien cijfers plus zes letters.'},
+ ]},
+ {id:'c1l2',ti:'Binair \u2192 Decimaal Omzetting',bl:[
+  {t:'ic',v:'blue',lb:'Methode &mdash; Positiewaarden',tx:'Elke bitpositie heeft een vaste macht-van-2 waarde. Schrijf de 8 positiewaarden (128 64 32 16 8 4 2 1) en plaats de binaire cijfers eronder. <strong>Tel de waarden op waar de bit 1 is</strong>.'},
+  {t:'code',ln:'VOORBEELD &mdash; 11001010 naar Decimaal',li:['Positie:  128  64  32  16   8   4   2   1','Bits:       1   1   0   0   1   0   1   0','Waarden:  128  64   0   0   8   0   2   0','','Resultaat: 128 + 64 + 8 + 2 = 202']},
+  {t:'steps',st:[
+   {h:'Schrijf de positiewaarden van links naar rechts',d:'128, 64, 32, 16, 8, 4, 2, 1 (machten van 2 van 2\u2077 tot 2\u2070).'},
+   {h:'Schrijf de binaire bits onder elke waarde',d:'Noteer elke bit (0 of 1) direct onder zijn positiewaarde.'},
+   {h:'Behoud waarden waar bit = 1, nul de rest',d:'Posities met een 1 leveren hun waarde; posities met 0 leveren niets.'},
+   {h:'Tel alle resterende waarden op',d:'Sommeer de niet-nulwaarden om het decimale getal te krijgen.'},
+  ]},
+  {t:'ic',v:'yellow',lb:'Sleuteltip',tx:'Je hoeft enkel de posities met een <strong>1</strong> op te tellen. Negeer nullen volledig.'},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Schrijf altijd 8 bits. Decimaal 5 in binair is <strong>0000 0101</strong>, NIET gewoon 101. Vul aan met voorloopnullen.'},
+ ],qz:[
+  {t:'mcq',q:'Wat is de decimale waarde van binair 10000000?',o:['64','128','256','16'],a:1,e:'10000000 = 2\u2077 = 128.'},
+  {t:'fill',q:'Zet 01000010 om naar decimaal: ___',a:'66',e:'64 + 2 = 66.'},
+  {t:'mcq',q:'Wat is 11111111 in decimaal?',o:['254','255','256','128'],a:1,e:'128+64+32+16+8+4+2+1 = 255. Maximale 8-bit waarde.'},
+  {t:'tf',q:'Binair 00000000 is gelijk aan decimaal 0.',a:true,e:'Alle bits zijn 0, dus de som is 0.'},
+ ]},
+ {id:'c1l3',ti:'Decimaal \u2192 Binair Omzetting',bl:[
+  {t:'ic',v:'blue',lb:'Methode &mdash; Aftrekmetode',tx:'Gebruik de positietabel (128 64 32 16 8 4 2 1). Werk <strong>van links naar rechts</strong>. Bij elke positie: kun je deze waarde aftrekken van je getal? JA &rarr; schrijf 1, trek af. NEE &rarr; schrijf 0.'},
+  {t:'code',ln:'VOORBEELD &mdash; Zet 202 om naar Binair',li:['202 \u2265 128 \u2192 JA  \u2192 schrijf 1, rest = 74',' 74 \u2265  64 \u2192 JA  \u2192 schrijf 1, rest = 10',' 10 \u2265  32 \u2192 NEE \u2192 schrijf 0',' 10 \u2265  16 \u2192 NEE \u2192 schrijf 0',' 10 \u2265   8 \u2192 JA  \u2192 schrijf 1, rest = 2','  2 \u2265   4 \u2192 NEE \u2192 schrijf 0','  2 \u2265   2 \u2192 JA  \u2192 schrijf 1, rest = 0','  0 \u2265   1 \u2192 NEE \u2192 schrijf 0','','Resultaat: 11001010']},
+  {t:'ic',v:'green',lb:'Sleutelwaarden om te onthouden',tx:'<strong>128</strong> = 1000 0000 &nbsp; <strong>192</strong> = 1100 0000 &nbsp; <strong>255</strong> = 1111 1111 &nbsp; <strong>0</strong> = 0000 0000<br>Deze komen voortdurend voor in IP-adressen en subnetmaskers.'},
+ ],qz:[
+  {t:'fill',q:'Zet decimaal 128 om naar binair (8 bits): ___',a:'10000000',e:'128 = 2\u2077 = 10000000.'},
+  {t:'fill',q:'Zet decimaal 192 om naar binair (8 bits): ___',a:'11000000',e:'192 = 128+64 = 11000000. Gebruikt in subnetmaskers!'},
+  {t:'fill',q:'Wat is decimaal 255 in binair (8 bits)? ___',a:'11111111',e:'255 = alle 8 bits op 1 = 11111111.'},
+ ]},
+ {id:'c1l4',ti:'Binair \u2194 Hexadecimaal',bl:[
+  {t:'ic',v:'blue',lb:'Sleutelregel',tx:'<strong>1 hexadecimaal cijfer = exact 4 binaire bits</strong> (een nibble). Splits binair in groepen van 4 en converteer elke groep afzonderlijk.'},
+  {t:'tb',hs:['Decimaal','Binair','Hex'],rs:[['0','0000','0'],['1','0001','1'],['2','0010','2'],['3','0011','3'],['4','0100','4'],['5','0101','5'],['6','0110','6'],['7','0111','7'],['8','1000','8'],['9','1001','9'],['10','1010','A'],['11','1011','B'],['12','1100','C'],['13','1101','D'],['14','1110','E'],['15','1111','F']]},
+  {t:'code',ln:'Binair \u2192 Hex Voorbeelden',li:['1001 0111  \u2192  9  7  \u2192  0x97','1111 1111  \u2192  F  F  \u2192  0xFF  (= 255 decimaal)','0000 0000  \u2192  0  0  \u2192  0x00  (= 0 decimaal)']},
+  {t:'code',ln:'Hex \u2192 Binair Voorbeelden',li:['AC  \u2192  A(1010) C(1100)  \u2192  1010 1100','FF  \u2192  F(1111) F(1111)  \u2192  1111 1111','B5  \u2192  B(1011) 5(0101)  \u2192  1011 0101']},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Schrijf altijd exact 4 bits per hex-cijfer. Hex 3 = <strong>0011</strong>, niet 11. Nooit minder dan 4 bits per hex-cijfer.'},
+ ],qz:[
+  {t:'fill',q:'Zet binair 10010111 om naar hex: ___',a:'97',e:'1001=9, 0111=7 \u2192 97.'},
+  {t:'fill',q:'Zet hex FF om naar binair (8 bits): ___',a:'11111111',e:'F=1111, F=1111 \u2192 11111111.'},
+  {t:'mcq',q:'Hoeveel binaire bits zijn gelijk aan \xe9\xe9n hex-cijfer?',o:['2','8','4','16'],a:2,e:'1 hex-cijfer = 4 binaire bits (nibble).'},
+  {t:'fill',q:'Zet hex AC om naar binair: ___',a:'10101100',e:'A=1010, C=1100 \u2192 10101100.'},
+ ]},
+ {id:'c1l5',ti:'Hexadecimaal \u2194 Decimaal',bl:[
+  {t:'ic',v:'blue',lb:'Methode 1 &mdash; Positiewaarden',tx:'Elke hex-positie heeft een macht-van-16 waarde: 16\u2070=1, 16\u00b9=16, 16\u00b2=256. Vermenigvuldig elke hex-cijferwaarde met zijn positiewaarde en tel op.'},
+  {t:'code',ln:'VOORBEELD &mdash; Hex D4 naar Decimaal',li:['Positie:  16\u00b9   16\u2070','            16     1','Hex:        D      4','Decimaal:  13      4','','(13 \u00d7 16) + (4 \u00d7 1) = 208 + 4 = 212']},
+  {t:'ic',v:'green',lb:'Methode 2 &mdash; Via Binair',tx:'Converteer hex \u2192 binair (elke hex-cijfer uitbreiden naar 4 bits), daarna binair \u2192 decimaal via de positietabel. Beide methoden geven hetzelfde resultaat.'},
+  {t:'code',ln:'VOORBEELD &mdash; Hex D4 via Binair',li:['D = 1101,  4 = 0100  \u2192  11010100','','Positie:  128  64  32  16   8   4   2   1','Bits:       1   1   0   1   0   1   0   0','','128 + 64 + 16 + 4 = 212 \u2713']},
+  {t:'trap',tx:'<strong>Onthoud:</strong> Hex-letters staan voor hun decimale waarden bij berekeningen. D = 13, niet "D".'},
+ ],qz:[
+  {t:'fill',q:'Zet hex 1F om naar decimaal: ___',a:'31',e:'1\u00d716 + F(15)\u00d71 = 16+15 = 31.'},
+  {t:'fill',q:'Zet hex FF om naar decimaal: ___',a:'255',e:'F(15)\u00d716 + F(15)\u00d71 = 240+15 = 255.'},
+  {t:'tf',q:'Hex 10 is gelijk aan decimaal 16.',a:true,e:'1\u00d716 + 0\u00d71 = 16. Hex 10 = zestien, niet tien!'},
+ ]},
+ {id:'c1l6',ti:'Binaire Adressering',bl:[
+  {t:'ic',v:'blue',lb:'Concept',tx:'Om N toestellen in binair te adresseren, heb je genoeg bits nodig zodat <strong>2<sup>n</sup> \u2265 N</strong>. Zoek de kleinste n waarvoor 2<sup>n</sup> het vereiste aantal dekt.'},
+  {t:'tb',hs:['Bits (n)','2\u207f (adressen)'],rs:[['1','2'],['2','4'],['3','8'],['4','16'],['5','32'],['6','64'],['7','128'],['8','256']]},
+  {t:'code',ln:'VOORBEELD &mdash; Adresseer 21 computers',li:['Nodig: 2\u207f \u2265 21','2\u2074 = 16 \u2192 te weinig','2\u2075 = 32 \u2192 genoeg!','','Minimum bits nodig: 5','Binaire adressen: 00000 t.e.m. 10100']},
+  {t:'trap',tx:'<strong>Examentip:</strong> Voor 21 computers heb je 5 bits nodig, NIET 4. 2\u2074=16 is onvoldoende; 2\u2075=32 is de eerste macht die 21 dekt.'},
+ ],qz:[
+  {t:'fill',q:'Hoeveel bits heb je nodig om 13 computers te adresseren? ___',a:'4',e:'2\u00b3=8 te weinig, 2\u2074=16 genoeg. Antwoord: 4 bits.'},
+  {t:'mcq',q:'Hoeveel unieke adressen kan je maken met 3 bits?',o:['3','6','8','16'],a:2,e:'2\u00b3 = 8 unieke combinaties (000 t.e.m. 111).'},
+  {t:'fill',q:'Wat is decimaal 5 in 4 binaire bits? ___',a:'0101',e:'5 = 4+1 = 0101 in 4-bit binair.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 2 ── */
+{id:'c2',cc:'#22d3a5',em:'&#128268;',ti:'MAC-adressen',su:'NIC &middot; OUI &middot; IEEE &middot; Broadcast',ls:[
+ {id:'c2l1',ti:'Wat is een MAC-adres?',bl:[
+  {t:'ic',v:'green',lb:'Definitie',tx:'<strong>MAC</strong> = <strong>Media Access Control</strong>. Een MAC-adres is een <strong>uniek 48-bit (6-byte)</strong> adres dat door de fabrikant permanent toegekend wordt aan een <strong>NIC (Network Interface Controller)</strong>. Ook wel: <strong>hardware-adres</strong>, <strong>ethernet-adres</strong> of <strong>fysiek adres</strong>.'},
+  {t:'hb',cs:[{v:'48 bits',k:'Adreslengte',c:'#22d3a5'},{v:'6 bytes',k:'= 12 hex-tekens',c:'#4f8ef7'},{v:'NIC',k:'Toegekend aan',c:'#f97316'}]},
+  {t:'ic',v:'blue',lb:'Doel',tx:'Het MAC-adres identificeert een toestel <strong>binnen een LAN</strong>. Routers en switches gebruiken MAC-adressen om frames naar het juiste toestel te sturen. MAC-adressen zijn <strong>enkel lokaal geldig</strong> &mdash; ze veranderen telkens een pakket een router passeert.'},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> MAC-adressen worden NIET op het internet gerouteerd. Ze werken enkel binnen een LAN-segment. Bij elke router worden bron- en doel-MAC-adres vervangen.'},
+ ],qz:[
+  {t:'fill',q:'Waar staat MAC voor? (drie woorden)',a:'Media Access Control',e:'MAC = Media Access Control.'},
+  {t:'mcq',q:'Hoeveel bits heeft een MAC-adres?',o:['32','64','48','128'],a:2,e:'MAC-adressen zijn 48 bits (6 bytes).'},
+  {t:'tf',q:'Een MAC-adres blijft ongewijzigd wanneer een pakket een router passeert.',a:false,e:'Fout &mdash; MAC-adressen veranderen bij elke router. Enkel IP-adressen blijven van bron tot bestemming.'},
+ ]},
+ {id:'c2l2',ti:'MAC-formaat: OUI &amp; NIC-specifiek',bl:[
+  {t:'ic',v:'green',lb:'Structuur',tx:'Een MAC-adres wordt in hex geschreven, bv. <code>00:0C:6E:D2:11:E6</code>. Het is opgesplitst in twee gelijke helften van 3 bytes (24 bits).'},
+  {t:'hb',cs:[{v:'OUI',k:'Eerste 3 bytes &mdash; Fabrikant',c:'#4f8ef7'},{v:'NIC-specifiek',k:'Laatste 3 bytes &mdash; Toestel',c:'#22d3a5'}]},
+  {t:'ic',v:'blue',lb:'OUI &mdash; Organizational Unique Identifier',tx:'De <strong>eerste 3 bytes</strong> identificeren de <strong>fabrikant</strong>. De IEEE kent elke fabrikant een unieke OUI toe. Voorbeeld: Cisco = <code>00-0C-6E</code>. Opzoeken via ouilookup.com.'},
+  {t:'ic',v:'purple',lb:'NIC-specifiek',tx:'De <strong>laatste 3 bytes</strong> worden door de <strong>fabrikant zelf</strong> toegekend om elk individueel toestel uniek te identificeren.'},
+  {t:'ic',v:'yellow',lb:'IEEE 802-standaard',tx:'De <strong>IEEE</strong> beheert MAC-adrestoewijzingen onder <strong>IEEE 802</strong> (EUI-48). Dit biedt 2\u2078\u2078 = 281.474.976.710.656 unieke combinaties.'},
+  {t:'code',ln:'MAC-adres Opgesplitst',li:['00:0C:6E : D2:11:E6','\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518','   OUI       NIC-specifiek','(Fabrikant)  (Toestel)','','Opzoeken: https://ouilookup.com']},
+ ],qz:[
+  {t:'fill',q:'De eerste 3 bytes van een MAC-adres vormen de ___.',a:'OUI',e:'OUI = Organizational Unique Identifier \u2014 identificeert de fabrikant.'},
+  {t:'mcq',q:'Wie kent OUI-codes toe aan fabrikanten?',o:['IANA','Cisco','IEEE','ISO'],a:2,e:'De IEEE kent OUI-codes toe onder de IEEE 802-standaard.'},
+  {t:'tf',q:'De laatste 3 bytes van een MAC-adres identificeren de fabrikant.',a:false,e:'Fout \u2014 de EERSTE 3 bytes (OUI) identificeren de fabrikant. De LAATSTE 3 bytes identificeren het specifieke toestel.'},
+ ]},
+ {id:'c2l3',ti:'Broadcast MAC &amp; CMD-commando\'s',bl:[
+  {t:'ic',v:'red',lb:'Broadcast MAC-adres',tx:'<code>FF:FF:FF:FF:FF:FF</code> &mdash; alle 48 bits op 1. Frames die naar dit adres worden gestuurd, worden afgeleverd bij <strong>elk toestel op het LAN</strong>. Gebruikt door ARP-verzoeken en DHCP-detectie.'},
+  {t:'hb',cs:[{v:'FF:FF:FF:FF:FF:FF',k:'Broadcast MAC',c:'#f43f5e'},{v:'Alle 48 bits = 1',c:'Bitpatroon',c:'#f97316'}]},
+  {t:'tb',hs:['Commando','Wat het toont'],rs:[['<code>getmac</code>','MAC-adres(sen) van je computer (Physical Address)'],['<code>ipconfig /all</code>','Volledige netwerkconfiguratie inclusief MAC (veld Physical Address)']]},
+  {t:'code',ln:'CMD &mdash; getmac',li:['C:\\> getmac','Physical Address    Transport Name','==================  ==================================','B4-B6-86-27-1D-B8   \\Device\\Tcpip_{...}']},
+  {t:'code',ln:'CMD &mdash; ipconfig /all (fragment)',li:['Ethernet adapter Ethernet:','   Physical Address. . . : B4-B6-86-27-1D-B8','   IPv4 Address. . . . . : 192.168.1.50','   Subnet Mask . . . . . : 255.255.255.0','   Default Gateway . . . : 192.168.1.1']},
+  {t:'trap',tx:'<strong>Let op:</strong> Windows toont MAC met koppeltekens: <code>B4-B6-86-27-1D-B8</code>. In netwerkleer gebruiken we dubbele punten: <code>B4:B6:86:27:1D:B8</code>. Zelfde adres, andere notatie.'},
+ ],qz:[
+  {t:'fill',q:'Wat is het broadcast MAC-adres?',a:'FF:FF:FF:FF:FF:FF',e:'Broadcast MAC = FF:FF:FF:FF:FF:FF \u2014 alle 48 bits zijn 1.'},
+  {t:'mcq',q:'Welk CMD-commando toont ENKEL MAC-adressen?',o:['ipconfig','netstat -an','getmac','arp -a'],a:2,e:'getmac toont de Physical Addresses (MAC-adressen).'},
+  {t:'tf',q:'Frames met bestemming FF:FF:FF:FF:FF:FF worden aan alle toestellen op het LAN afgeleverd.',a:true,e:'Juist \u2014 het broadcast MAC-adres zorgt ervoor dat het frame bij elk toestel in het LAN terechtkomt.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 3 ── */
+{id:'c3',cc:'#f97316',em:'&#128225;',ti:'Netwerkcommunicatie',su:'Unicast &middot; Multicast &middot; Broadcast',ls:[
+ {id:'c3l1',ti:'Unicast, Multicast en Broadcast',bl:[
+  {t:'ic',v:'orange',lb:'Drie Communicatietypes',tx:'Data in een netwerk kan op drie manieren geadresseerd worden, afhankelijk van hoeveel toestellen het moeten ontvangen.'},
+  {t:'bt',tx:'Unicast \u2014 \xc9\xe9n specifiek toestel'},
+  {t:'ic',v:'blue',lb:'Unicast',tx:'Data wordt naar <strong>\xe9\xe9n specifiek toestel</strong> gestuurd. Het doel-MAC-adres is het exacte MAC-adres van de ontvanger. Dit is het meest voorkomende communicatietype (surfen, bestandsoverdracht, videobellen).'},
+  {t:'bt',tx:'Multicast \u2014 Een groep toestellen'},
+  {t:'ic',v:'green',lb:'Multicast',tx:'Data wordt naar een <strong>groep toestellen</strong> gestuurd die ervoor gekozen hebben het te ontvangen. Multicast MAC-adressen beginnen met <code>01-00-5E</code> in hex. IPv4 multicast IP-bereik: 224.0.0.0 \u2013 239.255.255.255.'},
+  {t:'bt',tx:'Broadcast \u2014 Alle toestellen op het LAN'},
+  {t:'ic',v:'red',lb:'Broadcast',tx:'Data wordt naar <strong>elk toestel</strong> op het netwerk gestuurd. Doel-MAC = <code>FF:FF:FF:FF:FF:FF</code>. Alle toestellen moeten het frame ontvangen en verwerken. Gebruikt bij ARP-verzoeken en DHCP-detectie.'},
+  {t:'tb',hs:['Type','Ontvangers','Doel-MAC','Typisch gebruik'],rs:[['Unicast','1 toestel','Specifiek MAC-adres','Surfen, bestandsoverdracht'],['Multicast','Groep toestellen','01-00-5E-xx-xx-xx','Videostreaming, routerprotocollen'],['Broadcast','ALLE toestellen in LAN','FF:FF:FF:FF:FF:FF','ARP-verzoeken, DHCP-detectie']]},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Broadcasts gaan naar ALLE toestellen en veroorzaken netwerkoverlast. Dit is waarom switches (die MAC-adressen leren) hubs (die alles naar alle poorten broadcasten) vervangen hebben.'},
+ ],qz:[
+  {t:'mcq',q:'Welk communicatietype stuurt data naar ALLE toestellen op het netwerk?',o:['Unicast','Anycast','Multicast','Broadcast'],a:3,e:'Broadcast stuurt naar alle toestellen via FF:FF:FF:FF:FF:FF.'},
+  {t:'mcq',q:'Multicast MAC-adressen beginnen met welk voorvoegsel?',o:['FF-FF-FF','00-00-00','01-00-5E','AC-DE-48'],a:2,e:'IPv4 multicast MACs beginnen altijd met 01-00-5E.'},
+  {t:'tf',q:'Bij unicast is het doel-MAC-adres FF:FF:FF:FF:FF:FF.',a:false,e:'Fout \u2014 FF:FF:FF:FF:FF:FF is BROADCAST. Bij unicast gebruik je het specifieke MAC-adres van de ontvanger.'},
+  {t:'mcq',q:'ARP-verzoeken gebruiken welk communicatietype?',o:['Unicast','Multicast','Broadcast','Geen'],a:2,e:'ARP-verzoeken zijn broadcasts \u2014 de afzender kent het MAC-adres nog niet, dus vraagt het aan iedereen.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 4 ── */
+{id:'c4',cc:'#e879f9',em:'&#127760;',ti:'TCP/IP',su:'IP-klassen &middot; Subnet &middot; CIDR &middot; DHCP',ls:[
+ {id:'c4l1',ti:'IP-adressen &amp; TCP/IP',bl:[
+  {t:'ic',v:'purple',lb:'TCP/IP',tx:'<strong>TCP/IP</strong> is een protocolsuite voor communicatie tussen netwerkapparaten. <strong>TCP</strong> (Transmission Control Protocol) zorgt voor betrouwbare levering. <strong>IP</strong> (Internet Protocol) zorgt voor adressering en routering.'},
+  {t:'ic',v:'blue',lb:'Client-servermodel',tx:'Netwerkcommunicatie is een proces van <strong>vraag en antwoord</strong>. Een <strong>client</strong> stuurt een verzoek (bv. vraagt een webpagina op). Een <strong>server</strong> verwerkt het en antwoordt (bv. stuurt de pagina terug). Dit model geldt voor HTTP, DNS, DHCP en de meeste netwerkdiensten.'},
+  {t:'ic',v:'green',lb:'IP-adres',tx:'Een <strong>32-bit logisch adres</strong> toegekend aan elk netwerkapparaat. Geschreven in <strong>decimale puntnotatie</strong>: vier octetten gescheiden door punten, bv. <code>192.168.1.50</code>. Elk octet = 8 bits, bereik 0&ndash;255.'},
+  {t:'hb',cs:[{v:'32 bits',k:'IPv4-grootte',c:'#e879f9'},{v:'4 octetten',k:'Geschreven als',c:'#4f8ef7'},{v:'0\u2013255',k:'Per octet',c:'#22d3a5'}]},
+  {t:'trap',tx:'<strong>Belangrijk verschil:</strong> MAC = fysiek/hardware-adres (permanent). IP = logisch adres (kan gewijzigd worden, toegekend door beheerder of DHCP).'},
+ ],qz:[
+  {t:'fill',q:'IP staat voor ___ Protocol.',a:'Internet',e:'IP = Internet Protocol.'},
+  {t:'mcq',q:'Hoeveel bits heeft een IPv4-adres?',o:['16','48','64','32'],a:3,e:'IPv4 = 32 bits = 4 octetten van 8 bits elk.'},
+  {t:'tf',q:'Een IP-adres is een permanent hardware-adres dat niet kan worden gewijzigd.',a:false,e:'Fout \u2014 IP-adressen zijn LOGISCH en kunnen gewijzigd worden. MAC-adressen zijn de hardware/fysieke adressen.'},
+ ]},
+ {id:'c4l2',ti:'IP-adresklassen',bl:[
+  {t:'ic',v:'purple',lb:'Vijf Klassen (A\u2013E)',tx:'IPv4-adressen zijn ingedeeld in <strong>5 klassen</strong> bepaald door het eerste octet. Klassen A, B, C zijn voor hostadressen. D = multicast. E = gereserveerd.'},
+  {t:'tb',hs:['Klasse','Eerste Octet','Standaard Masker','CIDR','Hosts/Netwerk'],rs:[['A','1 \u2013 126','255.0.0.0','/8','16.777.214'],['B','128 \u2013 191','255.255.0.0','/16','65.534'],['C','192 \u2013 223','255.255.255.0','/24','254'],['D','224 \u2013 239','Multicast','&mdash;','&mdash;'],['E','240 \u2013 255','Gereserveerd','&mdash;','&mdash;']]},
+  {t:'code',ln:'IP-klassen Herkennen',li:['10.10.10.5     \u2192 eerste octet 10  \u2192 Klasse A','172.168.50.4   \u2192 eerste octet 172 \u2192 Klasse B','192.168.60.5   \u2192 eerste octet 192 \u2192 Klasse C','224.0.0.1      \u2192 eerste octet 224 \u2192 Klasse D (multicast)']},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> 127.x.x.x is het LOOPBACK-bereik (127.0.0.1 = localhost). Dit is GEEN bruikbare Klasse A host-ruimte. Klasse A begint bij 1, niet bij 0.'},
+ ],qz:[
+  {t:'mcq',q:'Tot welke klasse behoort 192.168.1.1?',o:['Klasse A','Klasse B','Klasse C','Klasse D'],a:2,e:'Eerste octet 192 ligt in het bereik 192\u2013223 \u2192 Klasse C.'},
+  {t:'fill',q:'Wat is het standaard subnetmasker voor Klasse B?',a:'255.255.0.0',e:'Klasse B = 255.255.0.0 (/16).'},
+  {t:'mcq',q:'Welke klasse is gereserveerd voor multicast?',o:['Klasse A','Klasse B','Klasse C','Klasse D'],a:3,e:'Klasse D (224\u2013239) wordt gebruikt voor multicast.'},
+  {t:'tf',q:'127.0.0.1 is een geldig Klasse A host-adres.',a:false,e:'Fout \u2014 127.x.x.x is het loopback-bereik en kan niet aan een netwerkapparaat worden toegekend.'},
+ ]},
+ {id:'c4l3',ti:'Netwerk-ID, Broadcast &amp; Subnetmasker',bl:[
+  {t:'ic',v:'purple',lb:'Netwerk-ID',tx:'Gevonden door het <strong>hostgedeelte op alle nullen</strong> in te stellen. Identificeert het netwerk zelf. <strong>Kan NIET aan een host worden toegekend.</strong>'},
+  {t:'ic',v:'red',lb:'Broadcastadres',tx:'Gevonden door het <strong>hostgedeelte op allemaal enen (255)</strong> in te stellen. Stuurt naar ALLE toestellen in het netwerk. <strong>Kan NIET aan een host worden toegekend.</strong>'},
+  {t:'code',ln:'Netwerk-ID en Broadcast &mdash; Voorbeelden',li:['Klasse A:  10.24.10.2/8    \u2192 Netwerk-ID: 10.0.0.0     Broadcast: 10.255.255.255','Klasse B: 172.252.65.23/16 \u2192 Netwerk-ID: 172.252.0.0  Broadcast: 172.252.255.255','Klasse C: 192.168.50.112/24\u2192 Netwerk-ID: 192.168.50.0 Broadcast: 192.168.50.255']},
+  {t:'ic',v:'blue',lb:'Subnetmasker',tx:'Een <strong>32-bit waarde</strong> die het IP-adres opsplitst in netwerkgedeelte (bits=1) en hostgedeelte (bits=0). Begint altijd met aaneengesloten enen gevolgd door nullen.'},
+  {t:'tb',hs:['Klasse','Subnetmasker','CIDR','Binaire netwerkbits'],rs:[['A','255.0.0.0','/8','11111111.00000000.00000000.00000000'],['B','255.255.0.0','/16','11111111.11111111.00000000.00000000'],['C','255.255.255.0','/24','11111111.11111111.11111111.00000000']]},
+  {t:'ic',v:'green',lb:'CIDR-notatie',tx:'<strong>CIDR</strong> verkort het subnetmasker. In plaats van 255.255.255.0 te schrijven, noteer je <strong>/24</strong> \u2014 het aantal netwerk(1)bits. Voorbeeld: 192.168.1.1<strong>/24</strong>.'},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Twee adressen KUNNEN NIET aan hosts worden toegekend: (1) het Netwerk-ID (hostbits alle 0) en (2) het Broadcastadres (hostbits alle 1). Een /24 heeft 256 adressen maar slechts <strong>254 bruikbare hosts</strong>.'},
+ ],qz:[
+  {t:'fill',q:'Wat is het Netwerk-ID van 192.168.50.112/24?',a:'192.168.50.0',e:'Stel het laatste octet in op 0: 192.168.50.0'},
+  {t:'fill',q:'Wat is het broadcastadres van 172.16.0.1/16?',a:'172.16.255.255',e:'Stel de laatste 16 bits in op allemaal 1: 172.16.255.255'},
+  {t:'mcq',q:'Wat betekent /24 in CIDR?',o:['24 hosts','24 netwerkbits op 1','24 bits totaal','24 subnetten'],a:1,e:'/24 = 24 netwerkbits = subnetmasker 255.255.255.0.'},
+  {t:'fill',q:'Hoeveel bruikbare hosts heeft een /24-netwerk?',a:'254',e:'2\u2078 = 256 min 2 (Netwerk-ID + Broadcast) = 254 bruikbare hosts.'},
+ ]},
+ {id:'c4l4',ti:'Statisch &amp; Dynamisch &middot; Publiek &amp; Priv\xe9',bl:[
+  {t:'ic',v:'purple',lb:'Statisch IP',tx:'Handmatig geconfigureerd, permanent IP-adres. Wijzigt nooit tenzij je het zelf aanpast. Gebruikt voor servers, printers, routers. Instellen via <code>ncpa.cpl</code> in Windows.'},
+  {t:'ic',v:'green',lb:'Dynamisch IP (DHCP)',tx:'Automatisch toegekend door een <strong>DHCP-server</strong>. Tijdelijk \u2014 heeft een leaseperiode. Wordt automatisch verlengd. Gebruikt voor de meeste eindgebruikersapparaten.'},
+  {t:'tb',hs:['Bereik','Type','Klasse'],rs:[['10.0.0.0 \u2013 10.255.255.255','Privaat','A'],['172.16.0.0 \u2013 172.31.255.255','Privaat','B'],['192.168.0.0 \u2013 192.168.255.255','Privaat','C']]},
+  {t:'ic',v:'yellow',lb:'APIPA',tx:'Wanneer DHCP niet beschikbaar is, kent Windows automatisch een <strong>APIPA</strong>-adres toe in het bereik <code>169.254.x.x</code> (masker 255.255.0.0). Je kan andere APIPA-toestellen op het LAN bereiken maar NIET het internet.'},
+  {t:'trap',tx:'<strong>Sleutelregel:</strong> Privaat IP-adressen zijn NOOIT routeerbaar op het internet. Enkel publieke IP-adressen zijn wereldwijd routeerbaar. NAT vertaalt priv\xe9-IP naar een publiek IP aan de router.'},
+ ],qz:[
+  {t:'mcq',q:'Welk IP-adres is privaat?',o:['8.8.8.8','46.231.189.26','192.168.1.100','172.217.0.1'],a:2,e:'192.168.1.100 ligt in het Klasse C privaat bereik 192.168.0.0\u2013192.168.255.255.'},
+  {t:'tf',q:'Een privaat IP-adres kan rechtstreeks op het internet gebruikt worden.',a:false,e:'Fout \u2014 priv\xe9 IP-adressen zijn niet routeerbaar op het internet. NAT is vereist.'},
+  {t:'fill',q:'Welk protocol kent automatisch IP-adressen toe?',a:'DHCP',e:'DHCP (Dynamic Host Configuration Protocol) automatiseert IP-toewijzing.'},
+  {t:'fill',q:'Welk Windows-commando opent netwerkinstellingen?',a:'ncpa.cpl',e:'ncpa.cpl opent het Netwerkverbindingen paneel voor IP-configuratie.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 5 ── */
+{id:'c5',cc:'#facc15',em:'&#128279;',ti:'Poorten',su:'TCP &middot; UDP &middot; Bekende Poorten &middot; Socket',ls:[
+ {id:'c5l1',ti:'Wat is een Poort?',bl:[
+  {t:'ic',v:'yellow',lb:'Definitie',tx:'Een <strong>poort</strong> is een adres binnen een IP-adres dat een specifieke <strong>toepassing of dienst</strong> op dat toestel identificeert. Een IP-adres identificeert het toestel; een poortnummer identificeert de dienst. Samen vormen ze een <strong>socket</strong>.'},
+  {t:'code',ln:'Socket = IP-adres + Poort',li:['192.168.30.10:80   \u2192 Webserver (HTTP)','192.168.30.10:3389 \u2192 Extern bureaublad (RDP)','192.168.30.10:443  \u2192 Beveiligde webserver (HTTPS)','','Zelfde IP, andere poorten = andere diensten']},
+  {t:'ic',v:'blue',lb:'Poortbereik',tx:'Poorten zijn <strong>16-bit getallen</strong>: <strong>2\u00b9\u2076 = 65.536 mogelijke poorten</strong> (0\u201365535).'},
+  {t:'tb',hs:['Categorie','Bereik','Beschrijving'],rs:[['Bekende poorten','0 \u2013 1023','Fundamentele apps, toegekend door IANA'],['Geregistreerde poorten','1024 \u2013 49151','Apps geregistreerd bij IANA'],['Priv\xe9/Dynamisch','49152 \u2013 65535','Client-poorten, dynamisch toegekend per sessie']]},
+  {t:'ic',v:'green',lb:'IANA',tx:'<strong>IANA (Internet Assigned Numbers Authority)</strong> beheert de toewijzing van standaard poortnummers aan protocollen wereldwijd.'},
+ ],qz:[
+  {t:'fill',q:'Hoeveel mogelijke poortnummers bestaan er?',a:'65536',e:'2\u00b9\u2076 = 65.536 poorten (0\u201365535).'},
+  {t:'mcq',q:'Wat is een socket?',o:['Een type kabel','IP-adres + poortnummer','Een type NIC','Een draadloos signaal'],a:1,e:'Een socket = IP-adres + poortnummer, identificeert een specifieke dienst op een toestel.'},
+  {t:'fill',q:'Bekende poorten lopen van 0 tot ___.',a:'1023',e:'Bekende poorten: 0\u20131023, toegekend door IANA.'},
+ ]},
+ {id:'c5l2',ti:'TCP vs UDP &amp; Poorttabel',bl:[
+  {t:'tb',hs:['Kenmerk','TCP','UDP'],rs:[['Volledige naam','Transmission Control Protocol','User Datagram Protocol'],['Verbinding','Verbindingsgericht','Verbindingsloos'],['Betrouwbaarheid','Betrouwbaar, herverzendt verloren data','Geen foutcontrole'],['Snelheid','Trager','Sneller'],['Gebruik','HTTP, HTTPS, FTP, SSH, RDP, SMTP','DNS, DHCP, streaming']]},
+  {t:'bt',tx:'Te Kennen Poortnummers'},
+  {t:'tb',hs:['Protocol','Volledige Naam','Transport','Poort'],rs:[['HTTP','Hypertext Transfer Protocol','TCP','80'],['HTTPS','HTTP Secure','TCP','443'],['DNS','Domain Name System','<strong>UDP</strong>','53'],['DHCP','Dynamic Host Config Protocol','<strong>UDP</strong>','67/68'],['FTP','File Transfer Protocol','TCP','21'],['SSH','Secure Shell','TCP','22'],['SMTP','Simple Mail Transfer Protocol','TCP','25'],['SMB','Server Message Block','TCP','445'],['RDP','Remote Desktop Protocol','TCP','3389'],['TELNET','Teletype Network','TCP','23']]},
+  {t:'ic',v:'blue',lb:'Lokale vs Externe Poorten',tx:'<strong>Lokale poort</strong>: client-kant, dynamisch gekozen (49152\u201365535).<br><strong>Externe poort</strong>: server-kant, meestal een bekende poort (80, 443, 3389\u2026).'},
+  {t:'code',ln:'CMD &mdash; Verbindingen en poorten bekijken',li:['C:\\> netstat -an','','Proto  Lokaal Adres        Extern Adres         Status','TCP    0.0.0.0:80           0.0.0.0:0            LISTENING','TCP    192.168.1.50:51106   93.184.216.34:443    ESTABLISHED','UDP    0.0.0.0:53           *:*']},
+  {t:'trap',tx:'<strong>Examenvalkuilen:</strong> DNS gebruikt <strong>UDP 53</strong> (NIET TCP). DHCP gebruikt <strong>UDP 67/68</strong> (NIET TCP). Dit zijn de meest voorkomende foute antwoorden op examens!'},
+ ],qz:[
+  {t:'fill',q:'Welke poort gebruikt HTTPS?',a:'443',e:'HTTPS gebruikt TCP poort 443.'},
+  {t:'mcq',q:'Welk transportprotocol gebruikt DNS?',o:['TCP','UDP','Beide','Geen'],a:1,e:'DNS gebruikt UDP poort 53. UDP is sneller; DNS-verzoeken zijn klein.'},
+  {t:'fill',q:'Welke poort gebruikt RDP?',a:'3389',e:'RDP (Remote Desktop Protocol) gebruikt TCP poort 3389.'},
+  {t:'fill',q:'Welke poort gebruikt SSH?',a:'22',e:'SSH (Secure Shell) gebruikt TCP poort 22.'},
+  {t:'tf',q:'TCP is sneller dan UDP omdat het op fouten controleert.',a:false,e:'Fout \u2014 UDP is SNELLER omdat het GEEN foutcontrole uitvoert. TCP is betrouwbaar maar trager.'},
+  {t:'mcq',q:'Een client verbindt met een HTTP-server. Wat is de doelpoort?',o:['443','51106','80','3389'],a:2,e:'HTTP doelpoort = 80 op de server.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 6 ── */
+{id:'c6',cc:'#f43f5e',em:'&#128246;',ti:'ARP &amp; ICMP',su:'Adresresolutie &middot; Ping &middot; Tracert',ls:[
+ {id:'c6l1',ti:'ARP &mdash; Address Resolution Protocol',bl:[
+  {t:'ic',v:'red',lb:'Wat is ARP?',tx:'<strong>ARP (Address Resolution Protocol)</strong> is het <strong>eerste protocol dat actief wordt</strong> wanneer twee hosts in een LAN willen communiceren. De afzender kent het doel-IP-adres maar heeft het <strong>MAC-adres</strong> nodig om een Ethernet-frame op te bouwen.'},
+  {t:'steps',st:[
+   {h:'Host A wil Host B bereiken',d:'Host A kent het IP-adres van Host B (bv. 192.168.50.14) maar kent het MAC-adres nog niet.'},
+   {h:'Host A stuurt een ARP-verzoek (broadcast)',d:'Doel-MAC = FF:FF:FF:FF:FF:FF. Bericht: "Wie heeft 192.168.50.14? Vertel 192.168.50.12." ALLE toestellen ontvangen dit.'},
+   {h:'Enkel Host B antwoordt (unicast ARP-antwoord)',d:'Host B herkent zijn eigen IP en antwoordt rechtstreeks aan Host A: "Ik ben 192.168.50.14, mijn MAC is 6a:02:b8:82:bc:f3."'},
+   {h:'Host A slaat de koppeling op in zijn ARP-tabel',d:'Host A heeft nu het MAC-adres van Host B en kan Ethernet-frames rechtstreeks versturen. De ARP-tabel cachet dit.'},
+  ]},
+  {t:'tb',hs:['Stap','Frametype','Doel-MAC','Inhoud'],rs:[['ARP-verzoek','Broadcast','FF:FF:FF:FF:FF:FF','Doel-IP-adres'],['ARP-antwoord','Unicast','MAC-adres van Host A','MAC-adres van Host B']]},
+  {t:'ic',v:'green',lb:'GARP &mdash; Gratuitous ARP',tx:'Een <strong>Gratuitous ARP (GARP)</strong> is een <strong>ARP-antwoord zonder voorafgaand ARP-verzoek</strong>. Wordt als broadcast verstuurd om een toestel aan te kondigen of ARP-tabellen bij te werken (bv. bij failover). In Wireshark zichtbaar als <strong>ARP Probe</strong>.'},
+  {t:'code',ln:'CMD &mdash; ARP-tabelcommando\'s',li:['arp -a      # ARP-tabel bekijken (IP-naar-MAC-koppelingen)','arp -d *    # Alle ARP-cache-vermeldingen verwijderen','','Voorbeelduitvoer van arp -a:','  192.168.0.1    6a-02-b8-82-bc-f3  dynamic','  192.168.0.255  ff-ff-ff-ff-ff-ff  static']},
+ ],qz:[
+  {t:'fill',q:'Waar staat ARP voor? (drie woorden)',a:'Address Resolution Protocol',e:'ARP = Address Resolution Protocol.'},
+  {t:'mcq',q:'Een ARP-verzoek wordt verstuurd als een ___.',o:['Unicast','Multicast','Broadcast','Directe boodschap'],a:2,e:'ARP-verzoeken zijn broadcasts (FF:FF:FF:FF:FF:FF) omdat de afzender het MAC-adres nog niet kent.'},
+  {t:'mcq',q:'Een ARP-antwoord wordt verstuurd als een ___.',o:['Broadcast','Unicast','Multicast','GARP'],a:1,e:'ARP-antwoorden zijn unicast \u2014 rechtstreeks verstuurd naar de vragende host.'},
+  {t:'fill',q:'Welk CMD-commando toont de ARP-tabel?',a:'arp -a',e:'arp -a toont de ARP-cache (IP-naar-MAC-koppelingen).'},
+  {t:'tf',q:'Een GARP is een ARP-antwoord zonder voorafgaand ARP-verzoek.',a:true,e:'Juist \u2014 Gratuitous ARP is niet gevraagd, gebruikt voor aankondigingen of failover.'},
+ ]},
+ {id:'c6l2',ti:'ICMP \u2014 Ping en Tracert',bl:[
+  {t:'ic',v:'red',lb:'ICMP',tx:'<strong>ICMP (Internet Control Message Protocol)</strong> verstuurt <strong>controle- en foutberichten</strong> in IP-netwerken. Het draagt geen toepassingsdata \u2014 enkel diagnostische informatie. Wordt gebruikt om bereikbaarheid te testen en netwerkproblemen op te sporen.'},
+  {t:'tb',hs:['Commando','Beschrijving'],rs:[['<code>ping [IP/host]</code>','Test bereikbaarheid. Verstuurt 4 ICMP echo-verzoeken (32 bytes elk).'],['<code>ping -t [IP]</code>','Continue ping tot Ctrl+C. Test verbindingsstabiliteit.'],['<code>ping -4 [host]</code>','Verplicht IPv4.'],['<code>ping -6 [host]</code>','Verplicht IPv6.'],['<code>tracert [IP]</code>','Toont elke router-hop die het pakket neemt naar de bestemming.']]},
+  {t:'code',ln:'CMD &mdash; Ping-uitvoer voorbeeld',li:['C:\\> ping 192.168.1.1','','Pinging 192.168.1.1 with 32 bytes of data:','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','Reply from 192.168.1.1: bytes=32 time=1ms TTL=64','','Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)']},
+  {t:'ic',v:'yellow',lb:'Sterretjes (*) in ping / tracert',tx:'Sterretjes betekenen ofwel: (1) het toestel <strong>reageert niet op ICMP</strong> (firewall blokkeert) OF (2) de route is onderbroken. Een sterretje betekent NIET automatisch dat het toestel offline is!'},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Standaard ping verstuurt <strong>4 pakketten van 32 bytes</strong>. Sterretjes (*) kunnen betekenen dat ICMP geblokkeerd wordt door een firewall \u2014 het toestel kan nog steeds online zijn.'},
+ ],qz:[
+  {t:'fill',q:'Hoeveel pakketten verstuurt een standaard ping?',a:'4',e:'Een standaard ping verstuurt 4 ICMP echo-verzoeken van elk 32 bytes.'},
+  {t:'mcq',q:'Welk commando toont de route die pakketten naar een bestemming nemen?',o:['ping','arp -a','tracert','netstat'],a:2,e:'tracert toont elke router-hop tussen jou en de bestemming.'},
+  {t:'tf',q:'Sterretjes (*) in ping-uitvoer betekenen altijd dat het toestel offline is.',a:false,e:'Fout \u2014 sterretjes kunnen ook betekenen dat ICMP geblokkeerd wordt door een firewall. Het toestel kan online zijn.'},
+  {t:'fill',q:'Welke ping-optie blijft continu uitvoeren? ping ___ [IP]',a:'-t',e:'ping -t blijft uitvoeren tot je Ctrl+C drukt.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 7 ── */
+{id:'c7',cc:'#a78bfa',em:'&#128421;',ti:'Netwerktoestellen',su:'Hub &middot; Switch &middot; Router &middot; DHCP &middot; DNS',ls:[
+ {id:'c7l1',ti:'Hub vs Switch',bl:[
+  {t:'ic',v:'purple',lb:'Hub',tx:'Verbindt toestellen in een bedraad LAN. <strong>Stuurt elk pakket naar ALLE poorten</strong>, ongeacht de bestemming. Geen intelligentie whatsoever. Hubs zijn verouderd.'},
+  {t:'ic',v:'blue',lb:'Switch',tx:'Verbindt toestellen in een bedraad LAN. <strong>Stuurt pakketten enkel naar de doelpoort</strong> via een MAC-adrestabel. Intelligent, effici\xebnt, de standaard vandaag.'},
+  {t:'tb',hs:['Kenmerk','Hub','Switch'],rs:[['Verkeer','ALLE poorten','Enkel doelpoort'],['Intelligentie','Geen','MAC-adrestabel'],['Botsingen','Veel','Minimaal'],['Nog in gebruik?','Nee (verouderd)','Ja (standaard)'],['Types','Enkel onbeheerd','Onbeheerd of beheerd']]},
+  {t:'ic',v:'green',lb:'Onbeheerde vs Beheerde Switch',tx:'<strong>Onbeheerd (Unmanaged)</strong>: plug-and-play, geen configuratie nodig.<br><strong>Beheerd (Managed)</strong>: configureerbaar via CLI \u2014 poortsnelheden, poortbeveiliging, VLAN\'s, enz.'},
+  {t:'ic',v:'yellow',lb:'Bekabeling: MDI / MDIX / Auto-MDI',tx:'<strong>MDI</strong>: bedrading voor computers. <strong>MDIX</strong>: bedrading voor switches/hubs.<br>PC \u2192 Switch: <strong>doorverbindingskabel (straight-through)</strong>. Switch \u2192 Switch: <strong>kruiskabel (crossover)</strong>.<br><strong>Auto-MDI/MDIX</strong>: detecteert automatisch welk type kabel nodig is.'},
+  {t:'trap',tx:'<strong>Waarom geen hubs meer?</strong> Een hub stuurt AL het verkeer naar ALLE poorten \u2014 dit veroorzaakt onnodige overbelasting en botsingen. Een switch levert verkeer enkel af bij de beoogde ontvanger. Dat is waarom hubs verouderd zijn.'},
+ ],qz:[
+  {t:'mcq',q:'Wat doet een hub wanneer hij een datapakket ontvangt?',o:['Stuurt naar doelpoort','Stuurt naar alle poorten','Verwijdert onbekende MACs','Slaat op in MAC-tabel'],a:1,e:'Een hub stuurt elk pakket naar ALLE poorten \u2014 hij heeft geen intelligentie.'},
+  {t:'mcq',q:'Welke kabel verbindt een pc met een switch?',o:['Kruiskabel','Doorverbindingskabel','Co\xe4xkabel','Glasvezel'],a:1,e:'PC (MDI) \u2192 Switch (MDIX) = doorverbindingskabel (straight-through).'},
+  {t:'tf',q:'Een beheerde switch kan worden geconfigureerd via CLI.',a:true,e:'Juist \u2014 beheerde switches ondersteunen CLI-configuratie voor poorten, VLAN\'s, beveiliging, enz.'},
+ ]},
+ {id:'c7l2',ti:'Router &amp; Default Gateway',bl:[
+  {t:'ic',v:'purple',lb:'Router',tx:'Een <strong>router verbindt twee of meer verschillende IP-netwerken</strong>. Hij vindt de beste route en leidt pakketten tussen netwerken door. Heeft <strong>minimaal 2 NIC\'s</strong>. Heeft een priv\xe9 <strong>LAN-IP</strong> en een publiek <strong>WAN-IP</strong> (toegekend door ISP).'},
+  {t:'hb',cs:[{v:'LAN',k:'Priv\xe9 IP (intern)',c:'#a78bfa'},{v:'WAN',k:'Publiek IP (ISP)',c:'#4f8ef7'},{v:'2+',k:'NIC\'s vereist',c:'#22d3a5'}]},
+  {t:'ic',v:'blue',lb:'Default Gateway',tx:'De <strong>Default Gateway</strong> is het LAN-IP-adres van de router. Wanneer een toestel data naar een ander netwerk (bv. het internet) wil sturen, stuurt het de pakketten naar de Default Gateway. De router stuurt ze dan door via het WAN-interface.'},
+  {t:'code',ln:'Voorbeeld Netwerk',li:['LAN-netwerk: 10.0.1.0/24','Router LAN-IP (Default Gateway): 10.0.1.1','Router WAN-IP (van ISP):          46.231.189.26','','Alle LAN-toestellen gebruiken 10.0.1.1 als hun gateway']},
+ ],qz:[
+  {t:'fill',q:'De Default Gateway is het ___ van de router aan de LAN-kant.',a:'IP-adres',e:'Default Gateway = LAN-kant IP-adres van de router.'},
+  {t:'mcq',q:'Minimum aantal NIC\'s dat een router nodig heeft?',o:['1','2','3','4'],a:1,e:'Een router heeft minimaal 2 NIC\'s nodig \u2014 \xe9\xe9n per verbonden netwerk.'},
+  {t:'tf',q:'Een router verbindt twee toestellen binnen HETZELFDE IP-netwerk.',a:false,e:'Fout \u2014 een router verbindt VERSCHILLENDE netwerken. Toestellen in hetzelfde netwerk communiceren via een switch.'},
+ ]},
+ {id:'c7l3',ti:'DHCP-server',bl:[
+  {t:'ic',v:'purple',lb:'DHCP',tx:'<strong>DHCP (Dynamic Host Configuration Protocol)</strong> kent automatisch een volledige TCP/IP-configuratie toe aan verbindende toestellen.'},
+  {t:'ic',v:'green',lb:'Wat DHCP voorziet',tx:'DHCP kent vier vereiste instellingen toe:<br>1. <strong>IP-adres</strong> (uniek in het netwerk)<br>2. <strong>Subnetmasker</strong><br>3. <strong>Default gateway</strong><br>4. <strong>DNS-serveradres</strong>'},
+  {t:'steps',st:[
+   {h:'DHCP Discover (client broadcast)',d:'Toestel zendt broadcast: "Is er een DHCP-server? Ik heb een IP-adres nodig." (bron 0.0.0.0, doel 255.255.255.255)'},
+   {h:'DHCP Offer (server reageert)',d:'DHCP-server biedt een beschikbaar IP-adres aan.'},
+   {h:'DHCP Request (client accepteert)',d:'Client accepteert het aanbod en zendt een bevestigingsverzoek.'},
+   {h:'DHCP Acknowledge (server bevestigt)',d:'Server bevestigt de toewijzing. Client heeft nu een volledige TCP/IP-configuratie.'},
+  ]},
+  {t:'ic',v:'yellow',lb:'Leaseperiode',tx:'DHCP-toewijzingen zijn <strong>tijdelijk</strong>. De <strong>leaseperiode</strong> bepaalt hoe lang het IP geldig is. Bij het verlopen verlengt het toestel automatisch \u2014 transparant voor de gebruiker.'},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Als DHCP niet bereikbaar is, kent Windows een <strong>APIPA-adres (169.254.x.x)</strong> toe. Je kan andere APIPA-toestellen op het LAN bereiken maar NIET het internet.'},
+ ],qz:[
+  {t:'mcq',q:'Welke vier zaken voorziet DHCP?',o:['IP, MAC, DNS, NIC','IP, Subnetmasker, Gateway, DNS','IP, MAC, Gateway, Poort','IP, Subnet, ICMP, ARP'],a:1,e:'DHCP voorziet: IP-adres, Subnetmasker, Default gateway en DNS-server.'},
+  {t:'tf',q:'DHCP kent permanente IP-adressen toe.',a:false,e:'Fout \u2014 DHCP kent tijdelijke IP-adressen toe met een leaseperiode.'},
+ ]},
+ {id:'c7l4',ti:'DNS &amp; Webserver',bl:[
+  {t:'ic',v:'purple',lb:'DNS',tx:'<strong>DNS (Domain Name System)</strong> vertaalt <strong>domeinnamen \u2194 IP-adressen</strong>. Het is een client-serversysteem: jouw pc vraagt de DNS-server om een naam, de server antwoordt met het IP.'},
+  {t:'tb',hs:['Type opzoeking','Richting','Voorbeeld'],rs:[['Directe opzoeking','Domein \u2192 IP','www.encora.be \u2192 212.123.0.115'],['Omgekeerde opzoeking','IP \u2192 Domein','212.123.0.115 \u2192 www.encora.be']]},
+  {t:'tb',hs:['Recordtype','Functie','Voorbeeld'],rs:[['A-record','Koppelt hostnaam \u2192 IP-adres','www.encora.be \u2192 212.123.0.115'],['CNAME-record','Koppelt naam \u2192 andere naam (alias)','mail.encora.be \u2192 encora.be']]},
+  {t:'ic',v:'blue',lb:'FQDN \u2014 Fully Qualified Domain Name',tx:'De volledige naam van een host. Onderdelen:<br>&bull; <strong>Hostnaam</strong>: specifieke servernaam (bv. mailserver)<br>&bull; <strong>Domeinnaam</strong>: organisatie + TLD (bv. encora.be)<br>&bull; Volledige FQDN: <code>mailserver.encora.be</code>'},
+  {t:'ic',v:'green',lb:'Webserver',tx:'Gebruikt <strong>HTTP/HTTPS</strong> om webpagina\'s te serveren. Proces:<br>1. Browser bevraagt DNS \u2192 krijgt IP-adres<br>2. Browser stuurt HTTP-verzoek naar dat IP \u2192 server stuurt webpagina terug'},
+ ],qz:[
+  {t:'fill',q:'Welk DNS-recordtype koppelt een hostnaam aan een IP-adres?',a:'A',e:'Een A-record (adresrecord) koppelt een hostnaam rechtstreeks aan een IP-adres.'},
+  {t:'fill',q:'FQDN staat voor Fully ___ Domain Name.',a:'Qualified',e:'FQDN = Fully Qualified Domain Name.'},
+  {t:'mcq',q:'Wat doet een CNAME-record?',o:['Koppelt IP aan MAC','Koppelt hostnaam aan IP','Koppelt naam aan andere naam','Slaat DNS-cache op'],a:2,e:'CNAME (Canonical Name) koppelt \xe9\xe9n domeinnaam aan een andere \u2014 een alias.'},
+  {t:'tf',q:'Een DNS-opzoeking vertaalt een domeinnaam naar een IP-adres.',a:true,e:'Juist \u2014 een directe DNS-opzoeking: domeinnaam \u2192 IP-adres.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 8 ── */
+{id:'c8',cc:'#38bdf8',em:'&#128187;',ti:'Cisco Packet Tracer',su:'Simulatie &middot; Instellen &middot; Oefeningen',ls:[
+ {id:'c8l1',ti:'Inleiding &amp; Installatie',bl:[
+  {t:'ic',v:'blue',lb:'Wat is Cisco Packet Tracer?',tx:'<strong>Cisco Packet Tracer</strong> is een <strong>netwerksimulatieprogramma</strong> van Cisco. Je kan virtuele netwerken bouwen, configureren en testen zonder fysieke hardware \u2014 sneller, goedkoper en veiliger.'},
+  {t:'ic',v:'green',lb:'Packet Tracer Installeren',tx:'1. Ga naar <code>https://skillsforall.com</code> \u2192 maak een gratis account aan<br>2. Zoek "Getting Started with Cisco Packet Tracer"<br>3. Ga naar sectie 1.0.3 \u2192 download de installer<br>4. Installeer en open Packet Tracer'},
+  {t:'tb',hs:['Element','Waar','Doel'],rs:[['Netwerkapparaten','Onderin \u2192 Network Devices','Switches, routers, hubs toevoegen'],['Eindgebruikersapparaten','Onderin \u2192 End Devices','PC\'s, servers toevoegen'],['Verbindingen','Onderin \u2192 Connections','Kabels toevoegen'],['Simulatie','Rechtsonder knop','Pakketstroom stap voor stap zien'],['Noot plaatsen','Bovenbalk','Je diagram labelen'],['Snel vooruitspoelen','Simulatiebalk','Wachttijd overslaan (oranje \u2192 groen)']]},
+  {t:'steps',st:[
+   {h:'Voeg een switch en pc\'s toe',d:'Kies switch (2960-24TT) en pc\'s uit de werkbalk. Klik op het canvas om te plaatsen.'},
+   {h:'Verbind met doorverbindingskabel',d:'Verbindingen \u2192 Copper Straight-Through \u2192 klik op NIC van pc \u2192 klik op poort van switch.'},
+   {h:'Ken statische IP-adressen toe',d:'Klik op pc \u2192 Desktop \u2192 IP Configuration \u2192 voer IP-adres en subnetmasker in.'},
+   {h:'Voeg labels toe met Noot plaatsen',d:'Bovenbalk \u2192 Place Note. Klik op het canvas en typ je label.'},
+   {h:'Test met ping',d:'PC \u2192 Desktop \u2192 Command Prompt \u2192 ping [IP van andere pc]'},
+   {h:'Gebruik Snel Vooruitspoelen als koppelingen oranje zijn',d:'Klik op Snel Vooruitspoelen. Oranje \u2192 groen = koppeling actief.'},
+  ]},
+  {t:'trap',tx:'<strong>Statusindicatoren:</strong> Groen = verbonden en actief. Oranje = nog niet actief (gebruik Snel Vooruitspoelen). Rood = geen verbinding.'},
+ ],qz:[
+  {t:'mcq',q:'Een oranje punt op een kabel in Packet Tracer betekent ___.',o:['Verbonden en actief','Koppeling nog niet actief','Geen verbinding','Draadloos'],a:1,e:'Oranje = nog niet actief. Gebruik Snel Vooruitspoelen. Groen = actief. Rood = geen verbinding.'},
+  {t:'mcq',q:'Welke kabel verbindt een pc met een switch?',o:['Kruiskabel','Doorverbindingskabel','Co\xe4xkabel','Seri\xeble kabel'],a:1,e:'Doorverbindingskabel (straight-through): PC (MDI) \u2192 Switch (MDIX).'},
+  {t:'fill',q:'Welk commando test de verbinding tussen twee hosts?',a:'ping',e:'ping verstuurt ICMP echo-verzoeken om bereikbaarheid te testen.'},
+ ]},
+ {id:'c8l2',ti:'Simulatiemodus &amp; Oefeningen',bl:[
+  {t:'ic',v:'blue',lb:'Simulatiemodus',tx:'Toont hoe data door het netwerk stroomt <strong>stap voor stap</strong>. Filter op protocol (bv. toon enkel ARP en ICMP) en bekijk pakketten animeren tussen toestellen.'},
+  {t:'steps',st:[
+   {h:'Schakel naar Simulatiemodus',d:'Klik op de knop "Simulation" rechtsonder.'},
+   {h:'Wis alle filters',d:'Simulatiepaneel \u2192 "Show All/None" om alle protocollen uit te schakelen.'},
+   {h:'Selecteer protocollen om te bekijken',d:'"Edit Filters" \u2192 vink ARP en ICMP aan \u2192 sluit.'},
+   {h:'Stuur een ping',d:'PC \u2192 Desktop \u2192 Command Prompt \u2192 ping [doel-IP]. Pakketenveloppen verschijnen.'},
+   {h:'Loop door de pakketstroom',d:'Klik de driehoek om \xe9\xe9n stap voor te gaan.'},
+  ]},
+  {t:'ic',v:'green',lb:'ARP + ICMP Stroom in Simulatie',tx:'Wanneer PC3 PC4 pingt voor de eerste keer:<br>1. PC3 zendt <strong>ARP-verzoek</strong> (broadcast) \u2014 "Wie heeft dit IP?"<br>2. Alle pc\'s ontvangen het; enkel PC4 stuurt unicast <strong>ARP-antwoord</strong> \u2014 "Ik ben het, hier is mijn MAC"<br>3. PC3 stuurt 4 <strong>ICMP ping-verzoeken</strong> (unicast) naar PC4<br>4. PC4 stuurt 4 <strong>ICMP ping-antwoorden</strong> terug'},
+  {t:'tb',hs:['Oefening','Opstelling','Doel','Bestandsnaam'],rs:[['OEF1 \u2014 ARP &amp; ICMP','5 pc\'s + switch','Simuleer ARP en ICMP, frames bekijken','Voornaam_OEF1_ARP_ICMP.pkt'],['OEF2 \u2014 Rechtstreeks','2 pc\'s, geen switch','Rechtstreeks pingen zonder switch','Voornaam_OEF2_2PC_ZONDER_SWITCH.pkt'],['OEF3 \u2014 2 Netwerken','2 switches + router','Twee netwerken via router verbinden','Voornaam_OEF3_2_NETWERKEN.pkt']]},
+ ],qz:[
+  {t:'mcq',q:'Wat gebeurt er EERST wanneer PC3 PC4 voor de eerste keer pingt?',o:['ICMP-verzoek verzonden','DNS-zoekopdracht','ARP-broadcast verzonden','TCP-handshake'],a:2,e:'ARP wordt eerst uitgevoerd om het MAC-adres van PC4 te achterhalen. Dan pas kan ICMP ping verstuurd worden.'},
+  {t:'tf',q:'In Simulatiemodus kan je filteren om enkel ARP- en ICMP-verkeer te zien.',a:true,e:'Juist \u2014 Edit Filters in het Simulatiepaneel laat je kiezen welke protocollen je wil zien.'},
+  {t:'mcq',q:'Welke bestandsextensie gebruikt Packet Tracer?',o:['.cpt','.net','.pkt','.cisco'],a:2,e:'Cisco Packet Tracer-bestanden gebruiken de .pkt-extensie.'},
+ ]},
+]},
+
+/* ── HOOFDSTUK 9 ── */
+{id:'c9',cc:'#fb923c',em:'&#128260;',ti:'TCP/IP-model &amp; NAT',su:'4 Lagen &middot; PDU &middot; NAT-vertaling',ls:[
+ {id:'c9l1',ti:'Het TCP/IP-model \u2014 4 Lagen',bl:[
+  {t:'ic',v:'orange',lb:'TCP/IP-model',tx:'Een <strong>praktisch 4-lagenmodel</strong> dat beschrijft hoe internetcommunicatie daadwerkelijk werkt. In tegenstelling tot het theoretische 7-lagenmodel OSI, weerspiegelt TCP/IP de echte protocollen die op het internet gebruikt worden.'},
+  {t:'tb',hs:['Laag','Naam','Functie','Protocollen','PDU'],rs:[['1','Netwerktoegang (Network Access)','Hardware: NIC, switch, kabels. Omzetten van data naar signalen.','Ethernet, Wi-Fi','Frame'],['2','Internet','IP-adressering en routering tussen netwerken.','IP, ICMP, ARP','Pakket (IP-pakket)'],['3','Transport','Betrouwbare levering en poortadressering.','TCP, UDP','Segment'],['4','Toepassing (Application)','Eindgebruikersapps en protocollen.','HTTP, HTTPS, FTP, DNS, SMTP','Data']]},
+  {t:'ic',v:'blue',lb:'PDU \u2014 Protocol Data Unit',tx:'De naam die data krijgt op elke TCP/IP-laag. Bewegend <strong>omlaag</strong> in de stack voegt elke laag een header toe (inkapseling). Bewegend <strong>omhoog</strong> aan de ontvangersijde worden headers verwijderd (ontkapseling).'},
+  {t:'steps',st:[
+   {h:'Toepassingslaag \u2192 DATA',d:'Toepassing maakt data aan (bv. HTTP-verzoek voor een webpagina).'},
+   {h:'Transportlaag \u2192 SEGMENT',d:'TCP/UDP-header toegevoegd: bronpoort, doelpoort.'},
+   {h:'Internetlaag \u2192 PAKKET',d:'IP-header toegevoegd: bron-IP-adres, doel-IP-adres.'},
+   {h:'Netwerktoegangslaag \u2192 FRAME',d:'Ethernet-header (bron-MAC, doel-MAC) en CRC-trailer toegevoegd. Klaar voor verzending.'},
+  ]},
+  {t:'trap',tx:'<strong>PDU-namen \u2014 verplicht te kennen!</strong> Frame (Laag 1) | Pakket/IP-pakket (Laag 2) | Segment (Laag 3) | Data (Laag 4). Komen voor op elk examen!'},
+ ],qz:[
+  {t:'mcq',q:'Wat is de PDU op de Transportlaag?',o:['Frame','Pakket','Segment','Datagram'],a:2,e:'Transportlaag PDU = Segment. Bevat de TCP/UDP-header met poortnummers.'},
+  {t:'mcq',q:'Welke laag behandelt routering tussen verschillende netwerken?',o:['Netwerktoegang','Transport','Internet','Toepassing'],a:2,e:'Internetlaag (Laag 2) behandelt IP-adressering en routering. Routers werken op deze laag.'},
+  {t:'fill',q:'De Netwerktoegangslaag voegt ___ -adressen toe om een Frame te vormen.',a:'MAC',e:'De Netwerktoegangslaag voegt MAC-adressen toe (bron en doel) om een Ethernet-frame te maken.'},
+  {t:'mcq',q:'Hoeveel lagen heeft het TCP/IP-model?',o:['3','5','7','4'],a:3,e:'TCP/IP-model = 4 lagen: Netwerktoegang, Internet, Transport, Toepassing.'},
+  {t:'tf',q:'Het TCP/IP-model is puur theoretisch en weerspiegelt geen echte protocollen.',a:false,e:'Fout \u2014 TCP/IP is PRAKTISCH en gebaseerd op echte internetprotocollen.'},
+ ]},
+ {id:'c9l2',ti:'NAT \u2014 Network Address Translation',bl:[
+  {t:'ic',v:'orange',lb:'Wat is NAT?',tx:'<strong>NAT (Network Address Translation)</strong> laat meerdere toestellen met <strong>priv\xe9 IP-adressen</strong> toe om \xe9\xe9n <strong>publiek IP-adres</strong> te delen voor internettoegang. De NAT-router (ook wel <strong>randrouter</strong> of <strong>Edge Router</strong>) staat op de grens tussen LAN en internet.'},
+  {t:'hb',cs:[{v:'LAN',k:'Priv\xe9 IP\'s intern',c:'#fb923c'},{v:'NAT-router',k:'Edge Router',c:'#4f8ef7'},{v:'Internet',k:'Enkel publieke IP\'s',c:'#22d3a5'}]},
+  {t:'steps',st:[
+   {h:'PC stuurt pakket naar internet',d:'Bron-IP = privaat (bv. 192.168.1.10). Bestemming = publiek server-IP.'},
+   {h:'NAT-router onderschept het pakket',d:'Router vervangt het priv\xe9 bron-IP door zijn eigen publiek WAN-IP.'},
+   {h:'Gewijzigd pakket verstuurd naar internet',d:'Internet ziet enkel het publieke IP van de router. Priv\xe9-netwerk is verborgen.'},
+   {h:'Antwoord arriveert bij router',d:'Router raadpleegt de NAT-tabel en stuurt het antwoord door naar het juiste priv\xe9-IP-toestel.'},
+  ]},
+  {t:'tb',hs:['Laag','Toegevoegd bij','Sleutelvelden'],rs:[['Netwerktoegang','Elke hop','Bron-MAC, Doel-MAC'],['Internet','Afzender','Bron-IP (privaat), Doel-IP'],['Transport','Afzender','Bronpoort (lokaal), Doelpoort'],['Na NAT (router)','Randrouter','Bron-IP vervangen door publiek IP van router']]},
+  {t:'trap',tx:'<strong>Examenvalkuil:</strong> Priv\xe9 IP-adressen KUNNEN NIET op het internet gebruikt worden. NAT maakt het mogelijk dat miljoenen thuisnetwerken met identieke priv\xe9 IP-bereiken allemaal het internet bereiken via unieke publieke IP-adressen.'},
+ ],qz:[
+  {t:'fill',q:'NAT staat voor ___ ___ ___.',a:'Network Address Translation',e:'NAT = Network Address Translation.'},
+  {t:'mcq',q:'Wat vervangt een NAT-router in uitgaande pakketten?',o:['Doel-MAC','Bronpoort','Priv\xe9 bron-IP door publiek IP van router','Doel-IP'],a:2,e:'NAT vervangt het priv\xe9 bron-IP-adres door het publieke WAN-IP van de router.'},
+  {t:'tf',q:'Een NAT-router wordt ook een Edge Router (randrouter) genoemd.',a:true,e:'Juist \u2014 hij staat aan de rand van het netwerk, tussen LAN en internet.'},
+  {t:'mcq',q:'Wat is het hoofddoel van NAT?',o:['Netwerk versnellen','Meerdere priv\xe9-IP-toestellen \xe9\xe9n publiek IP laten delen','MAC-adressen toekennen','DNS vervangen'],a:1,e:'NAT laat veel toestellen met priv\xe9 IP-adressen toe om \xe9\xe9n publiek IP te delen voor internettoegang.'},
+ ]},
+]},
+];
+
+var _total=0;
+for(var _i=0;_i<CH.length;_i++) _total+=CH[_i].ls.length;
+
+function buildSB(){
+  var h='';
+  for(var ci=0;ci<CH.length;ci++){
+    var c=CH[ci];
+    h+='<div><div class="chhead" id="chh_'+ci+'" style="--cc:'+c.cc+'" onclick="toggleCH('+ci+')">';
+    h+='<div class="chdot" style="background:'+c.cc+'">'+(ci<9?'0':'')+(ci+1)+'</div>';
+    h+='<span class="chlabel">'+c.em+' '+c.ti+'</span>';
+    h+='<span class="charrow" id="cha_'+ci+'">&#9658;</span></div>';
+    h+='<div class="chlessons" id="chl_'+ci+'">';
+    for(var li=0;li<c.ls.length;li++){
+      var l=c.ls[li];var dn=ST.done[l.id];
+      h+='<div class="llink'+(dn?' done':'')+'" id="ll_'+l.id+'" onclick="openL('+ci+','+li+')">';
+      h+='<span class="lcheck" id="lc_'+l.id+'">'+(dn?'&#10003;':'&#9675;')+'</span> '+l.ti+'</div>';
+    }
+    h+='</div></div>';
+  }
+  document.getElementById('sbChapters').innerHTML=h;
+}
+
+function toggleCH(ci){
+  var el=document.getElementById('chl_'+ci);
+  var ar=document.getElementById('cha_'+ci);
+  if(el.classList.contains('open')){el.classList.remove('open');ar.style.transform='';}
+  else{el.classList.add('open');ar.style.transform='rotate(90deg)';}
+}
+
+function buildHome(){
+  var h='';
+  for(var ci=0;ci<CH.length;ci++){
+    var c=CH[ci];var dn=0;
+    for(var li=0;li<c.ls.length;li++){if(ST.done[c.ls[li].id])dn++;}
+    var pct=c.ls.length?Math.round(dn/c.ls.length*100):0;
+    h+='<div class="hcard" style="--cc:'+c.cc+'" onclick="openL('+ci+',0)">';
+    h+='<div class="hcnum">Hoofdstuk '+(ci<9?'0':'')+(ci+1)+'</div>';
+    h+='<div class="hctitle">'+c.em+' '+c.ti+'</div>';
+    h+='<div class="hcsub">'+c.su+'</div>';
+    h+='<div class="hcprog"><div class="hcprogf" style="width:'+pct+'%;background:'+c.cc+'"></div></div>';
+    h+='</div>';
+  }
+  document.getElementById('homeGrid').innerHTML=h;
+}
+
+function goHome(){
+  document.getElementById('lessonView').classList.remove('vis');
+  document.getElementById('courseHome').classList.add('vis');
+  buildHome();
+}
+
+function openL(ci,li){
+  var c=CH[ci];var l=c.ls[li];
+  document.getElementById('courseHome').classList.remove('vis');
+  var lv=document.getElementById('lessonView');
+  lv.style.setProperty('--cc',c.cc);
+  lv.innerHTML=buildLesson(ci,li);
+  lv.classList.add('vis');
+  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+  var links=document.querySelectorAll('.llink');
+  for(var i=0;i<links.length;i++) links[i].classList.remove('active');
+  var al=document.getElementById('ll_'+l.id);
+  if(al){al.classList.add('active');var chl=document.getElementById('chl_'+ci);if(chl&&!chl.classList.contains('open'))toggleCH(ci);}
+  window.scrollTo(0,0);
+  _qs={};
+}
+
+function buildLesson(ci,li){
+  var c=CH[ci];var l=c.ls[li];
+  var done=!!ST.done[l.id];
+  var h='';
+  h+='<div class="lbread">Hfst.'+(ci+1)+' <span>'+c.ti+'</span> &rsaquo; '+l.ti+'</div>';
+  h+='<h1 class="ltitle">'+l.ti+'</h1>';
+  h+='<div class="lmeta"><span class="lbadge" style="color:'+c.cc+';border-color:'+c.cc+'44">'+c.em+' Hfst.'+(ci+1)+'</span>';
+  if(l.qz) h+='<span class="lbadge">'+l.qz.length+' quizvragen</span>';
+  h+='</div>';
+  for(var bi=0;bi<l.bl.length;bi++) h+=rB(l.bl[bi]);
+  if(l.qz&&l.qz.length) h+=bQ(ci,li,l);
+  h+='<div class="lnav"><button class="markbtn'+(done?' done':'')+'" id="mdb" onclick="markDone('+ci+','+li+')">'+(done?'&#10003; Voltooid':'Markeer als voltooid')+'</button><div style="display:flex;gap:.65rem;flex-wrap:wrap">';
+  var pc=ci,pl=li-1;if(pl<0){pc=ci-1;if(pc>=0)pl=CH[pc].ls.length-1;}
+  if(pc>=0&&pl>=0) h+='<button class="lnavbtn" onclick="openL('+pc+','+pl+')">&#8592; Vorige</button>';
+  var nc=ci,nl=li+1;if(nl>=c.ls.length){nc=ci+1;nl=0;}
+  if(nc<CH.length) h+='<button class="lnavbtn primary" onclick="openL('+nc+','+nl+')">Volgende &#8594;</button>';
+  h+='</div></div>';
+  return h;
+}
+
+function rB(b){
+  var h='';
+  if(b.t==='ic'){
+    h+='<div class="ic '+b.v+' blk">';
+    if(b.lb) h+='<span class="ilabel '+b.v+'">'+b.lb+'</span>';
+    h+='<p>'+b.tx+'</p></div>';
+  } else if(b.t==='hb'){
+    h+='<div class="hbox blk">';
+    for(var i=0;i<b.cs.length;i++) h+='<div class="hbcard"><div class="hbval" style="color:'+(b.cs[i].c||'#4f8ef7')+'">'+b.cs[i].v+'</div><div class="hbkey">'+b.cs[i].k+'</div></div>';
+    h+='</div>';
+  } else if(b.t==='tb'){
+    h+='<div class="tw blk"><table><thead><tr>';
+    for(var i=0;i<b.hs.length;i++) h+='<th>'+b.hs[i]+'</th>';
+    h+='</tr></thead><tbody>';
+    for(var r=0;r<b.rs.length;r++){h+='<tr>';for(var c=0;c<b.rs[r].length;c++) h+='<td>'+b.rs[r][c]+'</td>';h+='</tr>';}
+    h+='</tbody></table></div>';
+  } else if(b.t==='code'){
+    var id='cb'+Math.random().toString(36).slice(2,6);
+    h+='<div class="codeblk blk"><div class="codehdr"><div class="codehdr-l"><div class="dots"><div class="dot" style="background:#f43f5e"></div><div class="dot" style="background:#facc15"></div><div class="dot" style="background:#22d3a5"></div></div><span class="clang">'+b.ln+'</span></div><button class="ccopy" onclick="cpCode(\''+id+'\',this)">Kopi\u00ebren</button></div><pre id="'+id+'">'+b.li.join('\n')+'</pre></div>';
+  } else if(b.t==='steps'){
+    h+='<div class="steps blk">';
+    for(var i=0;i<b.st.length;i++) h+='<div class="step"><div class="stepn">'+(i+1)+'</div><div class="stepc"><div class="stept">'+b.st[i].h+'</div><div class="stepd">'+b.st[i].d+'</div></div></div>';
+    h+='</div>';
+  } else if(b.t==='bt'){
+    h+='<div class="btitle blk">'+b.tx+'</div>';
+  } else if(b.t==='trap'){
+    h+='<div class="trap blk"><div class="trapicon">&#9888;&#65039;</div><div class="traptxt">'+b.tx+'</div></div>';
+  }
+  return h;
+}
+
+function bQ(ci,li,l){
+  var h='<div class="qsec" id="qs"><div class="qtitle">&#127919; Lesquiz</div><div class="qsub">'+l.qz.length+' vragen &mdash; test je begrip</div>';
+  for(var qi=0;qi<l.qz.length;qi++){
+    var q=l.qz[qi];
+    h+='<div class="qblock" id="qb_'+qi+'"><div class="qtext"><strong>V'+(qi+1)+'.</strong> '+q.q+'</div>';
+    if(q.t==='mcq'){
+      h+='<div class="qopts">';
+      var L=['A','B','C','D'];
+      for(var oi=0;oi<q.o.length;oi++) h+='<button class="qopt" id="qo_'+qi+'_'+oi+'" data-qi="'+qi+'" data-oi="'+oi+'" onclick="pO('+ci+','+li+','+qi+','+oi+')"><span class="qletter">'+L[oi]+'</span>'+q.o[oi]+'</button>';
+      h+='</div>';
+    } else if(q.t==='tf'){
+      h+='<div class="qopts"><button class="qopt" id="qo_'+qi+'_0" data-qi="'+qi+'" data-oi="0" onclick="pO('+ci+','+li+','+qi+',0)"><span class="qletter">J</span>Juist</button><button class="qopt" id="qo_'+qi+'_1" data-qi="'+qi+'" data-oi="1" onclick="pO('+ci+','+li+','+qi+',1)"><span class="qletter">F</span>Fout</button></div>';
+    } else if(q.t==='fill'){
+      h+='<input class="qfill" id="qf_'+qi+'" type="text" placeholder="Typ je antwoord...">';
+    }
+    h+='<div class="qfb" id="qfb_'+qi+'"></div></div>';
+  }
+  h+='<button class="qsubmit" onclick="subQ('+ci+','+li+')">Antwoorden controleren</button><div class="qresult" id="qr"></div></div>';
+  return h;
+}
+
+var _qs={};
+function pO(ci,li,qi,oi){
+  _qs[qi]=oi;
+  var bs=document.querySelectorAll('[data-qi="'+qi+'"]');
+  for(var i=0;i<bs.length;i++) bs[i].classList.remove('sel');
+  var b=document.getElementById('qo_'+qi+'_'+oi);
+  if(b) b.classList.add('sel');
+}
+
+function subQ(ci,li){
+  var l=CH[ci].ls[li];var ok=0;
+  for(var qi=0;qi<l.qz.length;qi++){
+    var q=l.qz[qi];var fb=document.getElementById('qfb_'+qi);if(!fb)continue;
+    var correct;
+    if(q.t==='mcq'){
+      var ua=_qs[qi];correct=(ua===q.a);
+      var bs=document.querySelectorAll('[data-qi="'+qi+'"]');
+      for(var i=0;i<bs.length;i++){
+        var oi=parseInt(bs[i].getAttribute('data-oi'),10);
+        bs[i].classList.remove('sel');
+        if(oi===q.a) bs[i].classList.add('ok');
+        else if(oi===ua&&!correct) bs[i].classList.add('bad');
+      }
+    } else if(q.t==='tf'){
+      var uaTrue=(_qs[qi]===0);correct=(uaTrue===q.a);
+      var b0=document.getElementById('qo_'+qi+'_0');
+      var b1=document.getElementById('qo_'+qi+'_1');
+      if(b0&&b1){if(q.a){b0.classList.add('ok');if(!correct)b1.classList.add('bad');}else{b1.classList.add('ok');if(!correct)b0.classList.add('bad');}}
+    } else if(q.t==='fill'){
+      var inp=document.getElementById('qf_'+qi);
+      var val=inp?inp.value.trim().toLowerCase():'';
+      var ans=String(q.a).trim().toLowerCase();
+      correct=(val===ans);
+      if(inp){inp.classList.remove('ok','bad');inp.classList.add(correct?'ok':'bad');}
+    }
+    if(correct) ok++;
+    fb.className='qfb show '+(correct?'ok':'bad');
+    fb.textContent=(correct?'\u2713 Juist! ':'\u2717 Fout. ')+q.e;
+  }
+  var pct=Math.round(ok/l.qz.length*100);
+  var xp=ok*10;
+  var rr=document.getElementById('qr');
+  if(rr){
+    rr.className='qresult show';
+    rr.style.background=pct>=70?'rgba(34,211,165,0.1)':'rgba(244,63,94,0.1)';
+    rr.style.border='1px solid '+(pct>=70?'rgba(34,211,165,0.3)':'rgba(244,63,94,0.3)');
+    rr.style.color=pct>=70?'#22d3a5':'#f43f5e';
+    rr.textContent=ok+'/'+l.qz.length+' correct ('+pct+'%) \u2014 +'+xp+' XP verdiend!';
+  }
+  if(pct>=70) markDone(ci,li);
+  ST.xp=(ST.xp||0)+xp;sv();updProg();
+}
+
+function markDone(ci,li){
+  var l=CH[ci].ls[li];
+  if(!ST.done[l.id]){ST.done[l.id]=true;ST.xp=(ST.xp||0)+20;sv();}
+  var mb=document.getElementById('mdb');
+  if(mb){mb.textContent='\u2713 Voltooid';mb.classList.add('done');}
+  var ll=document.getElementById('ll_'+l.id);
+  if(ll){ll.classList.add('done');var lc=document.getElementById('lc_'+l.id);if(lc)lc.innerHTML='&#10003;';}
+  updProg();
+}
+
+function updProg(){
+  var dn=0;for(var k in ST.done){if(ST.done[k])dn++;}
+  var pct=_total?Math.round(dn/_total*100):0;
+  var pf=document.getElementById('progFill');if(pf)pf.style.width=pct+'%';
+  var pp=document.getElementById('progPct');if(pp)pp.textContent=pct+'%';
+  var pd=document.getElementById('progDetail');if(pd)pd.textContent=dn+' van '+_total+' voltooid';
+  var np=document.getElementById('navProg');if(np)np.textContent=dn+' / '+_total;
+  var nx=document.getElementById('navXP');if(nx)nx.textContent='\u26a1 '+(ST.xp||0)+' XP';
+}
+
+function cpCode(id,btn){
+  var el=document.getElementById(id);if(!el)return;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(el.textContent).then(function(){
+      btn.textContent='Gekopieerd!';btn.classList.add('copied');
+      setTimeout(function(){btn.textContent='Kopi\u00ebren';btn.classList.remove('copied');},1400);
+    });
+  }
+}
+
+document.getElementById('menuBtn').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.toggle('open');
+});
+document.addEventListener('click',function(e){
+  var sb=document.getElementById('sidebar');var mb=document.getElementById('menuBtn');
+  if(sb&&mb&&!sb.contains(e.target)&&!mb.contains(e.target)&&sb.classList.contains('open')){
+    sb.classList.remove('open');
+  }
+});
+
+buildSB();
+buildHome();
+updProg();
+</script>
+</body>
+</html>
